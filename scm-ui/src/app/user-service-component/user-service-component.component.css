@@ -1,0 +1,40 @@
+
+.buttons{
+    border-radius: 5px;
+    outline:none;
+    border: 1px solid #c2c0ca;
+}
+
+#login-form-wrap {
+    background-color: #fff;
+    width: 35%;
+    margin: 30px auto;
+    text-align: center;
+    padding: 20px 0 0 0;
+    border-radius: 4px;
+    box-shadow: 0px 30px 50px 0px rgba(0, 0, 0, 0.2);
+    margin-top: 10%;
+    padding: 5px;
+    display: block; 
+  }
+  
+  #login-form {
+    padding: 0 60px;
+  }
+
+  #register-form-wrap {
+    background-color: #fff;
+    width: 35%;
+    margin: 30px auto;
+    text-align: center;
+    padding: 20px 0 0 0;
+    border-radius: 4px;
+    box-shadow: 0px 30px 50px 0px rgba(0, 0, 0, 0.2);
+    margin-top: 10%;
+    padding: 5px;
+    display: none;
+  }
+  
+  #register-form {
+    padding: 0 60px;
+  }

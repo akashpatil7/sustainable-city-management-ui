@@ -1,1 +1,43 @@
-<p>user-service-component works!</p>
+<body>
+    <div id="login-form-wrap">
+        <h2>Login</h2>
+        <form id="login-form">
+          <p>
+          <input type="text" id="username" name="username" placeholder="Username" required><i class="validation"><span></span><span></span></i>
+          </p>
+          <p>
+          <input type="password" id="password" name="pas" placeholder="Password" required><i class="validation"><span></span><span></span></i>
+          </p>
+          <p>
+          <input class="buttons" type="submit" id="login" value="Login">
+          </p>
+        </form>
+        <div id="create-account-wrap">
+          <p>Not a member? <button class="buttons" (click)="openRegisterView()">Create Account</button><p>
+        </div>
+      </div>
+
+      <div id="register-form-wrap">
+        <h2>Register</h2>
+        <form id="register-form">
+          <p>
+          <input type="text" id="register-email" name="Email" placeholder="Email" required><i class="validation"><span></span><span></span></i>
+          </p>
+          <p>
+          <input type="text" id="username" name="username" placeholder="Username" required><i class="validation"><span></span><span></span></i>
+          </p>
+          <p>
+          <input type="password" id="password" name="pas" placeholder="Password" required><i class="validation"><span></span><span></span></i>
+          </p>
+          <p>
+            <input type="password" id="password" name="pas" placeholder="Confirm Password" required><i class="validation"><span></span><span></span></i>
+            </p>
+          <p>
+          <input class="buttons" type="submit" id="register" value="Register">
+          </p>
+        </form>
+        <div id="create-account-wrap">
+          <p>Already have an account? <button class="buttons" (click)=openLoginView()>Login</button><p>
+        </div>
+      </div>
+</body>
