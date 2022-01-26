@@ -12,6 +12,10 @@ export class UserServiceComponentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onLogin(data: { email: string; password: string; }) {
+    alert("Entered Email id : " + data.password);
+  }
+
   openRegisterView(){
     var registerView = document.getElementById("register-form-wrap");
     if(registerView){
