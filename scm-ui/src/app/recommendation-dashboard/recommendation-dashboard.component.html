@@ -1,0 +1,14 @@
+<h1> Dublin Bike Data Recommendations </h1>
+
+<p> Move bikes to new stations: </p>
+
+<table>
+    <tr> 
+      <th> Move From </th>
+      <th> Move To </th>
+    </tr>
+    <tr *ngFor="let entry of filledSpots; let i =index">
+        <td>{{entry.address}}</td>
+        <td>{{openSpots[i].address}}</td>      
+    </tr>
+</table>
