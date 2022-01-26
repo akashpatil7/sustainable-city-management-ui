@@ -16,6 +16,10 @@ export class UserServiceComponentComponent implements OnInit {
     alert("Entered Email id : " + data.password);
   }
 
+  onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
+    alert("Entered Username : " + data.username);
+  }
+
   openRegisterView(){
     var registerView = document.getElementById("register-form-wrap");
     if(registerView){
