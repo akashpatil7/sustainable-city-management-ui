@@ -53,4 +53,25 @@ describe('UserServiceComponentComponent', () => {
       expect(style["display"]).toContain('none');
     }
   });
+
+
+  it('should display login wrap', () => {
+    const fixture = TestBed.createComponent(UserServiceComponentComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    let button = fixture.debugElement.nativeElement.querySelector('#login-account');
+    button.click();
+
+    var loginForm = compiled.querySelector('#login-form-wrap');
+    if(loginForm) {
+      var style = getComputedStyle(loginForm);
+      expect(style["display"]).toContain('block');
+    }
+
+    var registerForm = compiled.querySelector('#register-form-wrap');
+    if(registerForm) {
+      var style = getComputedStyle(registerForm);
+      expect(style["display"]).toContain('none');
+    }
+  });
 });
