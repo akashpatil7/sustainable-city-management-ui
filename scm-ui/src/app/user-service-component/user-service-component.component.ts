@@ -20,6 +20,15 @@ export class UserServiceComponentComponent implements OnInit {
     alert("Entered Username : " + data.username);
   }
 
+  isValidEmail(email: string) {
+    var validEmail = new RegExp("^[a-zA-Z0-9_.+-]+@dublincity\.ie$");
+    if (validEmail.test(email)) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
   openRegisterView(){
     var registerView = document.getElementById("register-form-wrap");
     if(registerView){
