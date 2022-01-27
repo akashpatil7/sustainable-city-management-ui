@@ -23,9 +23,11 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
-    console.log(data.email);
     if(this.checkPasswords(data.password1, data.password2)){
-      this.loginService.sendRegisterDetails(data.email, data.password1, data.username);
+      var obs = this.loginService.sendRegisterDetails(data.email, data.password1, data.username);
+      obs.subscribe(data => {
+        console.log(data);
+      });
     }
   }
 

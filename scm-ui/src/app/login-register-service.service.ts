@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class LoginRegisterServiceService {
-  BACKEND_URL:string = 'http://localhost:8080/user/';
+  BACKEND_URL:string = 'http://localhost:8080/user';
 
   constructor(private http: HttpClient) {}
 
@@ -17,13 +17,13 @@ export class LoginRegisterServiceService {
 
   sendRegisterDetails(email: string, password: string, username: string){
     var userObj = {
-      email: email, 
-      username: username,
-      password: password
+      "email": email, 
+      "username": username,
+      "password": password,
     };
 
-    console.log(userObj);
-    this.http.post(this.BACKEND_URL + '/register', userObj);
+    var options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*" }) };
+    return this.http.post<any>(this.BACKEND_URL + '/register', userObj, options)
   }
 }
 
