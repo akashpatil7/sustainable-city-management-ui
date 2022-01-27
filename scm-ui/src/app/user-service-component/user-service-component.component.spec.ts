@@ -91,4 +91,5 @@ describe('UserServiceComponentComponent', () => {
       var style = getComputedStyle(registerForm);
       expect(style["display"]).toContain('none');
     }
-  });
+  })
+});
