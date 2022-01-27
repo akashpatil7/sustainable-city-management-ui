@@ -1,7 +1,7 @@
 <body>
     <div id="login-form-wrap">
         <h2>Login</h2>
-        <form id="login-form" #userlogin = "ngForm" (ngSubmit) = "onLogin(userlogin.value)">
+        <form id="login-form" #userlogin = "ngForm" (ngSubmit) = "onLogin(userlogin.value)" ngNativeValidate>
           <p>
           <input type="text" id="login-email" name="email" placeholder="Email" ngModel required><i class="validation"><span></span><span></span></i>
           </p>
@@ -19,18 +19,18 @@
 
       <div id="register-form-wrap">
         <h2>Register</h2>
-        <form id="register-form"  #userregister = "ngForm" (ngSubmit) = "onRegister(userregister.value)">
+        <form id="register-form"  #userregister = "ngForm" (ngSubmit) = "onRegister(userregister.value)" ngNativeValidate>
           <p>
-          <input type="text" id="register-email" name="Email" placeholder="Email" ngModel required><i class="validation"><span></span><span></span></i>
+          <input type="text" id="register-email" name="email" placeholder="Email" ngModel required><i class="validation"><span></span><span></span></i>
           </p>
           <p>
           <input type="text" id="username" name="username" placeholder="Username" ngModel required><i class="validation"><span></span><span></span></i>
           </p>
           <p>
-          <input type="password" id="password1" name="pas" placeholder="Password" ngModel required><i class="validation"><span></span><span></span></i>
+          <input type="password" id="password1" name="password1" placeholder="Password" ngModel required><i class="validation"><span></span><span></span></i>
           </p>
           <p>
-            <input type="password" id="password2" name="pas" placeholder="Confirm Password" ngModel required><i class="validation"><span></span><span></span></i>
+            <input type="password" id="password2" name="password2" placeholder="Confirm Password" ngModel required><i class="validation"><span></span><span></span></i>
             </p>
           <p>
           <input class="buttons" type="submit" id="register" value="Register">

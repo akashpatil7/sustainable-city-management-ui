@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginRegisterServiceService } from '../login-register-service.service';
 
 @Component({
   selector: 'app-user-service-component',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserServiceComponentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private loginService: LoginRegisterServiceService) { }
 
   ngOnInit(): void {
   }
@@ -22,8 +23,9 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
+    console.log(data.email);
     if(this.checkPasswords(data.password1, data.password2)){
-      alert("Entered Username : " + data.username);
+      this.loginService.sendRegisterDetails(data.email, data.password1, data.username);
     }
   }
 
