@@ -12,12 +12,19 @@ export class UserServiceComponentComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  checkPasswords(password1: string, password2: string){
+    if(password1 == password2) return true;
+    else return false;
+  }
+
   onLogin(data: { email: string; password: string; }) {
     alert("Entered Email id : " + data.password);
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
-    alert("Entered Username : " + data.username);
+    if(this.checkPasswords(data.password1, data.password2)){
+      alert("Entered Username : " + data.username);
+    }
   }
 
   openRegisterView(){
