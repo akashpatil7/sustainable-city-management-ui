@@ -54,6 +54,24 @@ describe('UserServiceComponentComponent', () => {
     }
   });
 
+  it('should check that the registered passwords are the same', () => {
+    const fixture = TestBed.createComponent(UserServiceComponentComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    
+    var testPassword1 = "test_password";
+    var testPassword2 = "test_password";
+
+    var arePasswordsTrue = component.checkPasswords(testPassword1, testPassword2);
+    expect(arePasswordsTrue).toBeTrue();
+
+    
+    var testPassword1 = "test_password";
+    var testPassword2 = "test_password_not_same";
+
+    var arePasswordsTrue = component.checkPasswords(testPassword1, testPassword2);
+    expect(arePasswordsTrue).toBeFalse();
+  });
 
   it('should display login wrap', () => {
     const fixture = TestBed.createComponent(UserServiceComponentComponent);
