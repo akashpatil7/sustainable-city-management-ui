@@ -17,13 +17,13 @@ export class LoginRegisterServiceService {
 
   sendRegisterDetails(email: string, password: string, username: string){
     var userObj = {
-      _id: email, 
-      user_name: username,
+      email: email, 
+      username: username,
       password: password
     };
 
     console.log(userObj);
-    //this.http.post(this.BACKEND_URL + '/register', userObj);
+    this.http.post(this.BACKEND_URL + '/register', userObj);
   }
 }
 
