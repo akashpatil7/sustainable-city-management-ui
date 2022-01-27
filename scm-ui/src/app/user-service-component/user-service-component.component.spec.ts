@@ -91,5 +91,16 @@ describe('UserServiceComponentComponent', () => {
       var style = getComputedStyle(registerForm);
       expect(style["display"]).toContain('none');
     }
-  })
+  });
+
+  it('should make sure email is valid when registering', () => {
+    var invalidEmail = { "email": "test@invalid.ie", "username": "test", "password1": "test", "password2": "test"};
+    var validEmail = { "email": "test@dublincity.ie", "username": "test", "password1": "test", "password2": "test"};
+
+    var isValidEmail = component.isValidEmail(invalidEmail.email);
+    expect(isValidEmail).toBeFalse();
+
+    isValidEmail = component.isValidEmail(validEmail.email);
+    expect(isValidEmail).toBeTrue();
+  });
 });
