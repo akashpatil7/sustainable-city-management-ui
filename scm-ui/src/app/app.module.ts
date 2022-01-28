@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { UserServiceComponentComponent } from './user-service-component/user-service-component.component';
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/trend-analysis-dashboard.component';
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
+import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { RecommendationDashboardComponent } from './recommendation-dashboard/rec
     UserServiceComponentComponent,
     TrendAnalysisDashboardComponent,
     RecommendationDashboardComponent,
+    RealTimeDashboardComponent,
   ],
   imports: [
     BrowserModule,
