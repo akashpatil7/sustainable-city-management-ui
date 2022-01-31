@@ -4,6 +4,8 @@ import { UserServiceComponentComponent } from './user-service-component.componen
 
 import { FormsModule } from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
+
 describe('UserServiceComponentComponent', () => {
   let component: UserServiceComponentComponent;
   let fixture: ComponentFixture<UserServiceComponentComponent>;
@@ -11,7 +13,8 @@ describe('UserServiceComponentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
       declarations: [ UserServiceComponentComponent ]
     })
@@ -66,10 +69,10 @@ describe('UserServiceComponentComponent', () => {
     expect(arePasswordsTrue).toBeTrue();
 
     
-    var testPassword1 = "test_password";
-    var testPassword2 = "test_password_not_same";
+    testPassword1 = "test_password";
+    testPassword2 = "test_password_not_same";
 
-    var arePasswordsTrue = component.checkPasswords(testPassword1, testPassword2);
+    arePasswordsTrue = component.checkPasswords(testPassword1, testPassword2);
     expect(arePasswordsTrue).toBeFalse();
   });
 

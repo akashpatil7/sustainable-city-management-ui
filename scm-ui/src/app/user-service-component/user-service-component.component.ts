@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { LoginRegisterServiceService } from '../login-register-service.service';
 
 @Component({
@@ -6,6 +7,7 @@ import { LoginRegisterServiceService } from '../login-register-service.service';
   templateUrl: './user-service-component.component.html',
   styleUrls: ['./user-service-component.component.css']
 })
+
 export class UserServiceComponentComponent implements OnInit {
 
   constructor(private loginService: LoginRegisterServiceService) { }
