@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { LoginRegisterServiceService } from '../login-register-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-service-component',
@@ -10,7 +11,7 @@ import { LoginRegisterServiceService } from '../login-register-service.service';
 
 export class UserServiceComponentComponent implements OnInit {
 
-  constructor(private loginService: LoginRegisterServiceService) { }
+  constructor(private loginService: LoginRegisterServiceService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +25,9 @@ export class UserServiceComponentComponent implements OnInit {
     this.loginService.loginUser(data.email, data.password).subscribe(data => {
       var token = data["token"];
       localStorage.setItem("token", token);
+      if(token){
+        this.router.navigateByUrl('/real-time-dashboard');
+      }
     });
   }
 

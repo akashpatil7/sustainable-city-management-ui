@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { RouterTestingModule } from '@angular/router/testing';
+
 describe('UserServiceComponentComponent', () => {
   let component: UserServiceComponentComponent;
   let fixture: ComponentFixture<UserServiceComponentComponent>;
@@ -14,7 +16,8 @@ describe('UserServiceComponentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule
       ],
       declarations: [ UserServiceComponentComponent ]
     })
