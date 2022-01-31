@@ -1,0 +1,21 @@
+<h1> Data Trends </h1>
+
+<h3> Dublin Bikes </h3>
+
+<table>
+    <tr> 
+      <th> Last Updated </th>
+      <th> Station Name </th>
+      <th> Available bikes </th>
+      <th> Available stands </th>
+    </tr>
+    <tr *ngFor="let data of bikeData">
+        <td>{{data.last_update}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.available_bikes}}</td>
+        <td>{{data.available_bike_stands}}</td>
+        
+    </tr>
+</table>
+
+
