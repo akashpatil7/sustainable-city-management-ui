@@ -17,7 +17,6 @@ import { UserServiceComponentComponent } from './user-service-component/user-ser
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpClient
   ],
   providers: [],
   bootstrap: [AppComponent]
