@@ -19,13 +19,16 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onLogin(data: { email: string; password: string; }) {
-    alert("Entered Email id : " + data.password);
+    //alert("Entered Email id : " + data.password);
+
+    this.loginService.loginUser(data.email, data.password).subscribe(data => {
+      console.log(data);
+    });
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
-    if(this.checkPasswords(data.password1, data.password2)){
-      var obs = this.loginService.sendRegisterDetails(data.email, data.password1, data.username);
-      obs.subscribe(data => {
+    if(this.checkPasswords(data.password1, data.password2) && this.isValidEmail){
+      this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe(data => {
         console.log(data);
       });
     }

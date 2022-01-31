@@ -11,8 +11,13 @@ export class LoginRegisterServiceService {
   constructor(private http: HttpClient) {}
 
   loginUser(email: string, password: string){
-    //this.http.post(this.BACKEND_URL + '/login', userObj);
-  
+    var userObj = {
+      "email": email, 
+      "password": password,
+    };
+    
+    let options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*"})};
+    return this.http.post<any>(this.BACKEND_URL + '/login', userObj, options);  
   }
 
   sendRegisterDetails(email: string, password: string, username: string){
