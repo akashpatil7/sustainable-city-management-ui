@@ -21,10 +21,9 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onLogin(data: { email: string; password: string; }) {
-    //alert("Entered Email id : " + data.password);
-
     this.loginService.loginUser(data.email, data.password).subscribe(data => {
-      console.log(data);
+      var token = data["token"];
+      localStorage.setItem("token", token);
     });
   }
 
