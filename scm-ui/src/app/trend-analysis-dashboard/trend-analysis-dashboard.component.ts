@@ -15,20 +15,18 @@ export class TrendAnalysisDashboardComponent implements OnInit {
   bikeData:any[] = [];
   
   ngOnInit(): void {
-    this.getData();
     
     // call trends service to get trends from backend
     this.trends.getTrendsData().subscribe((res) => {
       console.log(res);
     });
+    
+    /*
+    this.trends.getTrendsFromBackend().subscribe( (res) => {
+      console.log(res);
+    });
+    */
 
   }
   
-  // get snapshot of data from assets folder
-  getData() {
-    this.http.get('../assets/bikeData.json', {responseType: 'json'}).subscribe( (data) => {
-      // store data in local list to display on HTML page
-      this.bikeData = Object.values(data);
-    })
-  }
 }

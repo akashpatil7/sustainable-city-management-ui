@@ -4,16 +4,12 @@
 
 <table>
     <tr> 
-      <th> Last Updated </th>
-      <th> Station Name </th>
-      <th> Available bikes </th>
-      <th> Available stands </th>
+      <th> Harvest Time </th>
+      <th> Bike Stands </th>
+      <th> Available Bike Stands </th>
+      <th> Available Bikes </th>
     </tr>
     <tr *ngFor="let data of bikeData">
-        <td>{{data.last_update}}</td>
-        <td>{{data.name}}</td>
-        <td>{{data.available_bikes}}</td>
-        <td>{{data.available_bike_stands}}</td>
         
     </tr>
 </table>
