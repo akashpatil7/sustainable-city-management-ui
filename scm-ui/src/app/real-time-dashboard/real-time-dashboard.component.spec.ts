@@ -2,12 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
 describe('RealTimeDashboardComponent', () => {
   let component: RealTimeDashboardComponent;
   let fixture: ComponentFixture<RealTimeDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule
+      ],
       declarations: [ RealTimeDashboardComponent ]
     })
     .compileComponents();
