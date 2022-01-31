@@ -8,7 +8,6 @@ import { UserServiceComponentComponent } from './user-service-component/user-ser
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/trend-analysis-dashboard.component';
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
-import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { Router } from '@angular/router';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    Router
   ],
   providers: [],
   bootstrap: [AppComponent]
