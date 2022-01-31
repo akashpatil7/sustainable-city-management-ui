@@ -21,8 +21,7 @@ export class TrendAnalysisDashboardComponent implements OnInit {
     this.trends.getTrendsData().subscribe((res) => {
       console.log(res);
     });
-    
-    
+
   }
   
   // get snapshot of data from assets folder

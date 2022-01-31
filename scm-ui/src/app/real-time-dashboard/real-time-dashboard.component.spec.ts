@@ -22,4 +22,14 @@ describe('RealTimeDashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  /*
+  it('should render data table', () => {
+    const fixture = TestBed.createComponent(RealTimeDashboardComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('th')?.textContent).toContain('Last Updated');
+  });
+  */
+
 });
