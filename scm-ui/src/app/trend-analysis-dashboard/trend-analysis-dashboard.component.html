@@ -1,17 +1,26 @@
 <h1> Data Trends </h1>
 
-<h3> Dublin Bikes </h3>
+<h2> Dublin Bikes </h2>
 
-<table>
-    <tr> 
-      <th> Harvest Time </th>
-      <th> Bike Stands </th>
-      <th> Available Bike Stands </th>
-      <th> Available Bikes </th>
-    </tr>
-    <tr *ngFor="let data of bikeData">
-        
-    </tr>
-</table>
+<p *ngIf="loadingData"> Loading... </p>
+
+<div class="dublinBikeContainer" *ngIf="!loadingData">
+  <h3> Average bike availability given the current time: {{currentTime | date: 'HH:mm'}} </h3>
+
+  <table id="bikeTable">
+      <tr> 
+        <th> Station </th>
+        <th> Average Availability </th>
+      </tr>
+      <tr *ngFor="let data of bikeTrends">
+          <td *ngIf="data.hour == currentTime.getHours()"> {{data.name}} </td>
+          <td *ngIf="data.hour == currentTime.getHours()"> {{data.avg_hourly_bike_availability}}% </td>
+      </tr>
+  </table>
+</div>
+
+
+
+
 
 

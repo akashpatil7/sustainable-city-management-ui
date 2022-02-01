@@ -12,21 +12,30 @@ export class TrendAnalysisDashboardComponent implements OnInit {
   constructor(private http:HttpClient, private trends:TrendsService) { }
   
   // array to store each Dublin bike data entry
-  bikeData:any[] = [];
+  bikeTrends:any[] = [];
+  loadingData:boolean = true;
+  currentTime:any;
   
   ngOnInit(): void {
-    
-    // call trends service to get trends from backend
-    this.trends.getTrendsData().subscribe((res) => {
-      console.log(res);
+    // get all default trends data
+    this.trends.getTrends().subscribe((res) => {
+      this.bikeTrends = Object.values(res);
+      console.log(this.bikeTrends);
+      this.currentTime = new Date();
+      this.loadingData = false;
     });
     
+    // get trends data with specified start and end dates
     /*
-    this.trends.getTrendsFromBackend().subscribe( (res) => {
+    this.trends.getTrendsFilterByDate().subscribe((res) => {
       console.log(res);
     });
     */
 
+  }
+  
+  getTrendsByDate() {
+    
   }
   
 }
