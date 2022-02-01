@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,6 +10,7 @@ import { UserServiceComponentComponent } from './user-service-component/user-ser
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/trend-analysis-dashboard.component';
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dash
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

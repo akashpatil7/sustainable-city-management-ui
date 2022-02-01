@@ -4,20 +4,23 @@
 
 <p *ngIf="loadingData"> Loading... </p>
 
-<div class="dublinBikeContainer" *ngIf="!loadingData">
+<mat-accordion multi class="headers-align" *ngIf="!loadingData">
   <h3> Average bike availability given the current time: {{currentTime | date: 'HH:mm'}} </h3>
-
-  <table id="bikeTable">
-      <tr> 
-        <th> Station </th>
-        <th> Average Availability </th>
-      </tr>
-      <tr *ngFor="let data of bikeTrends">
-          <td> {{data.name}} </td>
-          <td> {{data.current_bike_availability}}% </td>
-      </tr>
-  </table>
-</div>
+  <div class="bikeExpansionHeaders">
+      <h4 class="stationHeader"> Station </h4>
+      <h4 class="availabilityHeader"> Average Availability </h4>
+  </div>
+  <mat-expansion-panel *ngFor="let data of bikeTrends">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{data.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+        <div> {{data.current_bike_availability}}% </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+</mat-accordion>
 
 
 

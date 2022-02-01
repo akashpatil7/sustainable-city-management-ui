@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TrendsService } from '../trends.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-trend-analysis-dashboard',
