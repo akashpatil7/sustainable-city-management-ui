@@ -8,7 +8,8 @@ export class AuthService {
 
   constructor(private router: Router) { }
  
-  canActivate(){
+  isLoggedIn(){
+    console.log(localStorage.getItem('token'));
     if(localStorage.getItem('token') != ""){
       return true;
     }
@@ -16,5 +17,10 @@ export class AuthService {
       this.router.navigateByUrl('/login');
       return false;
     }
+  }
+  
+  canActivate(){
+    if(this.isLoggedIn()) return true;
+    else return false;
   }
 }

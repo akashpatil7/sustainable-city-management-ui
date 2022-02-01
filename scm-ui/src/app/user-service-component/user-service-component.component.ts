@@ -15,6 +15,10 @@ export class UserServiceComponentComponent implements OnInit {
   constructor(private loginService: LoginRegisterServiceService, private router: Router) { }
 
   ngOnInit(): void {
+    /*
+    if(this.auth.isLoggedIn()){
+      this.router.navigateByUrl('/real-time-dashboard');
+    }*/
   }
 
   checkPasswords(password1: string, password2: string){
