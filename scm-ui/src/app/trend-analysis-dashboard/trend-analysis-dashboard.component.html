@@ -13,8 +13,8 @@
         <th> Average Availability </th>
       </tr>
       <tr *ngFor="let data of bikeTrends">
-          <td *ngIf="data.hour == currentTime.getHours()"> {{data.name}} </td>
-          <td *ngIf="data.hour == currentTime.getHours()"> {{data.avg_hourly_bike_availability}}% </td>
+          <td> {{data.name}} </td>
+          <td> {{data.current_bike_availability}}% </td>
       </tr>
   </table>
 </div>
