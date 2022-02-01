@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { LoginRegisterServiceService } from '../login-register-service.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class UserServiceComponentComponent implements OnInit {
   responseMessage: String = '';
-  
+
   constructor(private loginService: LoginRegisterServiceService, private router: Router) { }
 
   ngOnInit(): void {
@@ -21,29 +21,38 @@ export class UserServiceComponentComponent implements OnInit {
     }*/
   }
 
-  checkPasswords(password1: string, password2: string){
-    if(password1 == password2) return true;
+  checkPasswords(password1: string, password2: string) {
+    if (password1 == password2) return true;
     else return false;
   }
 
   onLogin(data: { email: string; password: string; }) {
-    this.loginService.loginUser(data.email, data.password).subscribe(data => {
+    this.loginService.loginUser(data.email, data.password).subscribe({
+      next: this.handleLoginResponse.bind(this),
+      error: this.handleLoginError.bind(this)
+   });
+}
+
+  handleLoginResponse(data: { [key: string]: string}) {
       var token = data["token"];
       localStorage.setItem("token", token);
-      if(token){
+      if (token) {
         this.router.navigateByUrl('/real-time-dashboard');
       }
-    });
   }
 
-  onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
-    if(this.checkPasswords(data.password1, data.password2) && this.isValidEmail){
-      this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe( data => {
+  handleLoginError(error: HttpErrorResponse) {
+    window.alert("There was an error logging in: " + error.error)
+  }
+
+  onRegister(data: { email: string; username: string; password1: string; password2: string; }) {
+    if (this.checkPasswords(data.password1, data.password2) && this.isValidEmail) {
+      this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe(data => {
         console.log(data);
         this.openLoginView();
         this.responseMessage = 'Registration Successful, please login';
         let popup = document.getElementById('response1');
-        if(popup){
+        if (popup) {
           popup.style.display = 'block';
           popup.style.backgroundColor = '#98FB98';
         }
@@ -51,7 +60,7 @@ export class UserServiceComponentComponent implements OnInit {
         console.log(error);
         this.responseMessage = error.error;
         let popup = document.getElementById('response2');
-        if(popup){
+        if (popup) {
           popup.style.display = 'block';
           popup.style.backgroundColor = '#FF2400';
         }
@@ -62,32 +71,32 @@ export class UserServiceComponentComponent implements OnInit {
   isValidEmail(email: string) {
     var validEmail = new RegExp("^[a-zA-Z0-9_.+-]+@dublincity\.ie$");
     if (validEmail.test(email)) {
-        return true;
+      return true;
     } else {
-        return false;
+      return false;
     }
   }
 
-  openRegisterView(){
+  openRegisterView() {
     var registerView = document.getElementById("register-form-wrap");
-    if(registerView){
+    if (registerView) {
       registerView.style.display = "block";
     }
 
     var loginView = document.getElementById("login-form-wrap");
-    if(loginView){
+    if (loginView) {
       loginView.style.display = "none";
     }
   }
 
-  openLoginView(){
+  openLoginView() {
     var registerView = document.getElementById("register-form-wrap");
-    if(registerView){
+    if (registerView) {
       registerView.style.display = "none";
     }
 
     var loginView = document.getElementById("login-form-wrap");
-    if(loginView){
+    if (loginView) {
       loginView.style.display = "block";
     }
   }
