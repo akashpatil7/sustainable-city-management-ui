@@ -11,6 +11,7 @@ import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/tren
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 import { LogoutComponent } from './logout/logout/logout.component';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { LogoutComponent } from './logout/logout/logout.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
