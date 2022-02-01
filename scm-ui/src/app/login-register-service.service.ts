@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class LoginRegisterServiceService {
     };
 
     var options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*" }) };
-    return this.http.post<any>(this.BACKEND_URL + '/register', userObj, options)
+    return this.http.post<any>(this.BACKEND_URL + '/register', userObj, options);
   }
 }
 

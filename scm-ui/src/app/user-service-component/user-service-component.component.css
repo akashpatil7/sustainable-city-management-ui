@@ -38,3 +38,13 @@
   #register-form {
     padding: 0 60px;
   }
+
+  .responseStyle{
+    font-size: small;
+    border-radius: 5px;
+    background-color: #98FB98;
+    margin: auto;
+    margin-bottom: 3%;
+    padding: 5px;
+    display: none;
+  }

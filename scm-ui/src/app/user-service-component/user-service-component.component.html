@@ -12,6 +12,7 @@
           <input class="buttons" type="submit" id="login" value="Login">
           </p>
         </form>
+        <p id='response1' class='responseStyle' [innerHtml]='responseMessage'></p>
         <div>
           <p>Not a member? <button id="create-account" class="buttons" (click)="openRegisterView()">Create Account</button></p>
         </div>
@@ -36,6 +37,7 @@
           <input class="buttons" type="submit" id="register" value="Register">
           </p>
         </form>
+        <p id='response2' class='responseStyle' [innerHtml]='responseMessage'></p>
         <div>
           <p>Already have an account? <button id="login-account" class="buttons" (click)="openLoginView()">Login</button></p>
         </div>

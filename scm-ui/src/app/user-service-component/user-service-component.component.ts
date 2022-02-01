@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 
 export class UserServiceComponentComponent implements OnInit {
-
+  responseMessage: String = '';
+  
   constructor(private loginService: LoginRegisterServiceService, private router: Router) { }
 
   ngOnInit(): void {
@@ -33,8 +34,23 @@ export class UserServiceComponentComponent implements OnInit {
 
   onRegister(data: { email: string; username: string; password1: string; password2: string;}) {
     if(this.checkPasswords(data.password1, data.password2) && this.isValidEmail){
-      this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe(data => {
+      this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe( data => {
         console.log(data);
+        this.openLoginView();
+        this.responseMessage = 'Registration Successful, please login';
+        let popup = document.getElementById('response1');
+        if(popup){
+          popup.style.display = 'block';
+          popup.style.backgroundColor = '#98FB98';
+        }
+      }, (error) => {
+        console.log(error);
+        this.responseMessage = error.error;
+        let popup = document.getElementById('response2');
+        if(popup){
+          popup.style.display = 'block';
+          popup.style.backgroundColor = '#FF2400';
+        }
       });
     }
   }
