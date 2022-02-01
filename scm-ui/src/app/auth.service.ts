@@ -10,7 +10,7 @@ export class AuthService {
  
   isLoggedIn(){
     console.log(localStorage.getItem('token'));
-    if(localStorage.getItem('token') != ""){
+    if(localStorage.getItem('token')){
       return true;
     }
     else{
@@ -22,5 +22,12 @@ export class AuthService {
   canActivate(){
     if(this.isLoggedIn()) return true;
     else return false;
+  }
+
+  logout() {
+    if(localStorage.getItem('token')){
+      localStorage.removeItem("token");
+      window.alert("You have been logged out.");
+    }
   }
 }

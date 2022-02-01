@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { RecommendationDashboardComponent } from './recommendation-dashboard.component';
-
-import { HttpClientModule } from '@angular/common/http'
 
 describe('RecommendationDashboardComponent', () => {
   let component: RecommendationDashboardComponent;

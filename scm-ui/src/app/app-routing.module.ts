@@ -5,13 +5,15 @@ import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/tren
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 import { AuthService } from './auth.service';
+import { LogoutComponent } from './logout/logout/logout.component';
 
 const routes: Routes = [
   { path: 'login', component: UserServiceComponentComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'trends', component: TrendAnalysisDashboardComponent, canActivate: [AuthService]},
   { path: 'recommendations', component: RecommendationDashboardComponent, canActivate: [AuthService]},
-  { path: 'real-time-dashboard', component: RealTimeDashboardComponent, canActivate: [AuthService]}
+  { path: 'real-time-dashboard', component: RealTimeDashboardComponent, canActivate: [AuthService]},
+  { path: 'logout', component: LogoutComponent}
 ];
 
 @NgModule({

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { UserServiceComponentComponent } from './user-service-component.component';
 
 import { FormsModule } from '@angular/forms';
-
-import { HttpClientModule } from '@angular/common/http';
 
 import { RouterTestingModule } from '@angular/router/testing';
 

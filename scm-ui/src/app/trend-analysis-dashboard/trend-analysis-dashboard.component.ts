@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TrendsService } from '../trends.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-trend-analysis-dashboard',
@@ -12,23 +13,30 @@ export class TrendAnalysisDashboardComponent implements OnInit {
   constructor(private http:HttpClient, private trends:TrendsService) { }
   
   // array to store each Dublin bike data entry
-  bikeData:any[] = [];
+  bikeTrends:any[] = [];
+  loadingData:boolean = true;
+  currentTime:any;
   
   ngOnInit(): void {
-    this.getData();
+    // get all default trends data
+    this.trends.getTrends().subscribe((res) => {
+      this.bikeTrends = Object.values(res);
+      console.log(this.bikeTrends);
+      this.currentTime = new Date();
+      this.loadingData = false;
+    });
     
-    // call trends service to get trends from backend
-    this.trends.getTrendsData().subscribe((res) => {
+    // get trends data with specified start and end dates
+    /*
+    this.trends.getTrendsFilterByDate().subscribe((res) => {
       console.log(res);
     });
+    */
 
   }
   
-  // get snapshot of data from assets folder
-  getData() {
-    this.http.get('../assets/bikeData.json', {responseType: 'json'}).subscribe( (data) => {
-      // store data in local list to display on HTML page
-      this.bikeData = Object.values(data);
-    })
+  getTrendsByDate() {
+    
   }
+  
 }
