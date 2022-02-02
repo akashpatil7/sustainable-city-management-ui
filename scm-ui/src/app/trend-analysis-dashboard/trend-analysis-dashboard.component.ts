@@ -21,6 +21,14 @@ export class TrendAnalysisDashboardComponent implements OnInit {
     // get all default trends data
     this.trends.getTrends().subscribe((res) => {
       this.bikeTrends = Object.values(res);
+      
+      // alphabetize the station names
+      this.bikeTrends.sort(function(a, b){
+          if(a._id.name < b._id.name) { return -1; }
+          if(a._id.name > b._id.name) { return 1; }
+          return 0;
+      });
+
       console.log(this.bikeTrends);
       this.currentTime = new Date();
       this.loadingData = false;
