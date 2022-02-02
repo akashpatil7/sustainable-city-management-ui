@@ -27,8 +27,6 @@ export class RecommendationDashboardComponent implements OnInit {
       this.getStationAvailability();
       this.openSpots = this.sortByMostOpen();
       this.filledSpots = this.sortByMostFilled();
-      console.log("OPEN SPOTS: ", this.openSpots);
-      console.log("FILLED SPOTS: ", this.filledSpots);
     
     })
   }
@@ -48,7 +46,6 @@ export class RecommendationDashboardComponent implements OnInit {
     for(let i = 0; i < this.bikeData.length; i++) {
       this.bikeData[i]["openPercentage"] = this.calculateOpenPercentage(this.bikeData[i].available_bikes, this.bikeData[i].available_bike_stands);
       this.bikeData[i]["filledPercentage"] = this.calculateFilledPercentage(this.bikeData[i].available_bikes, this.bikeData[i].available_bike_stands);
-      console.log(this.bikeData);
     }
   }
   
