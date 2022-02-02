@@ -42,7 +42,8 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   handleLoginError(error: HttpErrorResponse) {
-    window.alert("There was an error logging in: " + error.error)
+    //window.alert("There was an error logging in: " + error.error)
+    this.showLoginError(error.error);
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string; }) {
@@ -76,6 +77,15 @@ export class UserServiceComponentComponent implements OnInit {
   showRegisterError(error: string) {
     this.responseMessage = error;
     let popup = document.getElementById('response2');
+    if (popup) {
+      popup.style.display = 'block';
+      popup.style.backgroundColor = '#FF2400';
+    }
+  }
+
+  showLoginError(error: string){
+    this.responseMessage = error;
+    let popup = document.getElementById('response1');
     if (popup) {
       popup.style.display = 'block';
       popup.style.backgroundColor = '#FF2400';
