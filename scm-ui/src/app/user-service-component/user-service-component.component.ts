@@ -27,10 +27,15 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onLogin(data: { email: string; password: string; }) {
-    this.loginService.loginUser(data.email, data.password).subscribe({
-      next: this.handleLoginResponse.bind(this),
-      error: this.handleLoginError.bind(this)
-    });
+    if (this.isValidEmail(data.email)) {
+      this.loginService.loginUser(data.email, data.password).subscribe({
+        next: this.handleLoginResponse.bind(this),
+        error: this.handleLoginError.bind(this)
+      });
+    }
+    else {
+      window.alert("Invalid email.")
+    }
   }
 
   handleLoginResponse(data: { [key: string]: string }) {
