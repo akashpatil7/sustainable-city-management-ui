@@ -46,11 +46,14 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string; }) {
-    if (this.checkPasswords(data.password1, data.password2) && this.isValidEmail) {
+    if (this.checkPasswords(data.password1, data.password2) && this.isValidEmail(data.email)) {
       this.loginService.sendRegisterDetails(data.email, data.password1, data.username).subscribe({
         next: this.handleRegisterResponse.bind(this),
         error: this.handleRegisterError.bind(this)
       });
+    }
+    else {
+      this.showRegisterError("Invalid email or password.")
     }
   }
 
@@ -67,7 +70,11 @@ export class UserServiceComponentComponent implements OnInit {
 
   handleRegisterError(error: HttpErrorResponse) {
     console.log(error);
-    this.responseMessage = error.error;
+    this.showRegisterError(error.error)
+  }
+
+  showRegisterError(error: string) {
+    this.responseMessage = error;
     let popup = document.getElementById('response2');
     if (popup) {
       popup.style.display = 'block';
