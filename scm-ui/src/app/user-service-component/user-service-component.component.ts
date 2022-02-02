@@ -34,7 +34,7 @@ export class UserServiceComponentComponent implements OnInit {
       });
     }
     else {
-      window.alert("Invalid email.")
+      this.showLoginError('Invalid Email');
     }
   }
 
