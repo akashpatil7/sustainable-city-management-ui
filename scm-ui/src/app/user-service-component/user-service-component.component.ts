@@ -107,6 +107,7 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   openRegisterView() {
+    this.clearPopups();
     var registerView = document.getElementById("register-form-wrap");
     if (registerView) {
       registerView.style.display = "block";
@@ -119,6 +120,7 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   openLoginView() {
+    this.clearPopups();
     var registerView = document.getElementById("register-form-wrap");
     if (registerView) {
       registerView.style.display = "none";
@@ -127,6 +129,18 @@ export class UserServiceComponentComponent implements OnInit {
     var loginView = document.getElementById("login-form-wrap");
     if (loginView) {
       loginView.style.display = "block";
+    }
+  }
+
+  clearPopups(){
+    let popup1 = document.getElementById('response1');
+    if (popup1) {
+      popup1.style.display = 'none';
+    }
+
+    let popup2 = document.getElementById('response2');
+    if (popup2) {
+      popup2.style.display = 'none';
     }
   }
 
