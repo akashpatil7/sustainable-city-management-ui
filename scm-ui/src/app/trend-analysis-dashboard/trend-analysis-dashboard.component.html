@@ -8,17 +8,20 @@
   <h3> Average bike availability given the current time: {{currentTime | date: 'HH:mm'}} </h3>
   <div class="bikeExpansionHeaders">
       <h4 class="stationHeader"> Station </h4>
-      <h4 class="availabilityHeader"> Average Availability </h4>
+      <h4 class="availabilityHeader"> Average Availability (Empty stands)</h4>
   </div>
-  <mat-expansion-panel *ngFor="let data of bikeTrends">
+  <mat-expansion-panel *ngFor="let entry of hourlyBikeTrends">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{data._id.name}}
+        {{entry._id}}
       </mat-panel-title>
       <mat-panel-description>
-        <div> {{data.avgAvailability}}% </div>
+        <div> {{entry.current.avgAvailability}}% </div>
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <div *ngFor="let hourData of entry.data">
+      <span class="hourlyPercentages"> {{hourData.hour}}:00 - {{hourData.avgAvailability}}% </span>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>
 
