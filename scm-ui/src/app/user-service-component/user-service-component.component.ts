@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, NgModule, OnInit } from '@angular/core';
-import { LoginRegisterServiceService } from '../login-register-service.service';
+import { LoginRegisterServiceService } from '../services/login-register-service.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -47,7 +47,6 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   handleLoginError(error: HttpErrorResponse) {
-    //window.alert("There was an error logging in: " + error.error)
     this.showLoginError(error.error);
   }
 
