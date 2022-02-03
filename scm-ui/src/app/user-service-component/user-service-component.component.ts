@@ -47,7 +47,6 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   handleLoginError(error: HttpErrorResponse) {
-    //window.alert("There was an error logging in: " + error.error)
     this.showLoginError(error.error);
   }
 
