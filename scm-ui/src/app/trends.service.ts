@@ -15,9 +15,8 @@ export class TrendsService {
   }
   
   getTrends():Observable<any> {
-    //return this.http.get("http://localhost:8050/getDailyAverages");
+    return this.http.get("http://localhost:8050/getCurrentHourAverages");
     //return this.http.get("http://localhost:7001/trends/getTrendsData");
-    return this.http.get('../assets/bikeData.json', {responseType: 'json'});
   }
   
 }

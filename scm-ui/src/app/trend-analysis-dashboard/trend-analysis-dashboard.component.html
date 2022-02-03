@@ -13,10 +13,10 @@
   <mat-expansion-panel *ngFor="let data of bikeTrends">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{data.name}}
+        {{data._id.name}}
       </mat-panel-title>
       <mat-panel-description>
-        <div> {{data.current_bike_availability}}% </div>
+        <div> {{data.avgAvailability}}% </div>
       </mat-panel-description>
     </mat-expansion-panel-header>
   </mat-expansion-panel>
