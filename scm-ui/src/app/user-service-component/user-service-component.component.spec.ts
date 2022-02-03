@@ -144,4 +144,18 @@ describe('UserServiceComponentComponent', () => {
       expect(popup.textContent).toContain(error);
     }
   });
+
+  it('should clear popups', () => {
+    var data = { "email": "test@invalid.ie",  "username": "test", "password1": "test",  "password2": "test"};
+    component.onRegister(data);
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    var popup1 = compiled.querySelector('#response1');
+    if (popup1) {
+      component.clearPopups()
+      fixture.detectChanges();
+      var style = getComputedStyle(popup1);
+      expect(style["display"]).toContain('none');
+    }
+  });
 });
