@@ -12,6 +12,7 @@ import { RecommendationDashboardComponent } from './recommendation-dashboard/rec
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 import { LogoutComponent } from './logout/logout/logout.component';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -23,13 +24,18 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
     RealTimeDashboardComponent,
     LogoutComponent,
   ],
+  exports: [
+    MatExpansionModule,
+    MatButtonModule,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
