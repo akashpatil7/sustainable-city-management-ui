@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard.component';
+import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
 
 describe('TrendAnalysisDashboardComponent', () => {
   let component: TrendAnalysisDashboardComponent;
@@ -9,10 +10,10 @@ describe('TrendAnalysisDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrendAnalysisDashboardComponent ],
       imports: [
         HttpClientModule
-      ]
+      ],
+      declarations: [ TrendAnalysisDashboardComponent ]
     })
     .compileComponents();
   });

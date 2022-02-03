@@ -9,10 +9,10 @@ describe('RecommendationDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RecommendationDashboardComponent ],
       imports: [
         HttpClientModule
-      ]
+      ],
+      declarations: [ RecommendationDashboardComponent ]
     })
     .compileComponents();
   });

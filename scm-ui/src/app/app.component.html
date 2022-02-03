@@ -1,1 +1,66 @@
-<router-outlet></router-outlet>
+<style>
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .toolbar {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #1976d2;
+    color: white;
+    font-weight: 600;
+
+  }
+
+  .toolbar span {
+    margin: auto;
+  }
+
+  .header-social {
+  background: #1976d2;
+  text-align: center;
+}
+
+.header-text {
+  color: aliceblue;
+}
+li {
+  display: inline-block;
+  padding: 10px;
+}
+
+</style>
+
+<head>
+  <title> SCM </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="toolbar" role="banner">
+    <span>Welcome to Sustainable City Management</span>
+  </div>
+  <div class="header-social">
+    <nav class="header-nav-secondary">
+      <ul>
+        <li><a class="header-text" routerLink="/real-time-dashboard">real-time data</a></li>
+        <li><a class="header-text" routerLink="/trends">trends</a></li>
+        <li><a class="header-text" routerLink="/recommendations">recommendations</a></li>
+        <li><a class="header-text" routerLink="/logout">logout</a></li>
+      </ul>
+    </nav>
+  </div>
+  <router-outlet></router-outlet>
+</body>
