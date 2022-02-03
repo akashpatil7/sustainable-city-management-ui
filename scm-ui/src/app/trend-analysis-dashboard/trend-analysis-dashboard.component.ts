@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import {MatExpansionModule} from '@angular/material/expansion';
 import { TrendsService } from '../services/trends.service';
 
@@ -14,28 +15,28 @@ export class TrendAnalysisDashboardComponent implements OnInit {
   
   // array to store each Dublin bike data entry
   bikeTrends:any[] = [];
+  hourlyBikeTrends:any[] = [];
   loadingData:boolean = true;
   currentTime:any;
   
-  ngOnInit(): void {
-    // get all default trends data
-    this.trends.getTrends().subscribe((res) => {
-      this.bikeTrends = Object.values(res);
-      console.log(this.bikeTrends);
+  ngOnInit() {
+    // get all default trends data    
+    this.getHourlyBikeAverages();
+  }
+
+  // get hourly availability averages for bike stations
+  getHourlyBikeAverages() {
+    this.trends.getHourlyAverage().subscribe((res) => {
+      this.hourlyBikeTrends = res;
+      this.hourlyBikeTrends.sort(function(a, b){
+          if(a._id < b._id) { return -1; }
+          if(a._id > b._id) { return 1; }
+          return 0;
+      });
+      
       this.currentTime = new Date();
       this.loadingData = false;
-    });
-    
-    // get trends data with specified start and end dates
-    /*
-    this.trends.getTrendsFilterByDate().subscribe((res) => {
-      console.log(res);
-    });
-    */
-
-  }
-  
-  getTrendsByDate() {
+    })
     
   }
   
