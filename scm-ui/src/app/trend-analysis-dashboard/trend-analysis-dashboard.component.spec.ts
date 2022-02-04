@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard.component';
-import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
+
 
 describe('TrendAnalysisDashboardComponent', () => {
   let component: TrendAnalysisDashboardComponent;
@@ -29,19 +28,12 @@ describe('TrendAnalysisDashboardComponent', () => {
   });
   
   it('should render bike trend table', () => {
-    const fixture = TestBed.createComponent(RealTimeDashboardComponent);
+    const fixture = TestBed.createComponent(TrendAnalysisDashboardComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    
-    let tableHeaders = fixture.nativeElement.querySelector('#bikeTable');
-    /*
-    expect(tableHeaders[0].innerHTML).toBe('Last Updated');
-    expect(tableHeaders[1].innerHTML).toBe('Station Name');
-    expect(tableHeaders[2].innerHTML).toBe('Available bikes');
-    expect(tableHeaders[3].innerHTML).toBe('Available stands');
-    expect(tableHeaders.length).toBe(4);
-    */
-    
+    const rows = fixture.nativeElement.querySelector('mat-expansion-panel');
+    expect(rows.length).toBe(110);
   });
+  
+
   
 });

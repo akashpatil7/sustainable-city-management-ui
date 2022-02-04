@@ -10,7 +10,7 @@
       <h4 class="stationHeader"> Station </h4>
       <h4 class="availabilityHeader"> Average Availability (Empty stands)</h4>
   </div>
-  <mat-expansion-panel *ngFor="let entry of hourlyBikeTrends">
+  <mat-expansion-panel id="bikeEntry" *ngFor="let entry of hourlyBikeTrends">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{entry._id}}
