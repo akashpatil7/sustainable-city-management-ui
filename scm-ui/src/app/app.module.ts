@@ -13,6 +13,9 @@ import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dash
 import { LogoutComponent } from './logout/logout/logout.component';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -27,6 +30,8 @@ import {MatButtonModule} from '@angular/material/button';
   exports: [
     MatExpansionModule,
     MatButtonModule,
+    MatCardModule,
+
   ],
   imports: [
     BrowserModule,
@@ -36,6 +41,7 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatExpansionModule,
     MatButtonModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

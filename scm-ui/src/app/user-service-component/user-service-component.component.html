@@ -1,45 +1,53 @@
 <body>
-    <div id="login-form-wrap">
-        <h2>Login</h2>
-        <form id="login-form" #userlogin = "ngForm" (ngSubmit) = "onLogin(userlogin.value)" ngNativeValidate>
-          <p>
-          <input matInput type="text" id="login-email" name="email" placeholder="Email" ngModel required><i class="validation"><span></span><span></span></i>
-          </p>
-          <p>
-          <input matInput type="password" id="password" name="password" placeholder="Password" ngModel required><i class="validation"><span></span><span></span></i>
-          </p>
-          <p>
-          <button mat-raised-button color="primary" class="buttons" type="submit" id="login" >Login</button>
-          </p>
-        </form>
-        <p id='response1' class='responseStyle' [innerHtml]='responseMessage'></p>
-        <div>
-          <p>Not a member? <button mat-raised-button color="primary" id="create-account" class="buttons" (click)="openRegisterView()">Create Account</button></p>
-        </div>
-      </div>
+  <mat-card id="login-form-wrap">
+    <mat-card-title>Login</mat-card-title>
+    <form id="login-form" #userlogin="ngForm" (ngSubmit)="onLogin(userlogin.value)" ngNativeValidate>
+      <p>
+        <input matInput type="text" id="login-email" name="email" placeholder="Email" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <input matInput type="password" id="password" name="password" placeholder="Password" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <button mat-raised-button color="primary" class="buttons" type="submit" id="login">Login</button>
+      </p>
+    </form>
+    <p id='response1' class='responseStyle' [innerHtml]='responseMessage'></p>
+    <div>
+      <p>Not a member? <button mat-raised-button color="primary" id="create-account" class="buttons"
+          (click)="openRegisterView()">Create Account</button></p>
+    </div>
+  </mat-card>
 
-      <div id="register-form-wrap">
-        <h2>Register</h2>
-        <form id="register-form"  #userregister = "ngForm" (ngSubmit) = "onRegister(userregister.value)" ngNativeValidate>
-          <p>
-          <input type="text" id="register-email" name="email" placeholder="Email" ngModel required><i class="validation"><span></span><span></span></i>
-          </p>
-          <p>
-          <input type="text" id="username" name="username" placeholder="Username" ngModel required><i class="validation"><span></span><span></span></i>
-          </p>
-          <p>
-          <input type="password" id="password1" name="password1" placeholder="Password" ngModel required><i class="validation"><span></span><span></span></i>
-          </p>
-          <p>
-            <input type="password" id="password2" name="password2" placeholder="Confirm Password" ngModel required><i class="validation"><span></span><span></span></i>
-            </p>
-          <p>
-          <button mat-raised-button color="primary" class="buttons" type="submit" id="register" >Register</button>
-          </p>
-        </form>
-        <p id='response2' class='responseStyle' [innerHtml]='responseMessage'></p>
-        <div>
-          <p>Already have an account? <button mat-raised-button color="primary" id="login-account" class="buttons" (click)="openLoginView()">Login</button></p>
-        </div>
-      </div>
+  <mat-card id="register-form-wrap">
+    <mat-card-title>Register</mat-card-title>
+    <form id="register-form" #userregister="ngForm" (ngSubmit)="onRegister(userregister.value)" ngNativeValidate>
+      <p>
+        <input type="text" id="register-email" name="email" placeholder="Email" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <input type="text" id="username" name="username" placeholder="Username" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <input type="password" id="password1" name="password1" placeholder="Password" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <input type="password" id="password2" name="password2" placeholder="Confirm Password" ngModel required><i
+          class="validation"><span></span><span></span></i>
+      </p>
+      <p>
+        <button mat-raised-button color="primary" class="buttons" type="submit" id="register">Register</button>
+      </p>
+    </form>
+    <p id='response2' class='responseStyle' [innerHtml]='responseMessage'></p>
+    <div>
+      <p>Already have an account? <button mat-raised-button color="primary" id="login-account" class="buttons"
+          (click)="openLoginView()">Login</button></p>
+    </div>
+  </mat-card>
 </body>

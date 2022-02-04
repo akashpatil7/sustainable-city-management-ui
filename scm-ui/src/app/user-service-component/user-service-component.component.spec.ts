@@ -37,7 +37,7 @@ describe('UserServiceComponentComponent', () => {
     const fixture = TestBed.createComponent(UserServiceComponentComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('#login-form-wrap h2')?.textContent).toContain('Login');
+    expect(compiled.querySelector('#login-form-wrap mat-card-title')?.textContent).toContain('Login');
   });
 
   it('should display register wrap', () => {
