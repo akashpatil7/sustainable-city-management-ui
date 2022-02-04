@@ -16,6 +16,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
     MatExpansionModule,
     MatButtonModule,
     MatCardModule,
-
+    MatToolbarModule,
+    MatTabsModule
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,8 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
     MatExpansionModule,
     MatButtonModule,
     MatCardModule,
+    MatToolbarModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
