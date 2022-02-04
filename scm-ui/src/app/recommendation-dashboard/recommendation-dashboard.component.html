@@ -4,11 +4,11 @@
 
 <table>
     <tr> 
-      <th> Move From </th>
-      <th> Move To </th>
+      <th> Move Bikes From </th>
+      <th> Move Bikes To </th>
     </tr>
     <tr *ngFor="let entry of filledSpots; let i =index">
-        <td>{{entry.address}}</td>
-        <td>{{openSpots[i].address}}</td>      
+        <td>{{entry.name}}</td>
+        <td>{{openSpots[i].name}}</td>      
     </tr>
 </table>

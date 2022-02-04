@@ -2,3 +2,15 @@ table, th, td {
   border: 1px solid black;
   padding:5px;
 }
+
+#map-container {
+    position: relative;
+    height: 900px;
+    width: 1500px;
+}
+
+#map {
+    position: relative;
+    height: inherit;
+    width: inherit;
+}
