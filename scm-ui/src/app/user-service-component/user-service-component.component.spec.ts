@@ -108,4 +108,40 @@ describe('UserServiceComponentComponent', () => {
     isValidEmail = component.isValidEmail(validEmail.email);
     expect(isValidEmail).toBeTrue();
   });
+
+  it('should save token to localStorage on login and redirect', () => {
+    var data = { "token": "12345" };
+    component.handleLoginResponse(data);
+    expect(localStorage.getItem("token")).toEqual("12345");
+  });
+
+  it('should show login error with error string', () => {
+    let error: string = "Invalid Email";
+    var data = { "email": "test@invalid.ie",  "password": "test"};
+    component.onLogin(data);
+    
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    var popup = compiled.querySelector('#response1');
+    if (popup) {
+      var style = getComputedStyle(popup);
+      expect(style["display"]).toContain('block');
+      expect(popup.textContent).toContain(error);
+    }
+  });
+
+  it('should show register error with error string', () => {
+    let error: string = "Invalid email or password.";
+    var data = { "email": "test@invalid.ie",  "username": "test", "password1": "test",  "password2": "test"};
+    component.onRegister(data);
+    
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    var popup = compiled.querySelector('#response2');
+    if (popup) {
+      var style = getComputedStyle(popup);
+      expect(style["display"]).toContain('block');
+      expect(popup.textContent).toContain(error);
+    }
+  });
 });

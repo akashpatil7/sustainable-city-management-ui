@@ -29,3 +29,7 @@ mat-expansion-panel {
  justify-content: space-between;
  align-items: center;
 }
+
+.hourlyPercentages {
+  padding-left:33%;
+}

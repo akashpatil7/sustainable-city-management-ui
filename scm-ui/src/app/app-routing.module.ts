@@ -4,8 +4,8 @@ import { UserServiceComponentComponent } from './user-service-component/user-ser
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/trend-analysis-dashboard.component';
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
-import { AuthService } from './auth.service';
 import { LogoutComponent } from './logout/logout/logout.component';
+import { AuthService } from './services/auth.service';
 
 const routes: Routes = [
   { path: 'login', component: UserServiceComponentComponent },
