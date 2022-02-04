@@ -48,7 +48,7 @@ export class RealTimeDashboardComponent implements OnInit {
     // get snapshot of data from assets folder
     this.http.get('../assets/bikeData.json', {responseType: 'json'}).subscribe( (data) => {
       // store data in local list to display on HTML page
-      this.bikeData = Object.values(data
+      this.bikeData = Object.values(data);
       // make map markers for the bike stand data
       this.makeBikeMarkers();
     })
