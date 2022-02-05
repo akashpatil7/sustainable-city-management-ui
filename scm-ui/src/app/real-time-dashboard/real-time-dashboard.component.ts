@@ -1,8 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
+import { RealTimeDataService } from '../services/real-time-data-service.service';
+import {Observable, Observer} from 'rxjs';
+import * as EventSource from 'eventsource';
+import { DublinBikesData } from '../models/DublinBikesData';
 
-//import the code from the Leaflet API for creating marker icons 
+//import the code from the Leaflet API for creating marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -24,26 +28,33 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './real-time-dashboard.component.html',
   styleUrls: ['./real-time-dashboard.component.css']
 })
+@Injectable()
 export class RealTimeDashboardComponent implements OnInit {
-  
+
   // array to store each Dublin bike data entry
   bikeData:any[] = [];
   // create a map object to display the data
   map:any;
-  // object to hold map marker data 
+  // object to hold map marker data
   markers: Object = {};
 
-  constructor(private http:HttpClient) { }
+  dublinBikesList: Observable<DublinBikesData[]>;
+  
+  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.reloadData();
   }
-  
+
   // initialise the map after the html component is rendered
   ngAfterViewInit(): void {
     this.initialiseMap();
   }
-  
+
+  reloadData() {
+    this.dublinBikesList = this.realTimeDataService.getRealTimeData();
+  }
+
   getData() {
     // get snapshot of data from assets folder
     this.http.get('../assets/bikeData.json', {responseType: 'json'}).subscribe( (data) => {
@@ -53,14 +64,14 @@ export class RealTimeDashboardComponent implements OnInit {
       this.makeBikeMarkers();
     })
   }
-  
+
   // set initial map configurations (Dublin city centre)
   initialiseMap(): void {
      this.map = L.map('map', {
        center: [53.35105167452323, -6.256029081676276],
        zoom: 14
      });
-     
+
      const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
           minZoom: 3,
@@ -68,26 +79,26 @@ export class RealTimeDashboardComponent implements OnInit {
         });
 
       tiles.addTo(this.map);
-      
+
    }
-   
+
    // create a Dublin bike marker with given lat and lon
     makeBikeMarkers() {
       this.bikeData.forEach( (station) => {
         let marker = L.marker([station.latitude, station.longitude]);
         marker.bindPopup(this.makePopup(station));
         marker.addTo(this.map);
-      }); 
-      
+      });
+
     }
-    
+
     // create selected popup Bike information for each marker
     makePopup(station:any): string {
       return `` +
         `<div>Name: ${ station.name }</div>` +
         `<div>Address: ${ station.address }</div>` +
-        `<div>Available Bikes: ${ station.available_bikes }</div>` + 
-        `<div>Available Stands: ${ station.available_bike_stands }</div>` + 
+        `<div>Available Bikes: ${ station.available_bikes }</div>` +
+        `<div>Available Stands: ${ station.available_bike_stands }</div>` +
         `<div>Status: ${ station.status }</div>` +
         `<div>Last Updated: ${ station.last_update }</div>`
     }
