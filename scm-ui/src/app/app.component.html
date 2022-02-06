@@ -1,66 +1,28 @@
-<style>
-  :host {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  .toolbar {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-
-  }
-
-  .toolbar span {
-    margin: auto;
-  }
-
-  .header-social {
-  background: #1976d2;
-  text-align: center;
-}
-
-.header-text {
-  color: aliceblue;
-}
-li {
-  display: inline-block;
-  padding: 10px;
-}
-
-</style>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <title> SCM </title>
+  <title>Sustainable City Management</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <div class="toolbar" role="banner">
-    <span>Welcome to Sustainable City Management</span>
-  </div>
-  <div class="header-social">
-    <nav class="header-nav-secondary">
-      <ul>
-        <li><a class="header-text" routerLink="/real-time-dashboard">real-time data</a></li>
-        <li><a class="header-text" routerLink="/trends">trends</a></li>
-        <li><a class="header-text" routerLink="/recommendations">recommendations</a></li>
-        <li><a class="header-text" routerLink="/logout">logout</a></li>
-      </ul>
-    </nav>
-  </div>
+  <mat-toolbar class="toolbar">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex">Welcome to Sustainable City Management</h2>
+    </div>
+  </mat-toolbar>
+
+  <nav mat-tab-nav-bar mat-align-tabs="center" class="navbar">
+    <a mat-tab-link routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard'" [active]="activeLink == '/real-time-dashboard'"> Real Time Dashboard </a>
+    <a mat-tab-link routerLink="/trends" (click)="activeLink = '/trends'" [active]="activeLink == '/trends'"> Trends</a>
+    <a mat-tab-link routerLink="/recommendations" (click)="activeLink = '/recommendations'" [active]="activeLink == '/recommendations'"> Recommendations </a>
+    <a mat-tab-link routerLink="/logout" (click)="activeLink = '/logout'" [active]="activeLink == '/logout'"> Logout </a>
+  </nav> 
   <router-outlet></router-outlet>
+
+  <!-- Bootstrap JS should stay at the end just before the body tag closes. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+</html>

@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-
 import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard.component';
+import { RouterTestingModule } from '@angular/router/testing';
 import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
 
 describe('TrendAnalysisDashboardComponent', () => {
@@ -11,7 +11,10 @@ describe('TrendAnalysisDashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule.withRoutes([
+          { path: 'real-time-dashboard', component: RealTimeDashboardComponent}
+      ])
       ],
       declarations: [ TrendAnalysisDashboardComponent ]
     })
@@ -19,6 +22,8 @@ describe('TrendAnalysisDashboardComponent', () => {
   });
 
   beforeEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    localStorage.setItem("token", "test");
     fixture = TestBed.createComponent(TrendAnalysisDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -28,20 +33,19 @@ describe('TrendAnalysisDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('should render bike trend table', () => {
-    const fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    
-    let tableHeaders = fixture.nativeElement.querySelector('#bikeTable');
-    /*
-    expect(tableHeaders[0].innerHTML).toBe('Last Updated');
-    expect(tableHeaders[1].innerHTML).toBe('Station Name');
-    expect(tableHeaders[2].innerHTML).toBe('Available bikes');
-    expect(tableHeaders[3].innerHTML).toBe('Available stands');
-    expect(tableHeaders.length).toBe(4);
-    */
-    
-  });
+  it('should render bike trend table', waitForAsync(()  => {
+    const fixture = TestBed.createComponent(TrendAnalysisDashboardComponent);
+    component.getHourlyBikeAverages();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const rows = fixture.nativeElement.querySelectorAll('mat-expansion-panel');
+      if (rows) {
+        console.log('hihihihi')
+        expect(rows.length).toBe(110);
+      }
+    })
+  }));
+  
+
   
 });
