@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { LoginRegisterServiceService } from '../services/login-register-service.service';
 import { Router } from '@angular/router';
+import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-service-component',

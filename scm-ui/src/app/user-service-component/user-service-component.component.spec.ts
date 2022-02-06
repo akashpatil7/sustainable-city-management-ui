@@ -37,7 +37,7 @@ describe('UserServiceComponentComponent', () => {
     const fixture = TestBed.createComponent(UserServiceComponentComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('#login-form-wrap h2')?.textContent).toContain('Login');
+    expect(compiled.querySelector('#login-form-wrap mat-card-title')?.textContent).toContain('Login');
   });
 
   it('should display register wrap', () => {
@@ -142,6 +142,20 @@ describe('UserServiceComponentComponent', () => {
       var style = getComputedStyle(popup);
       expect(style["display"]).toContain('block');
       expect(popup.textContent).toContain(error);
+    }
+  });
+
+  it('should clear popups', () => {
+    var data = { "email": "test@invalid.ie",  "username": "test", "password1": "test",  "password2": "test"};
+    component.onRegister(data);
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    var popup1 = compiled.querySelector('#response1');
+    if (popup1) {
+      component.clearPopups()
+      fixture.detectChanges();
+      var style = getComputedStyle(popup1);
+      expect(style["display"]).toContain('none');
     }
   });
 });

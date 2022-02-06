@@ -14,22 +14,22 @@
     height: 60px;
     display: flex;
     align-items: center;
-    background-color: #1976d2;
+    background-color: #381bb9;
     color: white;
     font-weight: 600;
-
+    justify-content: center;
   }
 
   .toolbar span {
     margin: auto;
   }
 
-  .header-social {
-  background: #1976d2;
+  .navbar {
+  background: #381bb9;
   text-align: center;
 }
 
-.header-text {
+a {
   color: aliceblue;
 }
 li {

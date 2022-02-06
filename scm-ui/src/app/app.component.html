@@ -8,19 +8,18 @@
 </head>
 
 <body>
-  <div class="toolbar" role="banner">
-    <span>Welcome to Sustainable City Management</span>
-  </div>
-  <div class="header-social">
-    <nav class="header-nav-secondary">
-      <ul>
-        <li><a class="header-text" routerLink="/real-time-dashboard">real-time data</a></li>
-        <li><a class="header-text" routerLink="/trends">trends</a></li>
-        <li><a class="header-text" routerLink="/recommendations">recommendations</a></li>
-        <li><a class="header-text" routerLink="/logout">logout</a></li>
-      </ul>
-    </nav>
-  </div>
+  <mat-toolbar class="toolbar">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex">Welcome to Sustainable City Management</h2>
+    </div>
+  </mat-toolbar>
+
+  <nav mat-tab-nav-bar mat-align-tabs="center" class="navbar">
+    <a mat-tab-link routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard'" [active]="activeLink == '/real-time-dashboard'"> Real Time Dashboard </a>
+    <a mat-tab-link routerLink="/trends" (click)="activeLink = '/trends'" [active]="activeLink == '/trends'"> Trends</a>
+    <a mat-tab-link routerLink="/recommendations" (click)="activeLink = '/recommendations'" [active]="activeLink == '/recommendations'"> Recommendations </a>
+    <a mat-tab-link routerLink="/logout" (click)="activeLink = '/logout'" [active]="activeLink == '/logout'"> Logout </a>
+  </nav> 
   <router-outlet></router-outlet>
 
   <!-- Bootstrap JS should stay at the end just before the body tag closes. -->
