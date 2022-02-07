@@ -32,19 +32,18 @@ L.Marker.prototype.options.icon = iconDefault;
 export class RealTimeDashboardComponent implements OnInit {
 
   // array to store each Dublin bike data entry
-  bikeData:any[] = [];
+  bikeData:DublinBikesData[] = [];
   // create a map object to display the data
   map:any;
   // object to hold map marker data
   markers: Object = {};
 
-  dublinBikesList: Observable<DublinBikesData[]>;
+  dublinBikesList: DublinBikesData[] = [];
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
   ngOnInit(): void {
     this.reloadData();
-    console.log(this.dublinBikesList)
   }
 
   // initialise the map after the html component is rendered
@@ -53,7 +52,18 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   reloadData() {
-    this.dublinBikesList = this.realTimeDataService.getRealTimeData();
+    this.realTimeDataService.getRealTimeData().subscribe({
+      next: this.handleDataResponse.bind(this)
+    });
+  }
+
+  objectKeys(obj:DublinBikesData){
+    return Object.keys(obj);
+   }
+
+  handleDataResponse(data:DublinBikesData[]) {
+    this.bikeData = data;
+    console.log(this.bikeData[0])
   }
 
   getData() {

@@ -9,7 +9,7 @@
       <th>Available bikes</th>
       <th>Available stands</th>
     </tr>
-    <tr *ngFor="let data of dublinBikesList | async">
+    <tr *ngFor="let data of bikeData">
         <td>{{data.lastUpdate}}</td>
         <td>{{data.name}}</td>
         <td>{{data.availableBikes}}</td>

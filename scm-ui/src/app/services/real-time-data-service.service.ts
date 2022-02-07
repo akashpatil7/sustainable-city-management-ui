@@ -13,19 +13,13 @@ export class RealTimeDataService {
   constructor(private http: HttpClient) {
   }
 
-  getRealTimeData():Observable<any> {
+  getRealTimeData():Observable<DublinBikesData[]> {
     this.dublinBikesDataObjectsList = new Array();
     return new Observable((observer: Observer<any>) => {
-      let qstr:string = "/sse?access_token=" + localStorage.getItem("token");
       const eventSource = new EventSource(`${this.baseUrl}`);
-      console.log("hi0");
       eventSource.onmessage = (event) => {
-        console.log("hi1");
-        console.log('eventSource.onmessage: ', event);
         const json = JSON.parse(event.data);
-        console.log(json);
         this.dublinBikesDataObjectsList.push(json);
-        console.log(this.dublinBikesDataObjectsList)
         observer.next(this.dublinBikesDataObjectsList);
       };
       eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
