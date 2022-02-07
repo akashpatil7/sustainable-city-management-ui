@@ -62,10 +62,12 @@ export class RealTimeDashboardComponent implements OnInit {
    }
 
   handleDataResponse(data:any[]) {
-    for(let i=0; i < data.length; i++) {
-      this.bikeData.push(data[i].bikeDTO)
-    }
-    console.log(this.bikeData[0])
+    console.log(data)
+    this.bikeData = data[data.length-1].bikeDTO
+    // for(let i=0; i < data.length; i++) {
+    //   this.bikeData.push(data[i].bikeDTO)
+    //   console.log(data[i].bikeDTO)
+    // }
   }
 
   getData() {
