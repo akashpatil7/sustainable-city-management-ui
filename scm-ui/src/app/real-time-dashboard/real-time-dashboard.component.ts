@@ -44,6 +44,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadData();
+    console.log(this.dublinBikesList)
   }
 
   // initialise the map after the html component is rendered
