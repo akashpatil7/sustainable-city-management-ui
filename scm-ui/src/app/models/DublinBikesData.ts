@@ -1,11 +1,11 @@
 export class DublinBikesData{
   id: number;
-  harvestTime: Date;
+  harvestTime: string;
   stationId: string;
-  availableBikeStands: string;
-  bikeStands: string;
-  availableBikes: string;
-  lastUpdate: Date;
+  availableBikeStands: number;
+  bikeStands: number;
+  availableBikes: number;
+  lastUpdate: string;
   status: string;
   name: string;
   latitude: number;

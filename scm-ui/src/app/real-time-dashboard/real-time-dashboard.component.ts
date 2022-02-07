@@ -43,11 +43,11 @@ export class RealTimeDashboardComponent implements OnInit {
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
   ngOnInit(): void {
-    this.reloadData();
   }
 
   // initialise the map after the html component is rendered
   ngAfterViewInit(): void {
+    this.reloadData();
     this.initialiseMap();
   }
 
@@ -61,8 +61,10 @@ export class RealTimeDashboardComponent implements OnInit {
     return Object.keys(obj);
    }
 
-  handleDataResponse(data:DublinBikesData[]) {
-    this.bikeData = data;
+  handleDataResponse(data:any[]) {
+    for(let i=0; i < data.length; i++) {
+      this.bikeData.push(data[i].bikeDTO)
+    }
     console.log(this.bikeData[0])
   }
 

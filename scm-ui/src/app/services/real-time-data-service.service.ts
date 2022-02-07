@@ -13,7 +13,7 @@ export class RealTimeDataService {
   constructor(private http: HttpClient) {
   }
 
-  getRealTimeData():Observable<DublinBikesData[]> {
+  getRealTimeData():Observable<any[]> {
     this.dublinBikesDataObjectsList = new Array();
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.baseUrl}`);
