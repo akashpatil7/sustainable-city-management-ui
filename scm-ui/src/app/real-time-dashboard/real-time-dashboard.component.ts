@@ -1,10 +1,9 @@
 import { Component, OnInit, AfterViewInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as L from 'leaflet';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import {Observable, Observer} from 'rxjs';
-import * as EventSource from 'eventsource';
 import { DublinBikesData } from '../models/DublinBikesData';
+import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
@@ -61,9 +60,9 @@ export class RealTimeDashboardComponent implements OnInit {
     return Object.keys(obj);
    }
 
-  handleDataResponse(data:any[]) {
+  handleDataResponse(data:any) {
     console.log(data)
-    this.bikeData = data[data.length-1].bikeDTO
+    this.bikeData = data.bikeDTO
     this.lastUpdated = this.bikeData[0]["lastUpdate"];
     this.makeBikeMarkers();
     // for(let i=0; i < data.length; i++) {
@@ -117,10 +116,10 @@ export class RealTimeDashboardComponent implements OnInit {
       return `` +
         `<div>Name: ${ station.name }</div>` +
         `<div>Address: ${ station.address }</div>` +
-        `<div>Available Bikes: ${ station.available_bikes }</div>` +
-        `<div>Available Stands: ${ station.available_bike_stands }</div>` +
+        `<div>Available Bikes: ${ station.availableBikes }</div>` +
+        `<div>Available Stands: ${ station.availableBikeStands }</div>` +
         `<div>Status: ${ station.status }</div>` +
-        `<div>Last Updated: ${ station.last_update }</div>`
+        `<div>Last Updated: ${ station.lastUpdate }</div>`
     }
 
 }
