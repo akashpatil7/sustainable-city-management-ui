@@ -37,8 +37,8 @@ export class RealTimeDashboardComponent implements OnInit {
   map:any;
   // object to hold map marker data
   markers: Object = {};
-
-  dublinBikesList: DublinBikesData[] = [];
+  
+  lastUpdated:any;
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
@@ -64,12 +64,16 @@ export class RealTimeDashboardComponent implements OnInit {
   handleDataResponse(data:any[]) {
     console.log(data)
     this.bikeData = data[data.length-1].bikeDTO
+    this.lastUpdated = this.bikeData[0]["lastUpdate"];
+    this.makeBikeMarkers();
     // for(let i=0; i < data.length; i++) {
     //   this.bikeData.push(data[i].bikeDTO)
     //   console.log(data[i].bikeDTO)
     // }
   }
 
+// GET BIKE DATA FROM LOCAL FILE
+/*
   getData() {
     // get snapshot of data from assets folder
     this.http.get('../assets/bikeData.json', {responseType: 'json'}).subscribe( (data) => {
@@ -79,6 +83,7 @@ export class RealTimeDashboardComponent implements OnInit {
       this.makeBikeMarkers();
     })
   }
+  */
 
   // set initial map configurations (Dublin city centre)
   initialiseMap(): void {
