@@ -1,6 +1,7 @@
 <h1> Real Time Dashboard </h1>
 
 <p> Dublin Bikes </p>
+<div> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
 
 <table>
     <tr> 
@@ -9,11 +10,11 @@
       <th>Available bikes</th>
       <th>Available stands</th>
     </tr>
-    <tr *ngFor="let data of bikeData">
-        <td>{{data.last_update}}</td>
-        <td>{{data.name}}</td>
-        <td>{{data.available_bikes}}</td>
-        <td>{{data.available_bike_stands}}</td>  
+    <tr *ngFor="let data of bikeData; index as i">
+      <td>{{data.lastUpdate | date: 'dd/MM/yyyy HH:mm'}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.availableBikes}}</td>
+      <td>{{data.availableBikeStands}}</td>  
     </tr>
 </table>
 
