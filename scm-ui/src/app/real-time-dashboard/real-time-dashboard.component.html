@@ -10,7 +10,7 @@
       <th>Available stands</th>
     </tr>
     <tr *ngFor="let data of bikeData; index as i">
-      <td>{{data.lastUpdate}}</td>
+      <td>{{data.lastUpdate | date: 'dd/MM/yyyy HH:mm'}}</td>
       <td>{{data.name}}</td>
       <td>{{data.availableBikes}}</td>
       <td>{{data.availableBikeStands}}</td>  
