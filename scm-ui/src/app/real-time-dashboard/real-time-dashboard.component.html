@@ -1,9 +1,10 @@
 <h1> Real Time Dashboard </h1>
 
 <p> Dublin Bikes </p>
-<div> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
 
-<table>
+<p *ngIf="loadingData"> Loading... </p>
+<div *ngIf="!loadingData"> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
+<table *ngIf="!loadingData">
     <tr> 
       <th>Last Updated</th>
       <th>Station Name</th>

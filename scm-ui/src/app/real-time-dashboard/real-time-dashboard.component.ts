@@ -6,13 +6,12 @@ import { DublinBikesData } from '../models/DublinBikesData';
 import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
-const iconRetinaUrl = 'assets/marker-icon-2x.png';
-const iconUrl = 'assets/marker-icon.png';
-const shadowUrl = 'assets/marker-shadow.png';
-const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
+
+
+const blueIcon = L.icon({
+  iconRetinaUrl: 'assets/marker-icon-2x.png',
+  iconUrl: 'assets/marker-icon-2x.png',
+  shadowUrl: 'assets/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -20,7 +19,24 @@ const iconDefault = L.icon({
   shadowSize: [41, 41]
 });
 
-L.Marker.prototype.options.icon = iconDefault;
+const greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const redIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 
 @Component({
   selector: 'app-real-time-dashboard',
@@ -36,8 +52,10 @@ export class RealTimeDashboardComponent implements OnInit {
   map:any;
   // object to hold map marker data
   markers: Object = {};
-  
+  // variable to store timestamp of data retrieval
   lastUpdated:any;
+  // variable to store loading status of real time data
+  loadingData:boolean = true;
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
@@ -48,6 +66,10 @@ export class RealTimeDashboardComponent implements OnInit {
   ngAfterViewInit(): void {
     this.reloadData();
     this.initialiseMap();
+  }
+  
+  ngAfterContentInit(): void {
+    this.loadingData = false;
   }
 
   reloadData() {
@@ -64,11 +86,20 @@ export class RealTimeDashboardComponent implements OnInit {
     console.log(data)
     this.bikeData = data.bikeDTO
     this.lastUpdated = this.bikeData[0]["lastUpdate"];
+    // alphabetise bike data by station name
+    this.bikeData.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+    });
+    
+    // get most up to date timestamp
+    this.bikeData.forEach( bike => {
+      if(bike.lastUpdate > this.lastUpdated) { this.lastUpdated = bike.lastUpdate}
+    })
+
     this.makeBikeMarkers();
-    // for(let i=0; i < data.length; i++) {
-    //   this.bikeData.push(data[i].bikeDTO)
-    //   console.log(data[i].bikeDTO)
-    // }
+
   }
 
 // GET BIKE DATA FROM LOCAL FILE
@@ -98,13 +129,12 @@ export class RealTimeDashboardComponent implements OnInit {
         });
 
       tiles.addTo(this.map);
-
    }
 
    // create a Dublin bike marker with given lat and lon
     makeBikeMarkers() {
       this.bikeData.forEach( (station) => {
-        let marker = L.marker([station.latitude, station.longitude]);
+        let marker = L.marker([station.latitude, station.longitude], {icon: blueIcon});
         marker.bindPopup(this.makePopup(station));
         marker.addTo(this.map);
       });
