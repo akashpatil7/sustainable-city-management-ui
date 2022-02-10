@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import {Observable, Observer} from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
+import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
@@ -42,6 +43,10 @@ export class RealTimeDashboardComponent implements OnInit {
   loadingData:boolean = true;
   // variable to hold search filter input
   searchText: string = '';
+  // variable to store selected data filter
+  filterChoice:string = '';
+  // data filter options
+  filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
@@ -52,6 +57,10 @@ export class RealTimeDashboardComponent implements OnInit {
   ngAfterViewInit(): void {
     this.reloadData();
     this.initialiseMap();
+  }
+  
+  ngAfterContentInit() {
+    this.loadingData = false;
   }
 
   reloadData() {
@@ -125,5 +134,41 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Status: ${ station.status }</div>` +
         `<div>Last Updated: ${ station.lastUpdate }</div>`
     }
-
+    
+    // sort the bike data based on selected filter
+    setDataFilter($event: MatRadioChange) {
+        console.log($event.source.name, $event.value);
+        // filter by station name
+        if ($event.value === 'Station Name') {
+          this.bikeData.sort(function(a, b){
+              if(a.name < b.name) { return -1; }
+              if(a.name > b.name) { return 1; }
+              return 0;
+          });
+        }
+        // filter by last updated
+        if ($event.value === 'Last Updated') {
+          this.bikeData.sort(function(a, b){
+              if(a.lastUpdate < b.lastUpdate) { return 1; }
+              if(a.lastUpdate > b.lastUpdate) { return -1; }
+              return 0;
+          });
+        }
+        // filter by available bikes
+        if ($event.value === 'Available Bikes') {
+          this.bikeData.sort(function(a, b){
+              if(a.availableBikes < b.availableBikes) { return 1; }
+              if(a.availableBikes > b.availableBikes) { return -1; }
+              return 0;
+          });
+        }
+        // filter by available bike stands
+        if ($event.value === 'Available Bike Stands') {
+          this.bikeData.sort(function(a, b){
+              if(a.availableBikeStands < b.availableBikeStands) { return 1; }
+              if(a.availableBikeStands > b.availableBikeStands) { return -1; }
+              return 0;
+          });
+        }
+    }
 }
