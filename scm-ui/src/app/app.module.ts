@@ -18,6 +18,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     RecommendationDashboardComponent,
     RealTimeDashboardComponent,
     LogoutComponent,
+    SearchFilterPipe,
   ],
   exports: [
     MatExpansionModule,

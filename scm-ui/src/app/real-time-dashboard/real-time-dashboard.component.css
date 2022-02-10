@@ -14,3 +14,8 @@ table, th, td {
     height: inherit;
     width: inherit;
 }
+
+.searchBar {
+  padding-bottom:20px;
+  width: 720px;
+}

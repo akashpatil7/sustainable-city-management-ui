@@ -38,6 +38,10 @@ export class RealTimeDashboardComponent implements OnInit {
   markers: Object = {};
   
   lastUpdated:any;
+  // variable to store loading status of real time data
+  loadingData:boolean = true;
+  // variable to hold search filter input
+  searchText: string = '';
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 

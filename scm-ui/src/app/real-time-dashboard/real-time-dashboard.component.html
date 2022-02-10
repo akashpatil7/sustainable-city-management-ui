@@ -1,16 +1,29 @@
 <h1> Real Time Dashboard </h1>
 
 <p> Dublin Bikes </p>
-<div> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
 
-<table>
+<p *ngIf="loadingData"> Loading... </p>
+<div *ngIf="!loadingData"> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
+
+<!-- Search bar -->
+<div role="main">
+  <div>
+    <div class="searchBar">
+      <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
+        [(ngModel)]="searchText" placeholder="Search a station">
+    </div>
+  </div>
+</div>
+
+<!-- Table to display Dublin bike data -->
+<table *ngIf="loadingData">
     <tr> 
       <th>Last Updated</th>
       <th>Station Name</th>
       <th>Available bikes</th>
       <th>Available stands</th>
     </tr>
-    <tr *ngFor="let data of bikeData; index as i">
+    <tr *ngFor="let data of bikeData | searchFilter: searchText">
       <td>{{data.lastUpdate | date: 'dd/MM/yyyy HH:mm'}}</td>
       <td>{{data.name}}</td>
       <td>{{data.availableBikes}}</td>
@@ -18,8 +31,8 @@
     </tr>
 </table>
 
+<!-- Map of data -->
 <h1> Map of Dublin Bikes </h1>
-
 <div id="map-container">
   <div id="map">
   </div>
