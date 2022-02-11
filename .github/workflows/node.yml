@@ -7,6 +7,10 @@ on:
 
 # TODO(all): add environment variables for deployment.
 
+defaults:
+ run:
+  working-directory: ./scm-ui
+
 jobs:
   build:
     runs-on: ubuntu-latest
