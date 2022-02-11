@@ -3,7 +3,6 @@ on:
     branches:
       - ui-deployment
       - main
-  workflow_dispatch:
 
 # TODO(all): add environment variables for deployment.
 
@@ -31,7 +30,7 @@ jobs:
         npm install url
         npm install puppeteer --save-dev
         npm run build --if-present
-        npm run test --if-present
+        npm test --if-present --watch=false --browsers=ChromeHeadless
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
