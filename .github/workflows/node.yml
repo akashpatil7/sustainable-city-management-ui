@@ -20,6 +20,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
+        working-directory: ./scm-ui
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
 
@@ -32,6 +33,7 @@ jobs:
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
+        working-directory: ./scm-ui
         name: node-app
         path: .
 
@@ -46,6 +48,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
+        working-directory: ./scm-ui
         name: node-app
 
    # TODO(all): deploy to server.
