@@ -1,6 +1,7 @@
 on:
   push:
     branches:
+      - ui-deployment
       - main
   workflow_dispatch:
 
