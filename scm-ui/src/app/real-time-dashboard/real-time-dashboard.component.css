@@ -33,3 +33,7 @@ table, th, td {
 .filterButton {
   margin: 5px;
 }
+
+.mapFilters {
+  margin: 20px 0;
+}

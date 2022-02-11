@@ -4,6 +4,7 @@ import { RealTimeDataService } from '../services/real-time-data-service.service'
 import { Observable, Observer } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
@@ -35,8 +36,8 @@ export class RealTimeDashboardComponent implements OnInit {
   bikeData:DublinBikesData[] = [];
   // create a map object to display the data
   map:any;
-  // object to hold map marker data
-  markers: Object = {};
+  // object to hold bike markers
+  bikeMarkers: Object[] = [];
   
   lastUpdated:any;
   // variable to store loading status of real time data
@@ -47,8 +48,15 @@ export class RealTimeDashboardComponent implements OnInit {
   filterChoice:string = '';
   // data filter options
   filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
+  mapFilterChoice:string = '';
   
-  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
+  // variables to hold map data checkbox values
+  showBikeMarkers:boolean = true;
+  showData2Markers:boolean = false;
+  showData3Markers:boolean = false;
+  
+  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) {
+  }
 
   ngOnInit(): void {
   }
@@ -120,6 +128,7 @@ export class RealTimeDashboardComponent implements OnInit {
         let marker = L.marker([station.latitude, station.longitude]);
         marker.bindPopup(this.makePopup(station));
         marker.addTo(this.map);
+        this.bikeMarkers.push(marker);
       });
 
     }
@@ -170,5 +179,19 @@ export class RealTimeDashboardComponent implements OnInit {
               return 0;
           });
         }
+    }
+    
+    setMapFilter() {
+      if(this.showBikeMarkers) {
+        this.bikeMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showBikeMarkers) {
+        this.bikeMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
     }
 }

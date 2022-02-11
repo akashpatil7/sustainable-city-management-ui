@@ -46,6 +46,13 @@
 </div>
 
 <!-- Map of data -->
+<section class="mapFilters">
+  <h4>Filter data:</h4>
+  <p><mat-checkbox [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showData2Markers" (change)="setMapFilter()">Data 2</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showData3Markers" (change)="setMapFilter()">Data 3</mat-checkbox></p>
+</section>
+
 <h1> Map of Dublin Bikes </h1>
 <div id="map-container">
   <div id="map"></div>

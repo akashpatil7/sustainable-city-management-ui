@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,7 +15,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
@@ -50,7 +50,9 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     MatCardModule,
     MatToolbarModule,
     MatTabsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
