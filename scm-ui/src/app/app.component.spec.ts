@@ -26,6 +26,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.toolbar span')?.textContent).toContain('Welcome to Sustainable City Management');
+    expect(compiled.querySelector('.md-toolbar-tools h2')?.textContent).toContain('Welcome to Sustainable City Management');
   });
 });
