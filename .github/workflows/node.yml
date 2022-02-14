@@ -6,10 +6,6 @@ on:
 
 # TODO(all): add environment variables for deployment.
 
-defaults:
- run:
-  working-directory: ./scm-ui
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,7 +15,6 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        working-directory: ./scm-ui
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
 
