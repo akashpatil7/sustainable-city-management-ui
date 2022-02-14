@@ -27,12 +27,14 @@ jobs:
         npm run build --if-present
         npm test -- --watch=false --browsers=ChromeHeadlessCustom
 
+    - name: Zip artifact for deployment
+      run: zip release.zip * .env .next
+
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
-        working-directory: ./scm-ui
         name: node-app
-        path: .
+        path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,7 +47,9 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
-        working-directory: ./scm-ui
         name: node-app
+
+    - name: unzip artifact for deployment
+      run: unzip release.zip
 
    # TODO(all): deploy to server.
