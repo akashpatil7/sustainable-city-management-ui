@@ -39,7 +39,7 @@ export class RealTimeDashboardComponent implements OnInit {
   
   lastUpdated:any;
   
-  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
+  constructor(private realTimeDataService: RealTimeDataService, private http:HttpClient) { }
 
   ngOnInit(): void {
   }

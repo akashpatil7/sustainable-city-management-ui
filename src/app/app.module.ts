@@ -34,7 +34,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +46,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
