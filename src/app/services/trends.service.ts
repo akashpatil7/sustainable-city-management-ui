@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,8 @@ export class TrendsService {
   
   // get hourly bike averages
   getHourlyAverage():Observable<any> {
-    return this.http.get("http://localhost:8050/getHourlyAverageForAllStation");
+    let options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*"})};
+    return this.http.get("http://localhost:8050/getHourlyAverageForAllStation", options);
   }
   
 }
