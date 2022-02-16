@@ -12,7 +12,7 @@ export class TrendsService {
   // get hourly bike averages
   getHourlyAverage():Observable<any> {
     let options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*"})};
-    return this.http.get("http://localhost:8050/getHourlyAverageForAllStation", options);
+    return this.http.get("http://localhost:8080/getHourlyAverageForAllStation", options);
   }
   
 }

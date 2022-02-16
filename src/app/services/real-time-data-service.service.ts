@@ -7,7 +7,7 @@ import { Observer } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class RealTimeDataService {
 
-  private baseUrl = 'http://localhost:7002/realTimeData';
+  private baseUrl = 'http://localhost:8080/realTimeData';
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
     harvestTime: '',
@@ -27,7 +27,7 @@ export class RealTimeDataService {
 
   getRealTimeData():Observable<any> {
     return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.baseUrl}`);
+      const eventSource = new EventSource(`${this.baseUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
         const json = JSON.parse(event.data);
         this.dublinBikesDataObjects = json;
