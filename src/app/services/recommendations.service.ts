@@ -11,8 +11,9 @@ export class RecommendationsService {
   
   // get Dublin bike recomendations
   getBikeRecommendations():Observable<any> {
-    let options = { headers: new HttpHeaders({ "Access-Control-Allow-Origin": "*"})};
-    return this.http.get("http://localhost:8080/getRecommendations", options);
+    let token: string = localStorage.getItem("token") || '{}'
+    let header = new HttpHeaders({ "Access-Control-Allow-Origin": "*", "Authorization":  "Bearer " + token})
+    return this.http.get("http://localhost:8080/getRecommendations", { headers: header});
   }
   
 }
