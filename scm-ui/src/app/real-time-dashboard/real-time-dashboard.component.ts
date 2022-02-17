@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import {Observable, Observer} from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
+import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
@@ -39,18 +41,37 @@ export class RealTimeDashboardComponent implements OnInit {
   bikeData:DublinBikesData[] = [];
   // create a map object to display the data
   map:any;
-  // object to hold map marker data
-  markers: Object = {};
-  // variable to store timestamp of data retrieval
+  
+  // objects to hold bike markers
+  bikeMarkers: Object[] = [];
+  pedestrianMarkers: Object[] = [];
+  busMarkers:Object[] = []
+  
   lastUpdated:any;
   // variable to store loading status of real time data
   loadingData:boolean = true;
+  // variable to hold search filter input
+  searchText: string = '';
+  // variable to store selected data filter
+  filterChoice:string = '';
+  // data filter options
+  filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
+  
+  // variables to hold map data checkbox values
+  showBikeMarkers:boolean = true;
+  showPedestrianMarkers:boolean = false;
+  showBusMarkers:boolean = false;
+
+  // object to hold map marker data
+  markers: Object = {};
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
   // array to store Dublin bus stop coordinates
   dublinBusStops:any[] = []
+
   
-  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
+  constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) {
+  }
 
   ngOnInit(): void {
   }
@@ -64,6 +85,10 @@ export class RealTimeDashboardComponent implements OnInit {
   }
   
   ngAfterContentInit(): void {
+    this.loadingData = false;
+  }
+  
+  ngAfterContentInit() {
     this.loadingData = false;
   }
 
@@ -89,6 +114,8 @@ export class RealTimeDashboardComponent implements OnInit {
     })
 
     this.makeBikeMarkers();
+  }
+
 
   }
   
@@ -172,6 +199,7 @@ export class RealTimeDashboardComponent implements OnInit {
         let marker = L.marker([station.latitude, station.longitude], {icon: blueIcon});
         marker.bindPopup(this.makeBikePopup(station));
         marker.addTo(this.map);
+        this.bikeMarkers.push(marker);
       });
     }
     
@@ -212,7 +240,7 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Status: ${ station.status }</div>` +
         `<div>Last Updated: ${ station.lastUpdate }</div>`
     }
-    
+
     // create selected popup Bike information for each marker
     makePedestrianPopup(street:any): string {
       return `` +
@@ -227,6 +255,82 @@ export class RealTimeDashboardComponent implements OnInit {
       return `` +
       `<div> ${ names[1]} </div>` +
       `<div> Name: ${ names[0] } </div>`
+    }
+    
+
+    // sort the bike table data based on selected filter
+    setDataFilter($event: MatRadioChange) {
+        console.log($event.source.name, $event.value);
+        // filter by station name
+        if ($event.value === 'Station Name') {
+          this.bikeData.sort(function(a, b){
+              if(a.name < b.name) { return -1; }
+              if(a.name > b.name) { return 1; }
+              return 0;
+          });
+        }
+        // filter by last updated
+        if ($event.value === 'Last Updated') {
+          this.bikeData.sort(function(a, b){
+              if(a.lastUpdate < b.lastUpdate) { return 1; }
+              if(a.lastUpdate > b.lastUpdate) { return -1; }
+              return 0;
+          });
+        }
+        // filter by available bikes
+        if ($event.value === 'Available Bikes') {
+          this.bikeData.sort(function(a, b){
+              if(a.availableBikes < b.availableBikes) { return 1; }
+              if(a.availableBikes > b.availableBikes) { return -1; }
+              return 0;
+          });
+        }
+        // filter by available bike stands
+        if ($event.value === 'Available Bike Stands') {
+          this.bikeData.sort(function(a, b){
+              if(a.availableBikeStands < b.availableBikeStands) { return 1; }
+              if(a.availableBikeStands > b.availableBikeStands) { return -1; }
+              return 0;
+          });
+        }
+    }
+    
+    // show or remove map pins based on filter values
+    setMapFilter() {
+      if(this.showBikeMarkers) {
+        this.bikeMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showBikeMarkers) {
+        this.bikeMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
+      
+      if(this.showPedestrianMarkers) {
+        this.pedestrianMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showPedestrianMarkers) {
+        this.pedestrianMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
+      if(this.showBusMarkers) {
+        this.busMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showBusMarkers) {
+        this.busMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
     }
 
 }
