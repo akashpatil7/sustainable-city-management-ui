@@ -49,6 +49,10 @@ export class RealTimeDashboardComponent implements OnInit {
   loadingData:boolean = true;
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
+  // array to store Dublin bus stop coordinates
+  dublinBusStops:any[] = []
+  // string to store stringified object of real-time dublin bus route data
+  dublinRouteData:string = "";
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
@@ -60,6 +64,7 @@ export class RealTimeDashboardComponent implements OnInit {
     this.reloadData();
     this.initialiseMap();
     this.getPedestrianData();
+    this.getDublinBusData();
   }
   
   ngAfterContentInit(): void {
@@ -110,7 +115,6 @@ export class RealTimeDashboardComponent implements OnInit {
         let populationSizeData = data[data.length-1];
         this.streetLatLon.forEach(street => {
           let population:any = populationSizeData[street["A"]][street["D"]]
-          console.log(population);
           street["E"] = population
         })
         
@@ -119,6 +123,46 @@ export class RealTimeDashboardComponent implements OnInit {
       });
     });
     
+  }
+  
+  customFilter(object){
+      if(object.hasOwnProperty('StopId') && object["StopId"] == "7010B158241")
+          return object;
+
+      for(let i=0; i<Object.keys(object).length; i++){
+          if(typeof object[Object.keys(object)[i]] == "object"){
+              let o:any = this.customFilter(object[Object.keys(object)[i]]);
+              if(o != null)
+                  return o;
+          }
+      }
+
+      return null;
+  }
+  
+  getDublinBusData() {
+    this.http.get('../assets/busData.json', {responseType: 'json'}).subscribe( (data:any) => {
+      // store data in local list to display on HTML page
+      //let test = JSON.stringify(data);
+      //console.log(test);
+      let test = this.customFilter(data)
+      console.log(test);
+      
+    });
+    /*
+    if( JSON.stringify(object_name).indexOf("key_name") > -1 ) {
+        console.log("Key Found");
+    }
+    else{
+        console.log("Key not Found");
+    }
+    */
+    this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
+      // store data in local list to display on HTML page
+      this.dublinBusStops = data;
+      this.makeBusMarkers();
+      
+    });
   }
   
 
@@ -164,6 +208,15 @@ export class RealTimeDashboardComponent implements OnInit {
       else
         return 0;
     }
+    
+    makeBusMarkers() {
+      this.dublinBusStops.forEach( (stop:any) => {
+        let marker = L.marker([stop["stop_lat"], stop["stop_lon"]], {icon: greenIcon});
+        marker.bindPopup(this.makeBusPopup(stop));
+        marker.addTo(this.map);
+      });
+    }
+    
 
     // create selected popup Bike information for each marker
     makeBikePopup(station:any): string {
@@ -182,6 +235,13 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Street: ${ street.A }</div>` +
         `<div>Area: ${ street.D }</div>` +
         `<div>Number of people: ${ street.E }</div>`
+    }
+    
+    makeBusPopup(stop:any): string {
+      let names = stop["stop_name"].split(',')
+      return `` +
+      `<div> ${ names[1]} </div>` +
+      `<div> Name: ${ names[0] } </div>`
     }
 
 }
