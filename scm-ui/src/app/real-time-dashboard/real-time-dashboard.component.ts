@@ -59,11 +59,9 @@ export class RealTimeDashboardComponent implements OnInit {
   
   // variables to hold map data checkbox values
   showBikeMarkers:boolean = true;
-  showPedestrianMarkers:boolean = false;
-  showBusMarkers:boolean = false;
+  showPedestrianMarkers:boolean = true;
+  showBusMarkers:boolean = true;
 
-  // object to hold map marker data
-  markers: Object = {};
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
   // array to store Dublin bus stop coordinates
@@ -85,10 +83,6 @@ export class RealTimeDashboardComponent implements OnInit {
   }
   
   ngAfterContentInit(): void {
-    this.loadingData = false;
-  }
-  
-  ngAfterContentInit() {
     this.loadingData = false;
   }
 
@@ -116,8 +110,6 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBikeMarkers();
   }
 
-
-  }
   
   // set initial map configurations (Dublin city centre)
   initialiseMap(): void {
@@ -210,6 +202,7 @@ export class RealTimeDashboardComponent implements OnInit {
         let marker = L.circleMarker([street["streetLatitude"], street["streetLongitude"]], {radius: radius}).setStyle({color: 'red'});
         marker.bindPopup(this.makePedestrianPopup(street));
         marker.addTo(this.map);
+        this.pedestrianMarkers.push(marker);
       })
     }
     
@@ -227,6 +220,7 @@ export class RealTimeDashboardComponent implements OnInit {
         let marker = L.marker([stop["stop_lat"], stop["stop_lon"]], {icon: greenIcon});
         marker.bindPopup(this.makeBusPopup(stop));
         marker.addTo(this.map);
+        this.busMarkers.push(marker);
       });
     }
     
