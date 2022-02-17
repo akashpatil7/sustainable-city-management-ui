@@ -1,8 +1,24 @@
 <h1 class="title"> Real Time Dashboard </h1>
 
-<h2> Dublin Bikes </h2>
+<p *ngIf="loadingData"> Loading... </p>
+<p> Dublin Bikes </p>
 
 <p *ngIf="loadingData"> Loading... </p>
+<div *ngIf="!loadingData"> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
+<table *ngIf="!loadingData">
+    <tr> 
+      <th>Last Updated</th>
+      <th>Station Name</th>
+      <th>Available bikes</th>
+      <th>Available stands</th>
+    </tr>
+    <tr *ngFor="let data of bikeData; index as i">
+      <td>{{data.lastUpdate | date: 'dd/MM/yyyy HH:mm'}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.availableBikes}}</td>
+      <td>{{data.availableBikeStands}}</td>  
+    </tr>
+</table>
 
 <div *ngIf="!loadingData">
   <!--<div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>-->
