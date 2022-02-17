@@ -36,7 +36,8 @@ export class RealTimeDashboardComponent implements OnInit {
   bikeData:DublinBikesData[] = [];
   // create a map object to display the data
   map:any;
-  // object to hold bike markers
+  
+  // objects to hold bike markers
   bikeMarkers: Object[] = [];
   pedestrianMarkers: Object[] = [];
   busMarkers:Object[] = []
@@ -50,7 +51,6 @@ export class RealTimeDashboardComponent implements OnInit {
   filterChoice:string = '';
   // data filter options
   filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
-  mapFilterChoice:string = '';
   
   // variables to hold map data checkbox values
   showBikeMarkers:boolean = true;
@@ -88,10 +88,6 @@ export class RealTimeDashboardComponent implements OnInit {
     this.bikeData = data.bikeDTO
     this.lastUpdated = this.bikeData[0]["lastUpdate"];
     this.makeBikeMarkers();
-    // for(let i=0; i < data.length; i++) {
-    //   this.bikeData.push(data[i].bikeDTO)
-    //   console.log(data[i].bikeDTO)
-    // }
   }
 
 // GET BIKE DATA FROM LOCAL FILE
@@ -146,7 +142,7 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Last Updated: ${ station.lastUpdate }</div>`
     }
     
-    // sort the bike data based on selected filter
+    // sort the bike table data based on selected filter
     setDataFilter($event: MatRadioChange) {
         console.log($event.source.name, $event.value);
         // filter by station name
@@ -183,6 +179,7 @@ export class RealTimeDashboardComponent implements OnInit {
         }
     }
     
+    // show or remove map pins based on filter values
     setMapFilter() {
       if(this.showBikeMarkers) {
         this.bikeMarkers.forEach(marker => {
