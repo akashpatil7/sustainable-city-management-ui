@@ -6,8 +6,6 @@ import { DublinBikesData } from '../models/DublinBikesData';
 import * as L from 'leaflet';
 
 //import the code from the Leaflet API for creating marker icons
-
-
 const blueIcon = L.icon({
   iconRetinaUrl: 'assets/marker-icon-2x.png',
   iconUrl: 'assets/marker-icon-2x.png',
@@ -51,8 +49,6 @@ export class RealTimeDashboardComponent implements OnInit {
   streetLatLon:any[] = [];
   // array to store Dublin bus stop coordinates
   dublinBusStops:any[] = []
-  // string to store stringified object of real-time dublin bus route data
-  dublinRouteData:string = "";
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) { }
 
@@ -61,7 +57,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   // initialise the map after the html component is rendered and get real-time data
   ngAfterViewInit(): void {
-    this.reloadData();
+    this.getBikeData();
     this.initialiseMap();
     this.getPedestrianData();
     this.getDublinBusData();
@@ -71,7 +67,7 @@ export class RealTimeDashboardComponent implements OnInit {
     this.loadingData = false;
   }
 
-  reloadData() {
+  getBikeData() {
     this.realTimeDataService.getRealTimeData().subscribe({
       next: this.handleDataResponse.bind(this)
     });
@@ -95,6 +91,22 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBikeMarkers();
 
   }
+  
+  // set initial map configurations (Dublin city centre)
+  initialiseMap(): void {
+     this.map = L.map('map', {
+       center: [53.35105167452323, -6.256029081676276],
+       zoom: 14
+     });
+
+     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          minZoom: 3,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+
+      tiles.addTo(this.map);
+   }
 
 // GET PEDESTRIAN DATA FROM LOCAL FILE
   getPedestrianData() {
@@ -125,62 +137,35 @@ export class RealTimeDashboardComponent implements OnInit {
     
   }
   
-  customFilter(object){
+  // GET DUBLIN BUS DATA FROM LOCAL FILE
+  getDublinBusData() {
+    // get real-time schedule data
+    this.http.get('../assets/busData.json', {responseType: 'json'}).subscribe( (data:any) => {
+      let test = this.filterBusData(data)
+      console.log(test);
+    });
+
+    // get stop geo data
+    this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
+      this.dublinBusStops = data;
+      this.makeBusMarkers();
+    });
+  }
+  
+  // find the schedule data for a given stop ID
+  filterBusData(object){
       if(object.hasOwnProperty('StopId') && object["StopId"] == "7010B158241")
           return object;
 
       for(let i=0; i<Object.keys(object).length; i++){
           if(typeof object[Object.keys(object)[i]] == "object"){
-              let o:any = this.customFilter(object[Object.keys(object)[i]]);
+              let o:any = this.filterBusData(object[Object.keys(object)[i]]);
               if(o != null)
                   return o;
           }
       }
-
       return null;
   }
-  
-  getDublinBusData() {
-    this.http.get('../assets/busData.json', {responseType: 'json'}).subscribe( (data:any) => {
-      // store data in local list to display on HTML page
-      //let test = JSON.stringify(data);
-      //console.log(test);
-      let test = this.customFilter(data)
-      console.log(test);
-      
-    });
-    /*
-    if( JSON.stringify(object_name).indexOf("key_name") > -1 ) {
-        console.log("Key Found");
-    }
-    else{
-        console.log("Key not Found");
-    }
-    */
-    this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
-      // store data in local list to display on HTML page
-      this.dublinBusStops = data;
-      this.makeBusMarkers();
-      
-    });
-  }
-  
-
-  // set initial map configurations (Dublin city centre)
-  initialiseMap(): void {
-     this.map = L.map('map', {
-       center: [53.35105167452323, -6.256029081676276],
-       zoom: 14
-     });
-
-     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          minZoom: 3,
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
-
-      tiles.addTo(this.map);
-   }
 
    // create a Dublin bike marker with given lat and lon
     makeBikeMarkers() {
@@ -209,6 +194,7 @@ export class RealTimeDashboardComponent implements OnInit {
         return 0;
     }
     
+    // create a bus marker for each bus stop
     makeBusMarkers() {
       this.dublinBusStops.forEach( (stop:any) => {
         let marker = L.marker([stop["stop_lat"], stop["stop_lon"]], {icon: greenIcon});
@@ -217,7 +203,6 @@ export class RealTimeDashboardComponent implements OnInit {
       });
     }
     
-
     // create selected popup Bike information for each marker
     makeBikePopup(station:any): string {
       return `` +
@@ -237,6 +222,7 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Number of people: ${ street.E }</div>`
     }
     
+    // create selected popup Bus information for each marker
     makeBusPopup(stop:any): string {
       let names = stop["stop_name"].split(',')
       return `` +
