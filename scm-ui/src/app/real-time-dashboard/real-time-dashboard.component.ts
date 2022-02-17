@@ -38,7 +38,8 @@ export class RealTimeDashboardComponent implements OnInit {
   map:any;
   // object to hold bike markers
   bikeMarkers: Object[] = [];
-  populationMarkers: Object[] = [];
+  pedestrianMarkers: Object[] = [];
+  busMarkers:Object[] = []
   
   lastUpdated:any;
   // variable to store loading status of real time data
@@ -53,8 +54,8 @@ export class RealTimeDashboardComponent implements OnInit {
   
   // variables to hold map data checkbox values
   showBikeMarkers:boolean = true;
-  showPopulationMarkers:boolean = false;
-  showData3Markers:boolean = false;
+  showPedestrianMarkers:boolean = false;
+  showBusMarkers:boolean = false;
   
   constructor(private realTimeDataService: RealTimeDataService,private http:HttpClient) {
   }
@@ -195,14 +196,25 @@ export class RealTimeDashboardComponent implements OnInit {
         })
       }
       
-      if(this.showPopulationMarkers) {
-        this.populationMarkers.forEach(marker => {
+      if(this.showPedestrianMarkers) {
+        this.pedestrianMarkers.forEach(marker => {
           this.map.addLayer(marker)
         })
         
       }
-      if(!this.showPopulationMarkers) {
-        this.populationMarkers.forEach(marker => {
+      if(!this.showPedestrianMarkers) {
+        this.pedestrianMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
+      if(this.showBusMarkers) {
+        this.busMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showBusMarkers) {
+        this.busMarkers.forEach(marker => {
           this.map.removeLayer(marker)
         })
       }

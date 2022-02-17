@@ -49,11 +49,11 @@
 <section class="mapFilters">
   <h4>Filter data:</h4>
   <p><mat-checkbox [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox></p>
-  <p><mat-checkbox [(ngModel)]="showPopulationMarkers" (change)="setMapFilter()">Population</mat-checkbox></p>
-  <p><mat-checkbox [(ngModel)]="showData3Markers" (change)="setMapFilter()">Data 3</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()">Pedestrians</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showBusMarkers" (change)="setMapFilter()">Dublin Bus</mat-checkbox></p>
 </section>
 
-<h1> Map of Dublin Bikes </h1>
+<h1> Map of Real-Time Data </h1>
 <div id="map-container">
   <div id="map"></div>
 </div>
