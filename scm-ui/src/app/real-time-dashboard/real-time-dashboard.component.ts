@@ -116,18 +116,18 @@ export class RealTimeDashboardComponent implements OnInit {
       this.streetLatLon = data;
       // split the street data by street name and area
       this.streetLatLon.forEach( street => {
-        let streetNames = street["A"].split("/");
-        street["A"] = streetNames[0]
-        street["D"] = streetNames[streetNames.length-1];
+        let streetNames = street["streetName"].split("/");
+        street["streetName"] = streetNames[0]
+        street["streetSubName"] = streetNames[streetNames.length-1];
       
       })
       // get pedestrian numbers from open data (currently stored locally)
       this.http.get('../assets/pedestrian2022.json', {responseType: 'json'}).subscribe( (data:any) => {
-        console.log(data[data.length-1])
-        let populationSizeData = data[data.length-1];
+        // get most recent dataset (i.e. last entry in file)
+        let pedestrianSizeData = data[data.length-1];
         this.streetLatLon.forEach(street => {
-          let population:any = populationSizeData[street["A"]][street["D"]]
-          street["E"] = population
+          let pedestrianAmount:any = pedestrianSizeData[street["streetName"]][street["streetSubName"]]
+          street["pedestrians"] = pedestrianAmount
         })
         
         // make map markers for the pedestrian data
@@ -142,7 +142,6 @@ export class RealTimeDashboardComponent implements OnInit {
     // get real-time schedule data
     this.http.get('../assets/busData.json', {responseType: 'json'}).subscribe( (data:any) => {
       let test = this.filterBusData(data)
-      console.log(test);
     });
 
     // get stop geo data
@@ -179,17 +178,17 @@ export class RealTimeDashboardComponent implements OnInit {
     // create a Pedestrian marker with the size scaled to the amount of people in the area
     makePedestrianMarkers() {
       this.streetLatLon.forEach( (street:any) => {
-        let radius = this.scaleCircleMarker(street["E"]);
-        let marker = L.circleMarker([street["B"], street["C"]], {radius: radius}).setStyle({color: 'red'});
+        let radius = this.scaleCircleMarker(street["pedestrians"]);
+        let marker = L.circleMarker([street["streetLatitude"], street["streetLongitude"]], {radius: radius}).setStyle({color: 'red'});
         marker.bindPopup(this.makePedestrianPopup(street));
         marker.addTo(this.map);
       })
     }
     
-    // scale the population marker based on the number of people
-    scaleCircleMarker(population: number):number {
-      if(population)
-        return ((population - 0) / (3000-0)) * (30-5) + 5
+    // scale the pedestrian marker based on the number of people
+    scaleCircleMarker(pedestrians: number):number {
+      if(pedestrians)
+        return ((pedestrians - 0) / (3000-0)) * (30-5) + 5
       else
         return 0;
     }
@@ -217,9 +216,9 @@ export class RealTimeDashboardComponent implements OnInit {
     // create selected popup Bike information for each marker
     makePedestrianPopup(street:any): string {
       return `` +
-        `<div>Street: ${ street.A }</div>` +
-        `<div>Area: ${ street.D }</div>` +
-        `<div>Number of people: ${ street.E }</div>`
+        `<div>Street: ${ street.streetName }</div>` +
+        `<div>Area: ${ street.streetSubName }</div>` +
+        `<div>Number of people: ${ street.pedestrians }</div>`
     }
     
     // create selected popup Bus information for each marker
