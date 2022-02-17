@@ -62,8 +62,9 @@ export class RealTimeDashboardComponent implements OnInit {
 
   handleDataResponse(data:any) {
     console.log(data)
-    this.bikeData = data.bikeDTO
-    this.lastUpdated = this.bikeData[0]["lastUpdate"];
+    this.bikeData = data
+    console.log(this.bikeData);
+    this.lastUpdated = this.bikeData[0]["last_update"];
     this.makeBikeMarkers();
     // for(let i=0; i < data.length; i++) {
     //   this.bikeData.push(data[i].bikeDTO)
