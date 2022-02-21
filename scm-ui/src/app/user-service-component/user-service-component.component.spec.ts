@@ -6,7 +6,6 @@ import { UserServiceComponentComponent } from './user-service-component.componen
 import { FormsModule } from '@angular/forms';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
 
 describe('UserServiceComponentComponent', () => {
   let component: UserServiceComponentComponent;
@@ -17,10 +16,7 @@ describe('UserServiceComponentComponent', () => {
       imports: [
         FormsModule,
         HttpClientModule,
-        RouterTestingModule,
-        RouterTestingModule.withRoutes(
-          [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]
-        )
+        RouterTestingModule
       ],
       declarations: [ UserServiceComponentComponent ]
     })

@@ -7,15 +7,15 @@ import { Observer } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class RealTimeDataService {
 
-  private baseUrl = 'http://localhost:8005/getRealTimeData/bikes';
+  private baseUrl = 'http://localhost:8080/realTimeData';
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
-    harvest_time: '',
-    station_id: '',
-    available_bike_stands: 0,
-    bike_stands: 0,
-    available_bikes: 0,
-    last_update: '',
+    harvestTime: '',
+    stationId: '',
+    availableBikeStands: 0,
+    bikeStands: 0,
+    availableBikes: 0,
+    lastUpdate: '',
     status: '',
     name: '',
     latitude: 0,

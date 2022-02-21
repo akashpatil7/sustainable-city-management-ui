@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserServiceComponentComponent } from '../user-service-component/user-service-component.component';
 
 import { AuthService } from './auth.service';
 
@@ -11,9 +10,7 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes(
-          [{path: 'login', component: UserServiceComponentComponent}]
-        )
+        RouterTestingModule
       ]
     });
     service = TestBed.inject(AuthService);
