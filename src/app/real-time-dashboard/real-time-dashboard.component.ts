@@ -93,7 +93,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   handleDataResponse(data:any) {
-    this.bikeData = data.bikeDTO
+    this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
     // alphabetise bike data by station name
     this.bikeData.sort(function(a, b){
