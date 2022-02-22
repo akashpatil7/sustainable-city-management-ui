@@ -104,7 +104,7 @@ export class RealTimeDashboardComponent implements OnInit {
     
     // get most up to date timestamp
     this.bikeData.forEach( bike => {
-      if(bike.lastUpdate > this.lastUpdated) { this.lastUpdated = bike.lastUpdate}
+      if(bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update}
     })
 
     this.makeBikeMarkers();
@@ -229,10 +229,10 @@ export class RealTimeDashboardComponent implements OnInit {
       return `` +
         `<div>Name: ${ station.name }</div>` +
         `<div>Address: ${ station.address }</div>` +
-        `<div>Available Bikes: ${ station.availableBikes }</div>` +
-        `<div>Available Stands: ${ station.availableBikeStands }</div>` +
+        `<div>Available Bikes: ${ station.available_bikes }</div>` +
+        `<div>Available Stands: ${ station.available_bike_stands }</div>` +
         `<div>Status: ${ station.status }</div>` +
-        `<div>Last Updated: ${ station.lastUpdate }</div>`
+        `<div>Last Updated: ${ station.last_update }</div>`
     }
 
     // create selected popup Bike information for each marker
@@ -266,24 +266,24 @@ export class RealTimeDashboardComponent implements OnInit {
         // filter by last updated
         if ($event.value === 'Last Updated') {
           this.bikeData.sort(function(a, b){
-              if(a.lastUpdate < b.lastUpdate) { return 1; }
-              if(a.lastUpdate > b.lastUpdate) { return -1; }
+              if(a.last_update < b.last_update) { return 1; }
+              if(a.last_update > b.last_update) { return -1; }
               return 0;
           });
         }
         // filter by available bikes
         if ($event.value === 'Available Bikes') {
           this.bikeData.sort(function(a, b){
-              if(a.availableBikes < b.availableBikes) { return 1; }
-              if(a.availableBikes > b.availableBikes) { return -1; }
+              if(a.available_bikes < b.available_bikes) { return 1; }
+              if(a.available_bikes > b.available_bikes) { return -1; }
               return 0;
           });
         }
         // filter by available bike stands
         if ($event.value === 'Available Bike Stands') {
           this.bikeData.sort(function(a, b){
-              if(a.availableBikeStands < b.availableBikeStands) { return 1; }
-              if(a.availableBikeStands > b.availableBikeStands) { return -1; }
+              if(a.available_bike_stands < b.available_bike_stands) { return 1; }
+              if(a.available_bike_stands > b.available_bike_stands) { return -1; }
               return 0;
           });
         }
