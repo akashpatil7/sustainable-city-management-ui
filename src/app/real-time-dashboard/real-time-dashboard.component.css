@@ -3,6 +3,10 @@ table, th, td {
   padding:5px;
 }
 
+.title {
+  text-align: center;
+}
+
 #map-container {
     position: relative;
     height: 500px;
@@ -13,4 +17,23 @@ table, th, td {
     position: relative;
     height: inherit;
     width: inherit;
+}
+
+.searchBar {
+  padding-bottom:20px;
+  width: 720px;
+}
+
+.filterButtonsContainer {
+  display: flex;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.filterButton {
+  margin: 5px;
+}
+
+.mapFilters {
+  margin: 20px 0;
 }
