@@ -37,7 +37,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   imports: [
     BrowserModule,
