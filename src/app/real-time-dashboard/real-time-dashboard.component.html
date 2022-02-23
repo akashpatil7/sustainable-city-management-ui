@@ -1,26 +1,58 @@
-<h1> Real Time Dashboard </h1>
+<h1 class="title"> Real Time Dashboard </h1>
 
+<p *ngIf="loadingData"> Loading... </p>
 <p> Dublin Bikes </p>
-<div> Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
 
-<table>
-    <tr> 
-      <th>Last Updated</th>
-      <th>Station Name</th>
-      <th>Available bikes</th>
-      <th>Available stands</th>
-    </tr>
-    <tr *ngFor="let data of bikeData; index as i">
-      <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
-      <td>{{data.name}}</td>
-      <td>{{data.available_bikes}}</td>
-      <td>{{data.available_bike_stands}}</td>  
-    </tr>
-</table>
-
-<h1> Map of Dublin Bikes </h1>
-
-<div id="map-container">
-  <div id="map">
+<div *ngIf="!loadingData">
+  <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
+  <!-- Search bar -->
+  <div role="main">
+    <div>
+      <div class="searchBar">
+        <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
+          [(ngModel)]="searchText" placeholder="Search a station">
+      </div>
+    </div>
   </div>
+
+  <!-- Filter buttons -->
+  <label id="filter-buttons">Sort by: </label>
+  <mat-radio-group
+    aria-labelledby="filter-buttons-label"
+    class="filterButtonsContainer"
+    [(ngModel)]="filterChoice"
+    (change)="setDataFilter($event)">
+    <mat-radio-button class="filterButton" *ngFor="let item of filterOptions" [value]="item">
+      {{item}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <!-- Table to display Dublin bike data -->
+  <table>
+      <tr> 
+        <th>Last Updated</th>
+        <th>Station Name</th>
+        <th>Available bikes</th>
+        <th>Available stands</th>
+      </tr>
+      <tr *ngFor="let data of bikeData | searchFilter: searchText">
+        <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.available_bikes}}</td>
+        <td>{{data.available_bike_stands}}</td>  
+      </tr>
+  </table>
+</div>
+
+<!-- Map of data -->
+<section class="mapFilters">
+  <h4>Filter data:</h4>
+  <p><mat-checkbox [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()">Pedestrians</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showBusMarkers" (change)="setMapFilter()">Dublin Bus</mat-checkbox></p>
+</section>
+
+<h1> Map of Real-Time Data </h1>
+<div id="map-container">
+  <div id="map"></div>
 </div>
