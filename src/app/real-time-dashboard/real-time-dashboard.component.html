@@ -44,6 +44,23 @@
   </table>
 </div>
 
+<p *ngIf="loadingData"> Loading... </p>
+<p> Dublin Aqi </p>
+
+<!-- Table to display Aqi data -->
+<table>
+  <tr>
+    <th>Last Updated</th>
+    <th>Station Name</th>
+    <th>Aqi Level</th>
+  </tr>
+  <tr *ngFor="let aqi of aqiData">
+    <td>{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
+    <td>{{aqi.station.name}}</td>
+    <td>{{aqi.aqi}}</td>
+  </tr>
+</table>
+
 <!-- Map of data -->
 <section class="mapFilters">
   <h4>Filter data:</h4>

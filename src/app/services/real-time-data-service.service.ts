@@ -29,7 +29,7 @@ export class RealTimeDataService {
     uid: 0,
     aqi: '',
     station: {name: '', geo: [], url: '', country: ''},
-    time: {tz: '', sTime: '', vTime: 0},
+    time: {tz: '', stime: '', vtime: 0},
   };
 
   constructor(private http: HttpClient) {

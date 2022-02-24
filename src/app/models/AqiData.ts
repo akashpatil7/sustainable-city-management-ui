@@ -14,7 +14,7 @@ export class AqiData{
 
   export class AqiTime{
     tz: string;
-    sTime: string;
-    vTime: number;
+    stime: string;
+    vtime: number;
   }
   
