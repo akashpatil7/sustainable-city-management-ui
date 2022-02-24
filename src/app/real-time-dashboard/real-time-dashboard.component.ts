@@ -6,6 +6,7 @@ import { DublinBikesData } from '../models/DublinBikesData';
 import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
+import { AqiData } from '../models/AqiData';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -39,6 +40,9 @@ export class RealTimeDashboardComponent implements OnInit {
 
   // array to store each Dublin bike data entry
   bikeData:DublinBikesData[] = [];
+
+  aqiData:AqiData[] = [];
+
   // create a map object to display the data
   map:any;
   
@@ -80,6 +84,7 @@ export class RealTimeDashboardComponent implements OnInit {
     this.initialiseMap();
     this.getPedestrianData();
     this.getDublinBusData();
+    this.getAqiData();
   }
   
   ngAfterContentInit(): void {
@@ -90,6 +95,17 @@ export class RealTimeDashboardComponent implements OnInit {
     this.realTimeDataService.getRealTimeData().subscribe({
       next: this.handleDataResponse.bind(this)
     });
+  }
+
+  getAqiData() {
+    this.realTimeDataService.getRealTimeAqiData().subscribe({
+      next: this.handleAqiResponse.bind(this)
+    });
+  }
+
+  handleAqiResponse(data:any) {
+    this.aqiData = data
+    console.log(this.aqiData)
   }
 
   handleDataResponse(data:any) {
