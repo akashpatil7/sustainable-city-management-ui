@@ -20,6 +20,7 @@ import { FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angu
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { AqiSearchFilterPipe } from './pipes/aqi-search-filter.pipe';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     RealTimeDashboardComponent,
     LogoutComponent,
     SearchFilterPipe,
+    AqiSearchFilterPipe
   ],
   exports: [
     MatExpansionModule,

@@ -67,10 +67,15 @@ export class RealTimeDashboardComponent implements OnInit {
   loadingData:boolean = true;
   // variable to hold search filter input
   searchText: string = '';
+  // variable to hold search filter input
+  aqiSearchText: string = '';
   // variable to store selected data filter
   filterChoice:string = '';
+  // variable to store selected data filter
+  aqiFilterChoice:string = '';
   // data filter options
   filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
+  aqiOptions:string[] = ['Station Name', 'Last Updated', 'Aqi'];
   
   // variables to hold map data checkbox values
   showBikeMarkers:boolean = true;
@@ -331,6 +336,35 @@ export class RealTimeDashboardComponent implements OnInit {
           this.bikeData.sort(function(a, b){
               if(a.available_bike_stands < b.available_bike_stands) { return 1; }
               if(a.available_bike_stands > b.available_bike_stands) { return -1; }
+              return 0;
+          });
+        }
+    }
+
+      // sort the bike table data based on selected filter
+      setAqiFilter($event: MatRadioChange) {
+        console.log($event.source.name, $event.value);
+        // filter by station name
+        if ($event.value === 'Station Name') {
+          this.aqiData.sort(function(a, b){
+              if(a.station.name < b.station.name) { return -1; }
+              if(a.station.name > b.station.name) { return 1; }
+              return 0;
+          });
+        }
+        // filter by last updated
+        if ($event.value === 'Last Updated') {
+          this.aqiData.sort(function(a, b){
+              if(a.time.stime < b.time.stime) { return 1; }
+              if(a.time.stime > b.time.stime) { return -1; }
+              return 0;
+          });
+        }
+        // filter by available bikes
+        if ($event.value === 'Aqi') {
+          this.aqiData.sort(function(a, b){
+              if(a.aqi < b.aqi) { return 1; }
+              if(a.aqi > b.aqi) { return -1; }
               return 0;
           });
         }
