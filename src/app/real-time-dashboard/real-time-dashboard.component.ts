@@ -20,6 +20,16 @@ const blueIcon = L.icon({
   shadowSize: [41, 41]
 });
 
+const redIcon = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'assets/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+
 const greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -50,6 +60,7 @@ export class RealTimeDashboardComponent implements OnInit {
   bikeMarkers: Object[] = [];
   pedestrianMarkers: Object[] = [];
   busMarkers:Object[] = []
+  aqiMarkers:Object[] = []
   
   lastUpdated:any;
   // variable to store loading status of real time data
@@ -65,6 +76,7 @@ export class RealTimeDashboardComponent implements OnInit {
   showBikeMarkers:boolean = true;
   showPedestrianMarkers:boolean = true;
   showBusMarkers:boolean = true;
+  showAqiMarkers:boolean = true;
 
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
@@ -93,7 +105,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   getBikeData() {
     this.realTimeDataService.getRealTimeData().subscribe({
-      next: this.handleDataResponse.bind(this)
+      next: this.handleBikeResponse.bind(this)
     });
   }
 
@@ -105,10 +117,10 @@ export class RealTimeDashboardComponent implements OnInit {
 
   handleAqiResponse(data:any) {
     this.aqiData = data
-    console.log(this.aqiData)
+    this.makeAqiMarkers();
   }
 
-  handleDataResponse(data:any) {
+  handleBikeResponse(data:any) {
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
     // alphabetise bike data by station name
@@ -131,7 +143,8 @@ export class RealTimeDashboardComponent implements OnInit {
   initialiseMap(): void {
      this.map = L.map('map', {
        center: [53.35105167452323, -6.256029081676276],
-       zoom: 14
+       zoom: 13,
+       preferCanvas: true
      });
 
      const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -210,6 +223,16 @@ export class RealTimeDashboardComponent implements OnInit {
         this.bikeMarkers.push(marker);
       });
     }
+
+   // create an aqi marker with given lat and lon
+   makeAqiMarkers() {
+    this.aqiData.forEach( (aqi) => {
+      let marker = L.marker([aqi.station.geo[0], aqi.station.geo[1]], {icon: redIcon});
+      marker.bindPopup(this.makeAqiPopup(aqi));
+      marker.addTo(this.map);
+      this.aqiMarkers.push(marker);
+    });
+  }
     
     // create a Pedestrian marker with the size scaled to the amount of people in the area
     makePedestrianMarkers() {
@@ -233,7 +256,7 @@ export class RealTimeDashboardComponent implements OnInit {
     // create a bus marker for each bus stop
     makeBusMarkers() {
       this.dublinBusStops.forEach( (stop:any) => {
-        let marker = L.marker([stop["stop_lat"], stop["stop_lon"]], {icon: greenIcon});
+        let marker = L.circleMarker([stop["stop_lat"], stop["stop_lon"]],{radius: 5, color: 'green'});
         marker.bindPopup(this.makeBusPopup(stop));
         marker.addTo(this.map);
         this.busMarkers.push(marker);
@@ -250,6 +273,14 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Status: ${ station.status }</div>` +
         `<div>Last Updated: ${ station.last_update }</div>`
     }
+
+   // create selected popup Aqi information for each marker
+   makeAqiPopup(aqi:any): string {
+    return `` +
+      `<div>Name: ${ aqi.station.name }</div>` +
+      `<div>Aqi: ${ aqi.aqi }</div>` +
+      `<div>Last Updated: ${ aqi.time.stime }</div>`
+  }
 
     // create selected popup Bike information for each marker
     makePedestrianPopup(street:any): string {
@@ -338,6 +369,17 @@ export class RealTimeDashboardComponent implements OnInit {
       }
       if(!this.showBusMarkers) {
         this.busMarkers.forEach(marker => {
+          this.map.removeLayer(marker)
+        })
+      }
+      if(this.showAqiMarkers) {
+        this.aqiMarkers.forEach(marker => {
+          this.map.addLayer(marker)
+        })
+        
+      }
+      if(!this.showAqiMarkers) {
+        this.aqiMarkers.forEach(marker => {
           this.map.removeLayer(marker)
         })
       }
