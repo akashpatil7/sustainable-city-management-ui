@@ -43,7 +43,7 @@ export class RealTimeDataService {
         this.dublinBikesDataObjects = json;
         observer.next(this.dublinBikesDataObjects);
       };
-      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
+      //eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
     });
     
@@ -57,7 +57,7 @@ export class RealTimeDataService {
         this.aqiDataObjects = json;
         observer.next(this.aqiDataObjects);
       };
-      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
+      //eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
     });
   }
