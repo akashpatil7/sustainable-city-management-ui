@@ -28,6 +28,7 @@ describe('RealTimeDashboardComponent', () => {
        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         HttpClientModule,
+        FormsModule,
         RouterTestingModule,
         RouterTestingModule.withRoutes(
           [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]

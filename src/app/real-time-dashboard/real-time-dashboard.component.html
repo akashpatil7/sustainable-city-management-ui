@@ -10,7 +10,7 @@
     <div>
       <div class="searchBar">
         <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
-          [(ngModel)]="searchText" placeholder="Search a station">
+          [(ngModel)]="searchText" placeholder="Search a station" ngDefaultControl>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
     aria-labelledby="filter-buttons-label"
     class="filterButtonsContainer"
     [(ngModel)]="filterChoice"
-    (change)="setDataFilter($event)">
+    (change)="setDataFilter($event)" ngDefaultControl>
     <mat-radio-button class="filterButton" *ngFor="let item of filterOptions" [value]="item">
       {{item}}
     </mat-radio-button>
@@ -53,7 +53,7 @@
     <div>
       <div class="searchBar">
         <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text" 
-          [(ngModel)]="aqiSearchText" placeholder="Search a station">
+          [(ngModel)]="aqiSearchText" placeholder="Search a station" ngDefaultControl>
       </div>
     </div>
   </div>
@@ -64,7 +64,7 @@
     aria-labelledby="filter-buttons-label"
     class="filterButtonsContainer"
     [(ngModel)]="aqiFilterChoice"
-    (change)="setAqiFilter($event)">
+    (change)="setAqiFilter($event)" ngDefaultControl>
     <mat-radio-button class="filterButton" *ngFor="let item of aqiOptions" [value]="item">
       {{item}}
     </mat-radio-button>
@@ -87,10 +87,10 @@
 <!-- Map of data -->
 <section class="mapFilters">
   <h4>Filter data:</h4>
-  <p><mat-checkbox [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox></p>
-  <p><mat-checkbox [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()">Pedestrians</mat-checkbox></p>
-  <p><mat-checkbox [(ngModel)]="showBusMarkers" (change)="setMapFilter()">Dublin Bus</mat-checkbox></p>
-  <p><mat-checkbox [(ngModel)]="showAqiMarkers" (change)="setMapFilter()">Aqi</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showBikeMarkers" (change)="setMapFilter()" ngDefaultControl>Dublin Bikes</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()" ngDefaultControl>Pedestrians</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showBusMarkers" (change)="setMapFilter()" ngDefaultControl>Dublin Bus</mat-checkbox></p>
+  <p><mat-checkbox [(ngModel)]="showAqiMarkers" (change)="setMapFilter()" ngDefaultControl>Aqi</mat-checkbox></p>
 </section>
 
 <h1> Map of Real-Time Data </h1>
