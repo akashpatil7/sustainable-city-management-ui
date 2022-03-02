@@ -3,9 +3,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
+
 import { filter, Observable, Observer } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
+
+
+import { Observable, Observer } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AqiSearchFilterPipe } from '../pipes/aqi-search-filter.pipe';
 
 
 describe('RealTimeDashboardComponent', () => {
@@ -14,22 +21,28 @@ describe('RealTimeDashboardComponent', () => {
   let service: RealTimeDataService;
   let spy: any;
 
+
   beforeEach(async () => {
+
     await TestBed.configureTestingModule({
-      declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
+      declarations: [ RealTimeDashboardComponent, AqiSearchFilterPipe, SearchFilterPipe ],
+       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule,
+        RouterTestingModule.withRoutes(
+          [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]
+        )
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
+
+    service = TestBed.inject(RealTimeDataService);
+    spy = spyOn(service, 'getRealTimeData').and.callFake(()=> getRealTimeData());
   });
 
   beforeEach(() => {
     localStorage.setItem("token", "12345");
-
-    service = TestBed.inject(RealTimeDataService);
-    spy = spyOn(service, 'getRealTimeData').and.callFake(()=> getRealTimeData());
 
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
     component = fixture.componentInstance;
@@ -41,14 +54,16 @@ describe('RealTimeDashboardComponent', () => {
   });
   
   it('should render data headers', () => {
+    fixture = TestBed.createComponent(RealTimeDashboardComponent);
+    fixture.detectChanges();
+    
     const compiled = fixture.nativeElement as HTMLElement;
-    let tableHeaders = fixture.nativeElement.querySelectorAll('th');
+    let tableHeaders = compiled.querySelectorAll('th');
     
     expect(tableHeaders[0].innerHTML).toBe('Last Updated');
     expect(tableHeaders[1].innerHTML).toBe('Station Name');
     expect(tableHeaders[2].innerHTML).toBe('Available bikes');
     expect(tableHeaders[3].innerHTML).toBe('Available stands');
-    expect(tableHeaders.length).toBe(4);
     
   });
 
