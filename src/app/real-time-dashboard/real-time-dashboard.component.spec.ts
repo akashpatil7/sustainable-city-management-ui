@@ -3,7 +3,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import { Observable, Observer } from 'rxjs';
+import { filter, Observable, Observer } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SearchFilterPipe } from '../pipes/search-filter.pipe';
+
 
 describe('RealTimeDashboardComponent', () => {
   let component: RealTimeDashboardComponent;
@@ -13,10 +16,11 @@ describe('RealTimeDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RealTimeDashboardComponent ],
+      declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

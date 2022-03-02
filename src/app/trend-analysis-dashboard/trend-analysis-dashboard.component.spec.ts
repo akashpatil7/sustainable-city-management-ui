@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
 import { TrendsService } from '../services/trends.service';
 import { Observable, Observer } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TrendAnalysisDashboardComponent', () => {
   let component: TrendAnalysisDashboardComponent;
@@ -20,7 +21,8 @@ describe('TrendAnalysisDashboardComponent', () => {
           { path: 'real-time-dashboard', component: RealTimeDashboardComponent}
       ])
       ],
-      declarations: [ TrendAnalysisDashboardComponent ]
+      declarations: [ TrendAnalysisDashboardComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });
