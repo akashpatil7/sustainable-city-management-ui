@@ -9,7 +9,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
 
 
-import { Observable, Observer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AqiSearchFilterPipe } from '../pipes/aqi-search-filter.pipe';
