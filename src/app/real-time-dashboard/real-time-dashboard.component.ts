@@ -7,6 +7,7 @@ import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
+import { PedestrianData } from '../models/PedestrianData';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -52,6 +53,8 @@ export class RealTimeDashboardComponent implements OnInit {
   bikeData:DublinBikesData[] = [];
 
   aqiData:AqiData[] = [];
+
+  pedestrianData:PedestrianData[] = [];
 
   // create a map object to display the data
   map:any;
@@ -163,31 +166,39 @@ export class RealTimeDashboardComponent implements OnInit {
 
 // GET PEDESTRIAN DATA FROM LOCAL FILE
   getPedestrianData() {
-    // get snapshot of data from assets folder
-    this.http.get('../assets/DublinStreetsLatLon.json', {responseType: 'json'}).subscribe( (data:any) => {
-      // store data in local list to display on HTML page
-      this.streetLatLon = data;
-      // split the street data by street name and area
-      this.streetLatLon.forEach( street => {
-        let streetNames = street["streetName"].split("/");
-        street["streetName"] = streetNames[0]
-        street["streetSubName"] = streetNames[streetNames.length-1];
-      
-      })
-      // get pedestrian numbers from open data (currently stored locally)
-      this.http.get('../assets/pedestrian2022.json', {responseType: 'json'}).subscribe( (data:any) => {
-        // get most recent dataset (i.e. last entry in file)
-        let pedestrianSizeData = data[data.length-1];
-        this.streetLatLon.forEach(street => {
-          let pedestrianAmount:any = pedestrianSizeData[street["streetName"]][street["streetSubName"]]
-          street["pedestrians"] = pedestrianAmount
-        })
-        
-        // make map markers for the pedestrian data
-        this.makePedestrianMarkers();
-      });
+    this.realTimeDataService.getRealTimePedestrianData().subscribe({
+      next: this.handlePedestrianResponse.bind(this)
     });
     
+
+    // // get snapshot of data from assets folder
+    // this.http.get('../assets/DublinStreetsLatLon.json', {responseType: 'json'}).subscribe( (data:any) => {
+    //   // store data in local list to display on HTML page
+    //   this.streetLatLon = data;
+    //   // split the street data by street name and area
+    //   this.streetLatLon.forEach( street => {
+    //     let streetNames = street["streetName"].split("/");
+    //     street["streetName"] = streetNames[0]
+    //     street["streetSubName"] = streetNames[streetNames.length-1];
+      
+    //   })
+    //   // get pedestrian numbers from open data (currently stored locally)
+    //   this.http.get('../assets/pedestrian2022.json', {responseType: 'json'}).subscribe( (data:any) => {
+    //     // get most recent dataset (i.e. last entry in file)
+    //     let pedestrianSizeData = data[data.length-1];
+    //     this.streetLatLon.forEach(street => {
+    //       let pedestrianAmount:any = pedestrianSizeData[street["streetName"]][street["streetSubName"]]
+    //       street["pedestrians"] = pedestrianAmount
+    //     })
+        
+    //     // make map markers for the pedestrian data
+    //     this.makePedestrianMarkers();
+    //   });
+  }
+
+  handlePedestrianResponse(data:any) {
+    this.pedestrianData = data
+    console.log(this.pedestrianData)
   }
   
   // GET DUBLIN BUS DATA FROM LOCAL FILE
