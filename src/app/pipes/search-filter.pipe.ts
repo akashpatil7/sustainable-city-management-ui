@@ -37,7 +37,7 @@ export class SearchFilterPipe implements PipeTransform {
         console.log("aqi is read");
         return it.station.name.toLocaleLowerCase().includes(searchText);
       }
-      else  {
+      else {
         console.log("not isntance fo bikes")
         return;
       }

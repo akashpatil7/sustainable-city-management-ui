@@ -30,23 +30,23 @@ export class RealTimeDataService {
   private aqiDataObjects: AqiData = {
     uid: 0,
     aqi: '',
-    station: {name: '', geo: [], url: '', country: ''},
-    time: {tz: '', stime: '', vtime: 0},
+    station: { name: '', geo: [], url: '', country: '' },
+    time: { tz: '', stime: '', vtime: 0 },
   };
 
   private pedestrianDataObjects: PedestrianData = {
     id: 0,
-    street: '', 
+    street: '',
     count: 0,
-    streetLatitude: 0, 
-    streetLongitude: 0, 
+    streetLatitude: 0,
+    streetLongitude: 0,
     time: 0,
   };
 
   constructor(private http: HttpClient) {
   }
 
-  getRealTimeData():Observable<any> {
+  getRealTimeData(): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.bikeUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
@@ -57,10 +57,10 @@ export class RealTimeDataService {
       eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
     });
-    
+
   }
 
-  getRealTimeAqiData():Observable<any> {
+  getRealTimeAqiData(): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.aqiUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
@@ -73,7 +73,7 @@ export class RealTimeDataService {
     });
   }
 
-  getRealTimePedestrianData():Observable<any> {
+  getRealTimePedestrianData(): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.pedestrianUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
