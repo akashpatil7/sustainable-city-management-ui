@@ -6,7 +6,6 @@ import { RealTimeDataService } from '../services/real-time-data-service.service'
 import { Observable, Observer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AqiSearchFilterPipe } from '../pipes/aqi-search-filter.pipe';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
 
 describe('RealTimeDashboardComponent', () => {

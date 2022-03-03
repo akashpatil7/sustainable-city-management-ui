@@ -71,6 +71,7 @@ export class RealTimeDashboardComponent implements OnInit {
   searchText: string = '';
   // variable to hold search filter input
   aqiSearchText: string = '';
+  pedestrianSearchText: string = '';
   // variable to store selected data filter
   filterChoice:string = '';
   // variable to store selected data filter
@@ -127,7 +128,7 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeAqiMarkers();
   }
 
-  handleBikeResponse(data:any) {
+  handleBikeResponse(data:DublinBikesData[]) {
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
     // alphabetise bike data by station name
@@ -141,7 +142,6 @@ export class RealTimeDashboardComponent implements OnInit {
     this.bikeData.forEach( bike => {
       if(bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update}
     })
-
     this.makeBikeMarkers();
   }
 
