@@ -30,7 +30,6 @@ const redIcon = L.icon({
   shadowSize: [41, 41]
 });
 
-
 const greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -169,36 +168,12 @@ export class RealTimeDashboardComponent implements OnInit {
     this.realTimeDataService.getRealTimePedestrianData().subscribe({
       next: this.handlePedestrianResponse.bind(this)
     });
-    
-
-    // // get snapshot of data from assets folder
-    // this.http.get('../assets/DublinStreetsLatLon.json', {responseType: 'json'}).subscribe( (data:any) => {
-    //   // store data in local list to display on HTML page
-    //   this.streetLatLon = data;
-    //   // split the street data by street name and area
-    //   this.streetLatLon.forEach( street => {
-    //     let streetNames = street["streetName"].split("/");
-    //     street["streetName"] = streetNames[0]
-    //     street["streetSubName"] = streetNames[streetNames.length-1];
-      
-    //   })
-    //   // get pedestrian numbers from open data (currently stored locally)
-    //   this.http.get('../assets/pedestrian2022.json', {responseType: 'json'}).subscribe( (data:any) => {
-    //     // get most recent dataset (i.e. last entry in file)
-    //     let pedestrianSizeData = data[data.length-1];
-    //     this.streetLatLon.forEach(street => {
-    //       let pedestrianAmount:any = pedestrianSizeData[street["streetName"]][street["streetSubName"]]
-    //       street["pedestrians"] = pedestrianAmount
-    //     })
-        
-    //     // make map markers for the pedestrian data
-    //     this.makePedestrianMarkers();
-    //   });
   }
 
   handlePedestrianResponse(data:any) {
     this.pedestrianData = data
     console.log(this.pedestrianData)
+    this.makePedestrianMarkers();
   }
   
   // GET DUBLIN BUS DATA FROM LOCAL FILE
@@ -252,9 +227,10 @@ export class RealTimeDashboardComponent implements OnInit {
     
     // create a Pedestrian marker with the size scaled to the amount of people in the area
     makePedestrianMarkers() {
-      this.streetLatLon.forEach( (street:any) => {
-        let radius = this.scaleCircleMarker(street["pedestrians"]);
-        let marker = L.circleMarker([street["streetLatitude"], street["streetLongitude"]], {radius: radius}).setStyle({color: 'red'});
+      this.pedestrianData.forEach( (street:any) => {
+        let streetNames = street["streetName"].split("/");
+        let radius = this.scaleCircleMarker(street["count"]);
+        let marker = L.circleMarker([street["streetLatitude"], street["streetLongitude"]], {radius: radius}).setStyle({color: 'yellow'});
         marker.bindPopup(this.makePedestrianPopup(street));
         marker.addTo(this.map);
         this.pedestrianMarkers.push(marker);
@@ -300,10 +276,11 @@ export class RealTimeDashboardComponent implements OnInit {
 
     // create selected popup Bike information for each marker
     makePedestrianPopup(street:any): string {
+      let streetNames = street["street"].split("/");
       return `` +
-        `<div>Street: ${ street.streetName }</div>` +
-        `<div>Area: ${ street.streetSubName }</div>` +
-        `<div>Number of people: ${ street.pedestrians }</div>`
+        `<div>Street: ${ streetNames[0] }</div>` +
+        `<div>Area: ${ treetNames[streetNames.length-1] }</div>` +
+        `<div>Number of people: ${ street.count }</div>`
     }
     
     // create selected popup Bus information for each marker
