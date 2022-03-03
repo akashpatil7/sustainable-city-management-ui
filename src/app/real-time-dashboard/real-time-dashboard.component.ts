@@ -76,9 +76,11 @@ export class RealTimeDashboardComponent implements OnInit {
   filterChoice:string = '';
   // variable to store selected data filter
   aqiFilterChoice:string = '';
+  pedestrianFilterChoice:string = '';
   // data filter options
   filterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
   aqiOptions:string[] = ['Station Name', 'Last Updated', 'Aqi'];
+  pedestrianOptions:string[] = ['Street Name', 'Number of Pedestrians']
   
   // variables to hold map data checkbox values
   showBikeMarkers:boolean = true;
@@ -356,6 +358,27 @@ export class RealTimeDashboardComponent implements OnInit {
           });
         }
     }
+    
+    // sort the pedestrian table data based on selected filter
+    setPedestrianFilter($event: MatRadioChange) {
+      console.log($event.source.name, $event.value);
+      // filter by station name
+      if ($event.value === 'Street Name') {
+        this.pedestrianData.sort(function(a, b){
+            if(a.street < b.street) { return -1; }
+            if(a.street > b.street) { return 1; }
+            return 0;
+        });
+      }
+      // filter by last updated
+      if ($event.value === 'Number of Pedestrians') {
+        this.pedestrianData.sort(function(a, b){
+            if(a.count < b.count) { return 1; }
+            if(a.count > b.count) { return -1; }
+            return 0;
+        });
+      }
+  }
     
     // show or remove map pins based on filter values
     setMapFilter() {

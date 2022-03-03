@@ -87,16 +87,30 @@
 <p *ngIf="loadingData"> Loading... </p>
 <p> Pedestrian Data</p>
 
-<!-- Table to display Pedestrian data -->
-<!-- Search bar -->
-<div role="main">
-  <div>
-    <div class="searchBar">
-      <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text" 
-        [(ngModel)]="pedestrianSearchText" placeholder="Search a street">
+
+  <!-- Search bar -->
+  <div role="main">
+    <div>
+      <div class="searchBar">
+        <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text" 
+          [(ngModel)]="pedestrianSearchText" placeholder="Search a street">
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Filter buttons -->
+  <label id="filter-buttons">Sort by: </label>
+  <mat-radio-group
+    aria-labelledby="filter-buttons-label"
+    class="filterButtonsContainer"
+    [(ngModel)]="pedestrianFilterChoice"
+    (change)="setPedestrianFilter($event)">
+    <mat-radio-button class="filterButton" *ngFor="let item of pedestrianOptions" [value]="item">
+      {{item}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+<!-- Table to display Pedestrian data -->
 <table>
   <tr>
     <th>Location</th>
