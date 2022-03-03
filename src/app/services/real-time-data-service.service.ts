@@ -10,6 +10,7 @@ export class RealTimeDataService {
 
   private bikeUrl = 'http://localhost:8005/getRealTimeDataForBike';
   private aqiUrl = 'http://localhost:8005/getRealTimeDataForAqi';
+  private pedestrianUrl = 'http://localhost:8005/getRealTimeDataForPedestrian';
 
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
@@ -30,6 +31,15 @@ export class RealTimeDataService {
     aqi: '',
     station: {name: '', geo: [], url: '', country: ''},
     time: {tz: '', stime: '', vtime: 0},
+  };
+
+  private pedestrianDataObjects: PedestrianData = {
+    id: 0,
+    street: '', 
+    count: '',
+    streetLatitude: '', 
+    streetLongitude: '', 
+    time: '',
   };
 
   constructor(private http: HttpClient) {
@@ -56,6 +66,19 @@ export class RealTimeDataService {
         const json = JSON.parse(event.data);
         this.aqiDataObjects = json;
         observer.next(this.aqiDataObjects);
+      };
+      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
+      return () => eventSource.close();
+    });
+  }
+
+  getRealTimePedestrianData():Observable<any> {
+    return new Observable((observer: Observer<any>) => {
+      const eventSource = new EventSource(`${this.pedestrianUrl}` + "?Authorization=" + localStorage.getItem("token"));
+      eventSource.onmessage = (event) => {
+        const json = JSON.parse(event.data);
+        this.pedestrianDataObjects = json;
+        observer.next(this.pedestrianDataObjects);
       };
       eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
