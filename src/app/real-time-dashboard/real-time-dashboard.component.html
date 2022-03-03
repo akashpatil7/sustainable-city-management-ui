@@ -84,6 +84,22 @@
   </tr>
 </table>
 
+<p *ngIf="loadingData"> Loading... </p>
+<p> Pedestrian Data</p>
+
+<!-- Table to display Aqi data -->
+<table>
+  <tr>
+    <th>Location</th>
+    <th>Count</th>
+  </tr>
+  <tr *ngFor="let pedestrian of pedestrianData">
+    <td>{{pedestrian.street}}</td>
+    <td>{{pedestrian.count}}</td>
+  </tr>
+</table>
+
+
 <!-- Map of data -->
 <section class="mapFilters">
   <h4>Filter data:</h4>
