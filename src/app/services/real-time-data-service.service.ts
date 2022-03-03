@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
+import { PedestrianData } from '../models/PedestrianData';
 import { Observer } from 'rxjs';
 import { AqiData } from '../models/AqiData';
 
@@ -36,10 +37,10 @@ export class RealTimeDataService {
   private pedestrianDataObjects: PedestrianData = {
     id: 0,
     street: '', 
-    count: '',
+    count: 0,
     streetLatitude: '', 
     streetLongitude: '', 
-    time: '',
+    time: 0,
   };
 
   constructor(private http: HttpClient) {
