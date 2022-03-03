@@ -1,0 +1,13 @@
+version: '2.1'
+services: 
+  example: 
+    build: 
+      context: "."
+      dockerfile: Dockerfile
+    container_name: ui
+    image: scmcontainer.azurecr.io/ui
+    ports: 
+      - "4201:4200"
+    volumes: 
+      - ".:/app"
+      - /app/node_modules
