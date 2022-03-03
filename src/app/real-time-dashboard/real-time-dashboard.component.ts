@@ -227,11 +227,10 @@ export class RealTimeDashboardComponent implements OnInit {
     
     // create a Pedestrian marker with the size scaled to the amount of people in the area
     makePedestrianMarkers() {
-      this.pedestrianData.forEach( (street:any) => {
-        let streetNames = street["streetName"].split("/");
-        let radius = this.scaleCircleMarker(street["count"]);
-        let marker = L.circleMarker([street["streetLatitude"], street["streetLongitude"]], {radius: radius}).setStyle({color: 'yellow'});
-        marker.bindPopup(this.makePedestrianPopup(street));
+      this.pedestrianData.forEach( (pedestrian) => {
+        let radius = this.scaleCircleMarker(pedestrian["count"]);
+        let marker = L.circleMarker([pedestrian["streetLatitude"], pedestrian["streetLongitude"]], {radius: radius}).setStyle({color: 'yellow'});
+        marker.bindPopup(this.makePedestrianPopup(pedestrian));
         marker.addTo(this.map);
         this.pedestrianMarkers.push(marker);
       })
@@ -279,7 +278,7 @@ export class RealTimeDashboardComponent implements OnInit {
       let streetNames = street["street"].split("/");
       return `` +
         `<div>Street: ${ streetNames[0] }</div>` +
-        `<div>Area: ${ treetNames[streetNames.length-1] }</div>` +
+        `<div>Area: ${ streetNames[streetNames.length-1] }</div>` +
         `<div>Number of people: ${ street.count }</div>`
     }
     

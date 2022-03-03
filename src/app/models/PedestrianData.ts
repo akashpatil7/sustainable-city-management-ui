@@ -2,7 +2,7 @@ export class PedestrianData{
   id: number;
   street: string;
   count: number;
-  streetLatitude: string;
-  streetLongitude: string;
+  streetLatitude: number;
+  streetLongitude: number;
   time: number;
 }

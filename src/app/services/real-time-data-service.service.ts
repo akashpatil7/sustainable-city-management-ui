@@ -38,8 +38,8 @@ export class RealTimeDataService {
     id: 0,
     street: '', 
     count: 0,
-    streetLatitude: '', 
-    streetLongitude: '', 
+    streetLatitude: 0, 
+    streetLongitude: 0, 
     time: 0,
   };
 
