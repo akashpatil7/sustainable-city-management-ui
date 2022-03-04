@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { RecommendationDashboardComponent } from './recommendation-dashboard.component';
 import { Observable, Observer } from 'rxjs';
-import { RealTimeDataService } from '../services/real-time-data-service.service';
+import { of } from "rxjs";
 import { RouterTestingModule } from '@angular/router/testing';
 import { RecommendationsService } from '../services/recommendations.service';
 
@@ -11,7 +11,6 @@ describe('RecommendationDashboardComponent', () => {
   let component: RecommendationDashboardComponent;
   let fixture: ComponentFixture<RecommendationDashboardComponent>;
   let service: RecommendationsService;
-  let rtService: RealTimeDataService;
   let spy: any;
 
   beforeEach(async () => {
@@ -24,9 +23,6 @@ describe('RecommendationDashboardComponent', () => {
       declarations: [ RecommendationDashboardComponent ]
     })
     .compileComponents();
-
-    rtService = TestBed.inject(RealTimeDataService);
-    spy = spyOn(rtService, 'getRealTimeData').and.callFake(()=> getRealTimeData());
   });
 
   beforeEach(() => {
@@ -38,9 +34,18 @@ describe('RecommendationDashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should get bike recommendations', () => {
+    service=TestBed.inject(RecommendationsService);
+    spy = spyOn(service, 'getBikeRecommendations').and.callFake(()=> getBikeRecommendations());
+    let recs = component.getBikeRecommendations();
+    expect(component.openSpots).toEqual([1]);
+    expect(component.filledSpots).toEqual([2]);
+  });
+
 });
 
-function getRealTimeData():Observable<any> {
-  return new Observable((observer: Observer<any>) => {
-  });
+function getBikeRecommendations():Observable<any> {
+  let res = {"mostAvailableBikeStationData": [1], "mostEmptyBikeStationData": [2]};
+  return of(res);
 }
