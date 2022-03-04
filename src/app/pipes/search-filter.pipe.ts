@@ -33,7 +33,6 @@ export class SearchFilterPipe implements PipeTransform {
         return it.street.toLocaleLowerCase().includes(searchText);
       }
       else if ("station" in it) {
-        console.log("aqi is read");
         return it.station.name.toLocaleLowerCase().includes(searchText);
       }
       else {
