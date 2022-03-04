@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { Observable, Observer } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
+import { DublinBusData } from '../models/DublinBusData';
 import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
@@ -39,13 +40,15 @@ export class RealTimeDashboardComponent implements OnInit {
 
   // array to store each Dublin bike data entry
   bikeData:DublinBikesData[] = [];
+  busData:DublinBusData[] = [];
   // create a map object to display the data
   map:any;
   
   // objects to hold bike markers
   bikeMarkers: Object[] = [];
   pedestrianMarkers: Object[] = [];
-  busMarkers:Object[] = []
+  busMarkers:Object = {}
+  airQualityMarkers: Object[] = [];
   
   lastUpdated:any;
   // variable to store loading status of real time data
@@ -61,6 +64,7 @@ export class RealTimeDashboardComponent implements OnInit {
   showBikeMarkers:boolean = true;
   showPedestrianMarkers:boolean = true;
   showBusMarkers:boolean = true;
+  showAirQualityMarkers:boolean = false;
 
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
@@ -77,22 +81,24 @@ export class RealTimeDashboardComponent implements OnInit {
   // initialise the map after the html component is rendered and get real-time data
   ngAfterViewInit(): void {
     this.getBikeData();
-    this.initialiseMap();
     this.getPedestrianData();
     this.getDublinBusData();
+    this.initialiseMap();
   }
   
   ngAfterContentInit(): void {
     this.loadingData = false;
   }
 
+  // get real time bike data 
   getBikeData() {
-    this.realTimeDataService.getRealTimeData().subscribe({
-      next: this.handleDataResponse.bind(this)
+    this.realTimeDataService.getRealTimeBikeData().subscribe({
+      next: this.handleBikeDataResponse.bind(this)
     });
   }
 
-  handleDataResponse(data:any) {
+  // save real time bike data to array and sort alphabetically
+  handleBikeDataResponse(data:any) {
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
     // alphabetise bike data by station name
@@ -106,8 +112,39 @@ export class RealTimeDashboardComponent implements OnInit {
     this.bikeData.forEach( bike => {
       if(bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update}
     })
-
+    console.log(this.bikeData);
+    //console.log("BIKE DATA: ", this.bikeData);
     this.makeBikeMarkers();
+  }
+  
+  // GET DUBLIN BUS DATA FROM LOCAL FILE
+  async getDublinBusData() {
+    /*
+    this.realTimeDataService.getRealTimeBusData().subscribe({
+      next: this.handleBusDataResponse.bind(this)
+    });
+    */
+    // get real-time schedule data
+    
+    
+    let data = await this.http.get<Array<DublinBusData>>('../assets/busData.json', {responseType: 'json'}).toPromise()!;
+    this.busData = data!;
+    
+    // get stop geo data
+    await this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
+      this.dublinBusStops = data;
+      this.makeBusMarkers();
+      this.makeBusPopup();
+    });
+
+  }
+  
+  // save real time bus data
+  handleBusDataResponse(data:any) {
+    this.busData = data
+    console.log(this.busData);
+    this.makeBusMarkers();
+    this.makeBusPopup();
   }
 
   
@@ -156,21 +193,8 @@ export class RealTimeDashboardComponent implements OnInit {
     
   }
   
-  // GET DUBLIN BUS DATA FROM LOCAL FILE
-  getDublinBusData() {
-    // get real-time schedule data
-    this.http.get('../assets/busData.json', {responseType: 'json'}).subscribe( (data:any) => {
-      let test = this.filterBusData(data)
-    });
-
-    // get stop geo data
-    this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
-      this.dublinBusStops = data;
-      this.makeBusMarkers();
-    });
-  }
-  
   // find the schedule data for a given stop ID
+  /*
   filterBusData(object){
       if(object.hasOwnProperty('StopId') && object["StopId"] == "7010B158241")
           return object;
@@ -184,6 +208,7 @@ export class RealTimeDashboardComponent implements OnInit {
       }
       return null;
   }
+  */
 
    // create a Dublin bike marker with given lat and lon
     makeBikeMarkers() {
@@ -218,10 +243,11 @@ export class RealTimeDashboardComponent implements OnInit {
     makeBusMarkers() {
       this.dublinBusStops.forEach( (stop:any) => {
         let marker = L.marker([stop["stop_lat"], stop["stop_lon"]], {icon: greenIcon});
-        marker.bindPopup(this.makeBusPopup(stop));
+        //marker.bindPopup(this.makeBusPopup(stop));
         marker.addTo(this.map);
-        this.busMarkers.push(marker);
+        this.busMarkers[stop["stop_id"]] = marker;
       });
+      
     }
     
     // create selected popup Bike information for each marker
@@ -243,14 +269,36 @@ export class RealTimeDashboardComponent implements OnInit {
         `<div>Number of people: ${ street.pedestrians }</div>`
     }
     
-    // create selected popup Bus information for each marker
-    makeBusPopup(stop:any): string {
-      let names = stop["stop_name"].split(',')
-      return `` +
-      `<div> ${ names[1]} </div>` +
-      `<div> Name: ${ names[0] } </div>`
-    }
     
+    /*
+    arrivalDelay: -1
+departureDelay: 0
+scheduleRelationship: "Scheduled"
+stopId: "8220DB000896"
+stopLat: "53.3133721496325"
+stopLon: "-6.26135424684804"
+stopName: "Palmerston Park, stop 896"
+stopSequence: 1
+    */
+    makeBusPopup() {
+      this.busData["Entity"].forEach(entity => {
+        if(entity.TripUpdate.StopTimeUpdate) {
+          entity.TripUpdate.StopTimeUpdate.forEach(stop => {
+            let marker = this.busMarkers[stop.StopId]
+            if (marker) {
+              if(marker._popup) {
+                let content = marker._popup.getContent()
+                content = content + `<div> Route: ${ entity.TripUpdate.Trip.RouteId} Stop Sequence: ${stop.StopSequence}`
+                marker._popup.setContent(content)
+              }
+              else
+                marker.bindPopup(`<div style="text-align:center"> Stop Id: ${stop.StopId} </div>`)
+            }
+          })
+        }
+      })
+
+    }
 
     // sort the bike table data based on selected filter
     setDataFilter($event: MatRadioChange) {
@@ -314,17 +362,19 @@ export class RealTimeDashboardComponent implements OnInit {
           this.map.removeLayer(marker)
         })
       }
+      
       if(this.showBusMarkers) {
-        this.busMarkers.forEach(marker => {
+        Object.values(this.busMarkers).forEach(marker => {
           this.map.addLayer(marker)
         })
         
       }
       if(!this.showBusMarkers) {
-        this.busMarkers.forEach(marker => {
+        Object.values(this.busMarkers).forEach(marker => {
           this.map.removeLayer(marker)
         })
       }
+    
     }
 
 }
