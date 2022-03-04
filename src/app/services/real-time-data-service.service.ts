@@ -12,6 +12,7 @@ export class RealTimeDataService {
   private bikeUrl = 'http://localhost:8005/getRealTimeDataForBike';
   private aqiUrl = 'http://localhost:8005/getRealTimeDataForAqi';
   private pedestrianUrl = 'http://localhost:8005/getRealTimeDataForPedestrian';
+  urls = {"bike": this.bikeUrl, "aqi": this.aqiUrl, "ped": this.pedestrianUrl};
 
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
@@ -46,44 +47,30 @@ export class RealTimeDataService {
   constructor(private http: HttpClient) {
   }
 
-  getRealTimeData(): Observable<any> {
+  getRealTimeData(dataType:string): Observable<any> {
     return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.bikeUrl}` + "?Authorization=" + localStorage.getItem("token"));
+      const eventSource = new EventSource(`${this.urls[dataType]}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
         const json = JSON.parse(event.data);
-        this.dublinBikesDataObjects = json;
-        observer.next(this.dublinBikesDataObjects);
+        switch(dataType){
+          case "bike":
+            this.dublinBikesDataObjects = json;
+            observer.next(this.dublinBikesDataObjects);
+            break;
+          case "aqi":
+            this.aqiDataObjects = json;
+            observer.next(this.aqiDataObjects);
+            break;
+          case "ped":
+            this.pedestrianDataObjects = json;
+            observer.next(this.pedestrianDataObjects);
+            break;
+        }
       };
       eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
     });
 
-  }
-
-  getRealTimeAqiData(): Observable<any> {
-    return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.aqiUrl}` + "?Authorization=" + localStorage.getItem("token"));
-      eventSource.onmessage = (event) => {
-        const json = JSON.parse(event.data);
-        this.aqiDataObjects = json;
-        observer.next(this.aqiDataObjects);
-      };
-      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
-      return () => eventSource.close();
-    });
-  }
-
-  getRealTimePedestrianData(): Observable<any> {
-    return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.pedestrianUrl}` + "?Authorization=" + localStorage.getItem("token"));
-      eventSource.onmessage = (event) => {
-        const json = JSON.parse(event.data);
-        this.pedestrianDataObjects = json;
-        observer.next(this.pedestrianDataObjects);
-      };
-      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
-      return () => eventSource.close();
-    });
   }
 
 }

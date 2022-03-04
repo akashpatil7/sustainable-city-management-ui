@@ -1,10 +1,8 @@
-import { Component, OnInit, AfterViewInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import { Observable, Observer } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
-import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioChange } from '@angular/material/radio';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
@@ -24,15 +22,6 @@ const blueIcon = L.icon({
 const redIcon = L.icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   shadowUrl: 'assets/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-const greenIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
@@ -73,7 +62,7 @@ export class RealTimeDashboardComponent implements OnInit {
   aqiSearchText: string = '';
   pedestrianSearchText: string = '';
   // variable to store selected data filter
-  filterChoice: string = '';
+  bikeFilterChoice: string = '';
   // variable to store selected data filter
   aqiFilterChoice: string = '';
   pedestrianFilterChoice: string = '';
@@ -88,8 +77,6 @@ export class RealTimeDashboardComponent implements OnInit {
   showBusMarkers: boolean = true;
   showAqiMarkers: boolean = true;
 
-  // array to store Pedestrian data 
-  streetLatLon: any[] = [];
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
 
@@ -102,26 +89,24 @@ export class RealTimeDashboardComponent implements OnInit {
 
   // initialise the map after the html component is rendered and get real-time data
   ngAfterViewInit(): void {
-    this.getBikeData();
+    this.getData();
     this.initialiseMap();
-    this.getPedestrianData();
     this.getDublinBusData();
-    this.getAqiData();
   }
 
   ngAfterContentInit(): void {
     this.loadingData = false;
   }
 
-  getBikeData() {
-    this.realTimeDataService.getRealTimeData().subscribe({
+  getData() {
+    this.realTimeDataService.getRealTimeData("bike").subscribe({
       next: this.handleBikeResponse.bind(this)
     });
-  }
-
-  getAqiData() {
-    this.realTimeDataService.getRealTimeAqiData().subscribe({
+    this.realTimeDataService.getRealTimeData("aqi").subscribe({
       next: this.handleAqiResponse.bind(this)
+    });
+    this.realTimeDataService.getRealTimeData("ped").subscribe({
+      next: this.handlePedestrianResponse.bind(this)
     });
   }
 
@@ -130,9 +115,15 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeAqiMarkers();
   }
 
+  handlePedestrianResponse(data: any) {
+    this.pedestrianData = data
+    this.makePedestrianMarkers();
+  }
+
   handleBikeResponse(data: DublinBikesData[]) {
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
+
     // alphabetise bike data by station name
     this.bikeData.sort(function (a, b) {
       if (a.name < b.name) { return -1; }
@@ -163,19 +154,6 @@ export class RealTimeDashboardComponent implements OnInit {
     });
 
     tiles.addTo(this.map);
-  }
-
-  // GET PEDESTRIAN DATA FROM LOCAL FILE
-  getPedestrianData() {
-    this.realTimeDataService.getRealTimePedestrianData().subscribe({
-      next: this.handlePedestrianResponse.bind(this)
-    });
-  }
-
-  handlePedestrianResponse(data: any) {
-    this.pedestrianData = data
-    console.log(this.pedestrianData)
-    this.makePedestrianMarkers();
   }
 
   // GET DUBLIN BUS DATA FROM LOCAL FILE
@@ -294,138 +272,107 @@ export class RealTimeDashboardComponent implements OnInit {
 
 
   // sort the bike table data based on selected filter
-  setDataFilter($event: MatRadioChange) {
-    console.log($event.source.name, $event.value);
-    // filter by station name
-    if ($event.value === 'Station Name') {
-      this.bikeData.sort(function (a, b) {
-        if (a.name < b.name) { return -1; }
-        if (a.name > b.name) { return 1; }
-        return 0;
-      });
+  setBikeFilter($event: MatRadioChange) {
+    let dataAttr = ''
+    switch ($event.value) {
+      case 'Station Name':
+        dataAttr = "name";
+        break;
+      case 'Last Updated':
+        dataAttr = "last_update";
+        break;
+      case 'Available Bikes':
+        dataAttr = "available_bikes";
+        break;
+      case 'Available Bike Stands':
+        dataAttr = "available_bike_stands";
+        break;
     }
-    // filter by last updated
-    if ($event.value === 'Last Updated') {
-      this.bikeData.sort(function (a, b) {
-        if (a.last_update < b.last_update) { return 1; }
-        if (a.last_update > b.last_update) { return -1; }
-        return 0;
-      });
-    }
-    // filter by available bikes
-    if ($event.value === 'Available Bikes') {
-      this.bikeData.sort(function (a, b) {
-        if (a.available_bikes < b.available_bikes) { return 1; }
-        if (a.available_bikes > b.available_bikes) { return -1; }
-        return 0;
-      });
-    }
-    // filter by available bike stands
-    if ($event.value === 'Available Bike Stands') {
-      this.bikeData.sort(function (a, b) {
-        if (a.available_bike_stands < b.available_bike_stands) { return 1; }
-        if (a.available_bike_stands > b.available_bike_stands) { return -1; }
-        return 0;
-      });
-    }
+    this.bikeData.sort(function (a, b) {
+      if (a[dataAttr] < b[dataAttr]) { return -1; }
+      if (a[dataAttr] > b[dataAttr]) { return 1; }
+      return 0;
+    });
   }
 
   // sort the bike table data based on selected filter
   setAqiFilter($event: MatRadioChange) {
-    console.log($event.source.name, $event.value);
-    // filter by station name
-    if ($event.value === 'Station Name') {
-      this.aqiData.sort(function (a, b) {
-        if (a.station.name < b.station.name) { return -1; }
-        if (a.station.name > b.station.name) { return 1; }
-        return 0;
-      });
+    let dataAttr = ''
+    let innerAttr = ''
+    switch ($event.value) {
+      case 'Station Name':
+        dataAttr = "station";
+        innerAttr = "name";
+        break;
+      case 'Last Updated':
+        dataAttr = "time";
+        innerAttr = "stime";
+        break;
+      case 'Aqi':
+        dataAttr = "aqi";
+        break;
     }
-    // filter by last updated
-    if ($event.value === 'Last Updated') {
-      this.aqiData.sort(function (a, b) {
-        if (a.time.stime < b.time.stime) { return 1; }
-        if (a.time.stime > b.time.stime) { return -1; }
-        return 0;
-      });
-    }
-    // filter by available bikes
-    if ($event.value === 'Aqi') {
-      this.aqiData.sort(function (a, b) {
-        if (a.aqi < b.aqi) { return 1; }
-        if (a.aqi > b.aqi) { return -1; }
-        return 0;
-      });
-    }
+    this.aqiData.sort(function (a, b) {
+      let aVal = a[dataAttr];
+      let bVal = b[dataAttr];
+      if (innerAttr != '') {
+        aVal = aVal[innerAttr];
+        bVal = bVal[innerAttr];
+      }
+      if (aVal < bVal) { return -1; }
+      if (aVal > bVal) { return 1; }
+      return 0;
+    });
   }
 
   // sort the pedestrian table data based on selected filter
   setPedestrianFilter($event: MatRadioChange) {
-    console.log($event.source.name, $event.value);
-    // filter by station name
-    if ($event.value === 'Street Name') {
-      this.pedestrianData.sort(function (a, b) {
-        if (a.street < b.street) { return -1; }
-        if (a.street > b.street) { return 1; }
-        return 0;
-      });
+    let dataAttr = ''
+    switch ($event.value) {
+      case 'Street Name':
+        dataAttr = "street";
+        break;
+      case 'Number of Pedestrians':
+        dataAttr = "count";
+        break;
     }
-    // filter by last updated
-    if ($event.value === 'Number of Pedestrians') {
-      this.pedestrianData.sort(function (a, b) {
-        if (a.count < b.count) { return 1; }
-        if (a.count > b.count) { return -1; }
-        return 0;
-      });
-    }
+    this.pedestrianData.sort(function (a, b) {
+      if (a[dataAttr] < b[dataAttr]) { return -1; }
+      if (a[dataAttr] > b[dataAttr]) { return 1; }
+      return 0;
+    });
   }
 
   // show or remove map pins based on filter values
   setMapFilter() {
     if (this.showBikeMarkers) {
-      this.bikeMarkers.forEach(marker => {
-        this.map.addLayer(marker)
-      })
-
+      this.bikeMarkers.forEach(marker => { this.map.addLayer(marker) })
     }
-    if (!this.showBikeMarkers) {
-      this.bikeMarkers.forEach(marker => {
-        this.map.removeLayer(marker)
-      })
+    else {
+      this.bikeMarkers.forEach(marker => { this.map.removeLayer(marker) })
     }
 
     if (this.showPedestrianMarkers) {
-      this.pedestrianMarkers.forEach(marker => {
-        this.map.addLayer(marker)
-      })
+      this.pedestrianMarkers.forEach(marker => { this.map.addLayer(marker) })
 
     }
-    if (!this.showPedestrianMarkers) {
-      this.pedestrianMarkers.forEach(marker => {
-        this.map.removeLayer(marker)
-      })
+    else {
+      this.pedestrianMarkers.forEach(marker => { this.map.removeLayer(marker) })
     }
+
     if (this.showBusMarkers) {
-      this.busMarkers.forEach(marker => {
-        this.map.addLayer(marker)
-      })
+      this.busMarkers.forEach(marker => { this.map.addLayer(marker) })
 
     }
-    if (!this.showBusMarkers) {
-      this.busMarkers.forEach(marker => {
-        this.map.removeLayer(marker)
-      })
+    else {
+      this.busMarkers.forEach(marker => { this.map.removeLayer(marker) })
     }
+
     if (this.showAqiMarkers) {
-      this.aqiMarkers.forEach(marker => {
-        this.map.addLayer(marker)
-      })
-
+      this.aqiMarkers.forEach(marker => { this.map.addLayer(marker) })
     }
-    if (!this.showAqiMarkers) {
-      this.aqiMarkers.forEach(marker => {
-        this.map.removeLayer(marker)
-      })
+    else {
+      this.aqiMarkers.forEach(marker => { this.map.removeLayer(marker) })
     }
   }
 

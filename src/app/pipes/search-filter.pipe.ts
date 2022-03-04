@@ -27,7 +27,6 @@ export class SearchFilterPipe implements PipeTransform {
     // used in real-time-data dashboard component
     return items.filter(it => {
       if ("name" in it) {
-        console.log("it is an intance");
         return it.name.toLocaleLowerCase().includes(searchText);
       }
       else if ("street" in it) {
@@ -38,7 +37,7 @@ export class SearchFilterPipe implements PipeTransform {
         return it.station.name.toLocaleLowerCase().includes(searchText);
       }
       else {
-        console.log("not isntance fo bikes")
+        console.log("not instance of any known data source")
         return;
       }
     });

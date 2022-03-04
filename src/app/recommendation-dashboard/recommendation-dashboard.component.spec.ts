@@ -15,6 +15,7 @@ describe('RecommendationDashboardComponent', () => {
   let spy: any;
 
   beforeEach(async () => {
+    localStorage.setItem("token", "12345");
     await TestBed.configureTestingModule({
       imports: [
         HttpClientModule,

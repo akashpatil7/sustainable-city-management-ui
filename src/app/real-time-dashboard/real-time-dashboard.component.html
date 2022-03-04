@@ -17,8 +17,8 @@
 
   <!-- Filter buttons -->
   <label id="filter-buttons">Sort by: </label>
-  <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="filterChoice"
-    (change)="setDataFilter($event)">
+  <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="bikeFilterChoice"
+    (change)="setBikeFilter($event)">
     <mat-radio-button class="filterButton" *ngFor="let item of filterOptions" [value]="item">
       {{item}}
     </mat-radio-button>

@@ -16,9 +16,9 @@ describe('RealTimeDashboardComponent', () => {
 
 
   beforeEach(async () => {
-
+    localStorage.setItem("token", "12345");
     await TestBed.configureTestingModule({
-      declarations: [ RealTimeDashboardComponent, AqiSearchFilterPipe, SearchFilterPipe ],
+      declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule,
         RouterTestingModule,
@@ -34,11 +34,9 @@ describe('RealTimeDashboardComponent', () => {
   });
 
   beforeEach(() => {
-    localStorage.setItem("token", "12345");
-
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
+    component = fixture.componentInstance;
   });
 
   it('should create', () => {
@@ -57,6 +55,10 @@ describe('RealTimeDashboardComponent', () => {
     expect(tableHeaders[2].innerHTML).toBe('Available bikes');
     expect(tableHeaders[3].innerHTML).toBe('Available stands');
     
+  });
+
+  it('should handle aqi response', () => {
+    expect(component).toBeTruthy();
   });
 
 
