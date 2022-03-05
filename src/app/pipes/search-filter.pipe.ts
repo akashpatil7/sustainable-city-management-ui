@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { PedestrianData } from '../models/PedestrianData';
+import { DublinBusData } from '../models/DublinBusData';
 import { AqiData } from '../models/AqiData';
 
 /*
@@ -35,6 +36,9 @@ export class SearchFilterPipe implements PipeTransform {
       else if ("station" in it) {
         return it.station.name.toLocaleLowerCase().includes(searchText);
       }
+      else if ("routeShort" in it) {
+        return it.routeShort.includes(searchText);
+      }
       else {
         console.log("not instance of any known data source")
         return;
@@ -43,5 +47,5 @@ export class SearchFilterPipe implements PipeTransform {
   }
 }
 
-type PipeInput = DublinBikesData | PedestrianData | AqiData;
+type PipeInput = DublinBikesData | PedestrianData | AqiData | DublinBusData;
 

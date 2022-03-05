@@ -96,10 +96,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   // initialise the map after the html component is rendered and get real-time data
   ngAfterViewInit() {
-    this.getBikeData();
-    this.getPedestrianData();
-    this.getDublinBusData();
-    this.getAqiData();
+    this.getData();
     this.initialiseMap();
   }
 
@@ -184,29 +181,37 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBusPopup();
   }
 
-   // create a Dublin bike marker with given lat and lon
-    makeBikeMarkers() {
-      this.bikeData.forEach( (station) => {
-        if(this.bikeMarkers[station.name]) {
-          let marker = this.bikeMarkers[station.name];
-          marker.bindPopup(this.makeBikePopup(station));
-        }
-        else {
-          let marker = L.marker([station.latitude, station.longitude], {icon: blueIcon});
-          marker.bindPopup(this.makeBikePopup(station));
-          this.bikeMarkers[station.name] = marker;
-          marker.addTo(this.map);
-        }
-      });
-    }
+ // create a Dublin bike marker with given lat and lon
+  makeBikeMarkers() {
+    this.bikeData.forEach( (station) => {
+      // upate existing marker's popup with new real time information
+      if(this.bikeMarkers[station.name]) {
+        let marker = this.bikeMarkers[station.name];
+        marker.bindPopup(this.makeBikePopup(station));
+      }
+      // create a new marker if data is coming through first time
+      else {
+        let marker = L.marker([station.latitude, station.longitude], {icon: blueIcon});
+        marker.bindPopup(this.makeBikePopup(station));
+        this.bikeMarkers[station.name] = marker;
+        marker.addTo(this.map);
+      }
+    });
+  }
 
   // create an aqi marker with given lat and lon
   makeAqiMarkers() {
     this.aqiData.forEach((aqi) => {
-      let marker = L.marker([aqi.station.geo[0], aqi.station.geo[1]], { icon: redIcon });
-      marker.bindPopup(this.makeAqiPopup(aqi));
-      marker.addTo(this.map);
-      this.aqiMarkers[aqi.uid] = marker;
+      if(this.aqiMarkers[aqi.uid]) {
+        let marker = this.aqiMarkers[aqi.uid];
+        marker.bindPopup(this.makeAqiPopup(aqi));
+      }
+      else {
+        let marker = L.marker([aqi.station.geo[0], aqi.station.geo[1]], { icon: redIcon });
+        marker.bindPopup(this.makeAqiPopup(aqi));
+        marker.addTo(this.map);
+        this.aqiMarkers[aqi.uid] = marker;
+      }
     });
   }
 
@@ -239,9 +244,9 @@ export class RealTimeDashboardComponent implements OnInit {
   makeBusMarkers() {
     this.dublinBusStops.forEach((stop: any) => {
       let marker = L.circleMarker([stop["stop_lat"], stop["stop_lon"]], { radius: 5, color: 'green' });
-      marker.bindPopup(this.makeBusPopup(stop));
+      marker.bindPopup(`<div> <b> ${stop.stop_name} </b></div>`);
       marker.addTo(this.map);
-      this.busMarkers.push(marker);
+      this.busMarkers[stop.stop_name] = marker;
     });
   }
 
@@ -271,6 +276,10 @@ export class RealTimeDashboardComponent implements OnInit {
       `<div>Street: ${streetNames[0]}</div>` +
       `<div>Area: ${streetNames[streetNames.length - 1]}</div>` +
       `<div>Number of people: ${street.count}</div>`
+  }
+  
+  makeBusPopup() {
+    //TODO: figure out what data we want to show
   }
 
 
@@ -327,6 +336,24 @@ export class RealTimeDashboardComponent implements OnInit {
       if (aVal > bVal) { return 1; }
       return 0;
     });
+  }
+  
+  setBusFilter($event: MatRadioChange) {
+    let dataAttr = ''
+    switch ($event.value) {
+      case 'Route':
+        dataAttr = "routeShort";
+        break;
+      case 'Start Time':
+        dataAttr = "startTimestamp";
+        break;
+    }
+    this.busData.sort(function (a, b) {
+      if (a[dataAttr] < b[dataAttr]) { return -1; }
+      if (a[dataAttr] > b[dataAttr]) { return 1; }
+      return 0;
+    });
+    
   }
 
   // sort the pedestrian table data based on selected filter
