@@ -23,15 +23,15 @@ export class RealTimeDataService {
     longitude: 0
   };
   private dublinBusDataObjects: DublinBusData = {
-    trip_id: 0,
-    route_long: '',
-    route_short: '',
-    scheduled_relationship: '',
-    start_timestamp: '',
-    stop_sequence: [],
-    route_id: '',
-    creation_date: '',
-    last_modified: ''
+    routeId: '',
+    routeLong: '',
+    routeShort: '',
+    scheduledRelationship: '',
+    startTimestamp: 0,
+    stopSequence: [],
+    tripId: '',
+    _creationDate: '',
+    _lastModifiedDate: ''
   };
 
   constructor(private http: HttpClient) {
