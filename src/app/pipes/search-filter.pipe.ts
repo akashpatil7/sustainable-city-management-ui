@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DublinBikesData } from '../models/DublinBikesData';
+import { PedestrianData } from '../models/PedestrianData';
+import { AqiData } from '../models/AqiData';
 
 /*
 * Pipe created to filter out usernames from the list of users in the find-user component
@@ -9,11 +11,14 @@ export class SearchFilterPipe implements PipeTransform {
   /**
    * Transform
    *
+   * @param {any[]} items
    * @param {string} searchText
    * @returns {any[]}
    */
   transform(items: PipeInput[], searchText: string): any[] {
-
+    if (!items) {
+      return [];
+    }
     if (!searchText) {
       return items;
     }
@@ -21,10 +26,22 @@ export class SearchFilterPipe implements PipeTransform {
 
     // used in real-time-data dashboard component
     return items.filter(it => {
-      return it.name.toLocaleLowerCase().includes(searchText);
+      if ("name" in it) {
+        return it.name.toLocaleLowerCase().includes(searchText);
+      }
+      else if ("street" in it) {
+        return it.street.toLocaleLowerCase().includes(searchText);
+      }
+      else if ("station" in it) {
+        return it.station.name.toLocaleLowerCase().includes(searchText);
+      }
+      else {
+        console.log("not instance of any known data source")
+        return;
+      }
     });
   }
 }
 
-type PipeInput = DublinBikesData;
+type PipeInput = DublinBikesData | PedestrianData | AqiData;
 

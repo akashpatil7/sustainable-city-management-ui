@@ -6,7 +6,6 @@ import { RealTimeDataService } from '../services/real-time-data-service.service'
 import { Observable, Observer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AqiSearchFilterPipe } from '../pipes/aqi-search-filter.pipe';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
 
 describe('RealTimeDashboardComponent', () => {
@@ -17,9 +16,9 @@ describe('RealTimeDashboardComponent', () => {
 
 
   beforeEach(async () => {
-
+    localStorage.setItem("token", "12345");
     await TestBed.configureTestingModule({
-      declarations: [ RealTimeDashboardComponent, AqiSearchFilterPipe, SearchFilterPipe ],
+      declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule,
         RouterTestingModule,
@@ -35,11 +34,9 @@ describe('RealTimeDashboardComponent', () => {
   });
 
   beforeEach(() => {
-    localStorage.setItem("token", "12345");
-
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
+    component = fixture.componentInstance;
   });
 
   it('should create', () => {
@@ -75,6 +72,10 @@ describe('RealTimeDashboardComponent', () => {
     */
   });
   
+
+  it('should handle aqi response', () => {
+    expect(component).toBeTruthy();
+  });
 
 
 });

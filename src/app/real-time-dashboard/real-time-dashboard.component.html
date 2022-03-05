@@ -10,19 +10,16 @@
   <div role="main">
     <div>
       <div class="searchBar">
-        <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
-          [(ngModel)]="searchText" placeholder="Search a station">
+        <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+          placeholder="Search a station">
       </div>
     </div>
   </div>
 
   <!-- Filter buttons -->
   <label id="filter-buttons">Sort by: </label>
-  <mat-radio-group
-    aria-labelledby="filter-buttons-label"
-    class="filterButtonsContainer"
-    [(ngModel)]="filterChoice"
-    (change)="setDataFilter($event)">
+  <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="bikeFilterChoice"
+    (change)="setBikeFilter($event)">
     <mat-radio-button class="filterButton" *ngFor="let item of filterOptions" [value]="item">
       {{item}}
     </mat-radio-button>
@@ -30,18 +27,18 @@
 
   <!-- Table to display Dublin bike data -->
   <table>
-      <tr> 
-        <th>Last Updated</th>
-        <th>Station Name</th>
-        <th>Available bikes</th>
-        <th>Available stands</th>
-      </tr>
-      <tr *ngFor="let data of bikeData | searchFilter: searchText">
-        <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
-        <td>{{data.name}}</td>
-        <td>{{data.available_bikes}}</td>
-        <td>{{data.available_bike_stands}}</td>  
-      </tr>
+    <tr>
+      <th>Last Updated</th>
+      <th>Station Name</th>
+      <th>Available bikes</th>
+      <th>Available stands</th>
+    </tr>
+    <tr *ngFor="let data of bikeData | searchFilter: searchText">
+      <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.available_bikes}}</td>
+      <td>{{data.available_bike_stands}}</td>
+    </tr>
   </table>
 
   <!-- AQI -->
@@ -50,7 +47,7 @@
   <div role="main">
     <div>
       <div class="searchBar">
-        <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text" 
+        <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text"
           [(ngModel)]="aqiSearchText" placeholder="Search a station">
       </div>
     </div>
@@ -58,10 +55,7 @@
 
   <!-- Filter buttons -->
   <label id="filter-buttons">Sort by: </label>
-  <mat-radio-group
-    aria-labelledby="filter-buttons-label"
-    class="filterButtonsContainer"
-    [(ngModel)]="aqiFilterChoice"
+  <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="aqiFilterChoice"
     (change)="setAqiFilter($event)">
     <mat-radio-button class="filterButton" *ngFor="let item of aqiOptions" [value]="item">
       {{item}}
@@ -75,49 +69,83 @@
       <th>Station Name</th>
       <th>Aqi Level</th>
     </tr>
-    <tr *ngFor="let aqi of aqiData | aqiSearchFilter: aqiSearchText">
+    <tr *ngFor="let aqi of aqiData | searchFilter: aqiSearchText">
       <td>{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
       <td>{{aqi.station.name}}</td>
       <td>{{aqi.aqi}}</td>
     </tr>
   </table>
   
-  
-    <!-- DUBLIN BUS -->
-    <!-- Search bar -->
-    <p> Dublin Bus </p>
-    <div role="main">
-      <div>
-        <div class="searchBar">
-          <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
-            [(ngModel)]="busSearchText" placeholder="Search a route">
-        </div>
+  <!-- PEDESTRIAN  -->
+  <!-- Search bar -->
+  <p> Pedestrian Data</p>
+  <div role="main">
+    <div>
+      <div class="searchBar">
+        <input type="text" class="form-control" id="search-aqi-text" aria-describedby="search-aqi-text"
+          [(ngModel)]="pedestrianSearchText" placeholder="Search a street">
       </div>
     </div>
+  </div>
 
-    <!-- Filter buttons -->
-    <label id="filter-buttons">Sort by: </label>
-    <mat-radio-group
-      aria-labelledby="filter-buttons-label"
-      class="filterButtonsContainer"
-      [(ngModel)]="filterChoice"
-      (change)="setDataFilter($event)">
-      <mat-radio-button class="filterButton" *ngFor="let item of busFilterOptions" [value]="item">
-        {{item}}
-      </mat-radio-button>
-    </mat-radio-group>
+  <!-- Filter buttons -->
+  <label id="filter-buttons">Sort by: </label>
+  <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer"
+    [(ngModel)]="pedestrianFilterChoice" (change)="setPedestrianFilter($event)">
+    <mat-radio-button class="filterButton" *ngFor="let item of pedestrianOptions" [value]="item">
+      {{item}}
+    </mat-radio-button>
+  </mat-radio-group>
 
-    <!-- Table to display Dublin bus data -->
-    <table>
-        <tr> 
-          <th>Route</th>
-          <th>Start Time</th>
-        </tr>
-        <tr *ngFor="let data of busData">
-          <td>{{data.routeShort}}</td>
-          <td>{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
-        </tr>
-    </table>
+  <!-- Table to display Pedestrian data -->
+  <table>
+    <tr>
+      <th>Location</th>
+      <th>Count</th>
+    </tr>
+    <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
+      <td>{{pedestrian.street}}</td>
+      <td>{{pedestrian.count}}</td>
+    </tr>
+  </table>
+  
+  <!-- DUBLIN BUS -->
+  <!-- Search bar -->
+  <p> Dublin Bus </p>
+  <div role="main">
+    <div>
+      <div class="searchBar">
+        <input type="text" class="form-control" id="search-text" aria-describedby="search-text" 
+          [(ngModel)]="busSearchText" placeholder="Search a route">
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter buttons -->
+  <label id="filter-buttons">Sort by: </label>
+  <mat-radio-group
+    aria-labelledby="filter-buttons-label"
+    class="filterButtonsContainer"
+    [(ngModel)]="filterChoice"
+    (change)="setDataFilter($event)">
+    <mat-radio-button class="filterButton" *ngFor="let item of busFilterOptions" [value]="item">
+      {{item}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <!-- Table to display Dublin bus data -->
+  <table>
+      <tr> 
+        <th>Route</th>
+        <th>Start Time</th>
+      </tr>
+      <tr *ngFor="let data of busData">
+        <td>{{data.routeShort}}</td>
+        <td>{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
+      </tr>
+  </table>
+
+
 
   <!-- Map of data -->
   <section class="mapFilters">
