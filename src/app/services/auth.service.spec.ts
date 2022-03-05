@@ -1,23 +1,32 @@
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable, Observer } from 'rxjs';
 import { UserServiceComponentComponent } from '../user-service-component/user-service-component.component';
 
 import { AuthService } from './auth.service';
+import { RealTimeDataService } from './real-time-data-service.service';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let rtService: RealTimeDataService;
+  let spy: any;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
+        HttpClientModule,
         RouterTestingModule.withRoutes(
           [{path: 'login', component: UserServiceComponentComponent}]
         )
       ]
     });
     service = TestBed.inject(AuthService);
+    rtService = TestBed.inject(RealTimeDataService);
+    spy = spyOn(rtService, 'getRealTimeData').and.callFake(()=> getRealTimeData());
   });
+
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -37,3 +46,8 @@ describe('AuthService', () => {
     expect(localStorage.getItem('token')).toBeFalse;
   });
 });
+
+function getRealTimeData():Observable<any> {
+  return new Observable((observer: Observer<any>) => {
+  });
+}

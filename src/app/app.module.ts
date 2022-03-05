@@ -19,7 +19,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
-import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
+import { AqiSearchFilterPipe } from "../app/pipes/aqi-search-filter.pipe";
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     RealTimeDashboardComponent,
     LogoutComponent,
     SearchFilterPipe,
+    AqiSearchFilterPipe
   ],
   exports: [
     MatExpansionModule,
@@ -52,9 +54,9 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     MatTabsModule,
     MatRadioModule,
     MatCheckboxModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [SearchFilterPipe, AqiSearchFilterPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

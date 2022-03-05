@@ -4,11 +4,15 @@ import { Observable } from 'rxjs';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
 import { Observer } from 'rxjs';
+import { AqiData } from '../models/AqiData';
 
 @Injectable({ providedIn: 'root' })
 export class RealTimeDataService {
 
-  private baseUrl = 'http://localhost:8005';
+  private bikeUrl = 'http://localhost:8005/getRealTimeDataForBike';
+  private aqiUrl = 'http://localhost:8005/getRealTimeDataForAqi';
+  private busUrl = 'http://localhost:8005/getRealTimeDataForBus';
+
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
     harvest_time: '',
@@ -34,13 +38,20 @@ export class RealTimeDataService {
     _lastModifiedDate: ''
   };
 
+  private aqiDataObjects: AqiData = {
+    uid: 0,
+    aqi: '',
+    station: {name: '', geo: [], url: '', country: ''},
+    time: {tz: '', stime: '', vtime: 0},
+  };
+
   constructor(private http: HttpClient) {
   }
 
   // get real time bike data
   getRealTimeBikeData():Observable<any> {
     return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.baseUrl}` + "/getRealTimeDataForBike/?Authorization=" + localStorage.getItem("token"));
+      const eventSource = new EventSource(`${this.bikeUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
         const json = JSON.parse(event.data);
         this.dublinBikesDataObjects = json;
@@ -54,7 +65,7 @@ export class RealTimeDataService {
   // get real time bus data
   getRealTimeBusData():Observable<any> {
     return new Observable((observer: Observer<any>) => {
-      const eventSource = new EventSource(`${this.baseUrl}` + "/getRealTimeDataForBus/?Authorization=" + localStorage.getItem("token"));
+      const eventSource = new EventSource(`${this.busUrl}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
         const json = JSON.parse(event.data);
         this.dublinBusDataObjects = json;
@@ -65,4 +76,18 @@ export class RealTimeDataService {
       return () => eventSource.close();
     });
   }
+
+  getRealTimeAqiData():Observable<any> {
+    return new Observable((observer: Observer<any>) => {
+      const eventSource = new EventSource(`${this.aqiUrl}` + "?Authorization=" + localStorage.getItem("token"));
+      eventSource.onmessage = (event) => {
+        const json = JSON.parse(event.data);
+        this.aqiDataObjects = json;
+        observer.next(this.aqiDataObjects);
+      };
+      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
+      return () => eventSource.close();
+    });
+  }
+
 }
