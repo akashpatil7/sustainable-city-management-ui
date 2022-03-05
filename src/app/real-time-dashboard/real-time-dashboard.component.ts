@@ -63,8 +63,8 @@ export class RealTimeDashboardComponent implements OnInit {
   busMarkers:Object = {}
   aqiMarkers: Object = {};
   
+  // variables to store loading status of real time data
   lastUpdated:any;
-  // variable to store loading status of real time data
   loadingData:boolean = true;
   
   // variables to hold search filter inputs
@@ -113,23 +113,33 @@ export class RealTimeDashboardComponent implements OnInit {
   ngAfterContentInit(): void {
     this.loadingData = false;
   }
+  
+  // set initial map configurations (Dublin city centre)
+  initialiseMap(): void {
+     this.map = L.map('map', {
+       center: [53.35105167452323, -6.256029081676276],
+       zoom: 13,
+       preferCanvas: true
+     });
+
+     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          minZoom: 3,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+
+      tiles.addTo(this.map);
+   }
 
   // get real time bike data 
   getBikeData() {
     this.realTimeDataService.getRealTimeBikeData().subscribe({
-      next: this.handleBikeDataResponse.bind(this)
-    });
-  }
-
-  // save real time bike data to array and sort alphabetically
-  handleBikeDataResponse(data:any) {
-
-    this.realTimeDataService.getRealTimeData().subscribe({
       next: this.handleBikeResponse.bind(this)
     });
   }
+
   
-    handleBikeResponse(data:any) {
+  handleBikeResponse(data:any) {
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
     // alphabetise bike data by station name
@@ -162,7 +172,7 @@ export class RealTimeDashboardComponent implements OnInit {
   // Get Dublin Bus data from service and stop data from file
   async getDublinBusData() {
     this.realTimeDataService.getRealTimeBusData().subscribe({
-      next: this.handleBusDataResponse.bind(this)
+      next: this.handleBusResponse.bind(this)
     });
     
     // get stop geo data
@@ -173,7 +183,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
   
   // save real time bus data
-  handleBusDataResponse(data:any) {
+  handleBusResponse(data:any) {
     this.busData = data
     // sort bus data by route name
     this.busData.sort(function(a, b){
@@ -184,23 +194,6 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBusPopup();
   }
 
-  
-  // set initial map configurations (Dublin city centre)
-  initialiseMap(): void {
-     this.map = L.map('map', {
-       center: [53.35105167452323, -6.256029081676276],
-       zoom: 13,
-       preferCanvas: true
-     });
-
-     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          minZoom: 3,
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
-
-      tiles.addTo(this.map);
-   }
 
 // GET PEDESTRIAN DATA FROM LOCAL FILE
   getPedestrianData() {
@@ -255,7 +248,7 @@ export class RealTimeDashboardComponent implements OnInit {
       let marker = L.marker([aqi.station.geo[0], aqi.station.geo[1]], {icon: redIcon});
       marker.bindPopup(this.makeAqiPopup(aqi));
       marker.addTo(this.map);
-      this.aqiMarkers.push(marker);
+      this.aqiMarkers[aqi.uid] = marker;
     });
   }
     
@@ -405,7 +398,6 @@ export class RealTimeDashboardComponent implements OnInit {
           this.map.removeLayer(marker)
         })
       }
-      /*
       
       if(this.showPedestrianMarkers) {
         Object.values(this.pedestrianMarkers).forEach(marker => {
@@ -431,13 +423,13 @@ export class RealTimeDashboardComponent implements OnInit {
         })
       }
       if(this.showAqiMarkers) {
-        this.aqiMarkers.forEach(marker => {
+        Object.values(this.aqiMarkers).forEach(marker => {
           this.map.addLayer(marker)
         })
         
       }
       if(!this.showAqiMarkers) {
-        this.aqiMarkers.forEach(marker => {
+        Object.values(this.aqiMarkers).forEach(marker => {
           this.map.removeLayer(marker)
         })
       }
