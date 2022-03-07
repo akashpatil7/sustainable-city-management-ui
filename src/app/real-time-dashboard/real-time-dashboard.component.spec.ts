@@ -3,7 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
@@ -13,7 +13,6 @@ describe('RealTimeDashboardComponent', () => {
   let fixture: ComponentFixture<RealTimeDashboardComponent>;
   let service: RealTimeDataService;
   let spy: any;
-
 
   beforeEach(async () => {
     localStorage.setItem("token", "12345");
@@ -30,12 +29,9 @@ describe('RealTimeDashboardComponent', () => {
     .compileComponents();
 
     service = TestBed.inject(RealTimeDataService);
-    spy = spyOn(service, 'getRealTimeData').and.callFake(()=> getRealTimeData());
-  });
-
-  beforeEach(() => {
+    spy = spyOn(service, 'getRealTimeData').withArgs("bike").and.callFake(() => getRealTimeData("bike")).withArgs("bus").and.callFake(() => getRealTimeData("bus")).withArgs("aqi").and.callFake(() => getRealTimeData("aqi")).withArgs("ped").and.callFake(() => getRealTimeData("ped"));
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    fixture.detectChanges();
+    fixture.detectChanges()
     component = fixture.componentInstance;
   });
 
@@ -43,10 +39,11 @@ describe('RealTimeDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
   
+  it('should load in bike data', () => {
+    expect(component.bikeData.length).toBeGreaterThan(0);
+  });
+  
   it('should render data headers', () => {
-    fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    fixture.detectChanges();
-    
     const compiled = fixture.nativeElement as HTMLElement;
     let tableHeaders = compiled.querySelectorAll('th');
     
@@ -56,22 +53,6 @@ describe('RealTimeDashboardComponent', () => {
     expect(tableHeaders[3].innerHTML).toBe('Available stands');
     
   });
-  
-  it('should load in bike data', () => {
-    expect(service.getRealTimeData).toHaveBeenCalled();
-    //fixture.detectChanges();
-    expect(component.bikeData.length).toBeGreaterThan(0);
-    /*
-    fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    fixture.detectChanges();
-    expect(component.bikeData.length).toBe(0);
-    component.getBikeData();
-    tick();
-    fixture.detectChanges();
-    expect(component.bikeData.length).toBeGreaterThan(0);
-    */
-  });
-  
 
   it('should handle aqi response', () => {
     expect(component).toBeTruthy();
@@ -79,8 +60,27 @@ describe('RealTimeDashboardComponent', () => {
 
 
 });
-function getRealTimeData():Observable<any> {
-  return new Observable((observer: Observer<any>) => {
-  });
+
+function getRealTimeData(dataType:string):Observable<any> {
+  let data = {}
+  if (dataType=="bike") {
+    let bike = {"id": 0}
+    data = [bike];
+  }
+  if (dataType=="aqi") {
+    let aqiTime = {"stime": "Jun 15, 2015, 9:03:01 AM"}
+    let aqiStation = {"name": "test"}
+    let aqi = {"uid": 0, "time": aqiTime, "station": aqiStation}
+    data = [aqi];
+  }
+  if (dataType=="ped") {
+    let ped = {"id": 0}
+    data = [ped];
+  }
+  if (dataType=="bus") {
+    let bus = {"routeId": 0}
+    data = [bus];
+  }
+  return of(data);
 }
 

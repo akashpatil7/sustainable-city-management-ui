@@ -92,11 +92,11 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getData();
   }
 
   // initialise the map after the html component is rendered and get real-time data
   ngAfterViewInit() {
-    this.getData();
     this.initialiseMap();
   }
 
