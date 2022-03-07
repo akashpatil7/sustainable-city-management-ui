@@ -48,7 +48,7 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   handleLoginError(error: HttpErrorResponse) {
-    this.showLoginError(error.error);
+    this.showLoginError(error.name);
   }
 
   onRegister(data: { email: string; username: string; password1: string; password2: string; }) {

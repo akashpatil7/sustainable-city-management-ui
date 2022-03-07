@@ -4,7 +4,7 @@ import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard.comp
 import { RouterTestingModule } from '@angular/router/testing';
 import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
 import { TrendsService } from '../services/trends.service';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 describe('TrendAnalysisDashboardComponent', () => {
   let component: TrendAnalysisDashboardComponent;
@@ -17,12 +17,12 @@ describe('TrendAnalysisDashboardComponent', () => {
       imports: [
         HttpClientModule,
         RouterTestingModule.withRoutes([
-          { path: 'real-time-dashboard', component: RealTimeDashboardComponent}
-      ])
+          { path: 'real-time-dashboard', component: RealTimeDashboardComponent }
+        ])
       ],
-      declarations: [ TrendAnalysisDashboardComponent ]
+      declarations: [TrendAnalysisDashboardComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('TrendAnalysisDashboardComponent', () => {
     localStorage.setItem("token", "test");
 
     service = TestBed.inject(TrendsService);
-    spy = spyOn(service, 'getHourlyAverage').and.callFake(()=> getHourlyAverage());
+    spy = spyOn(service, 'getHourlyAverage').and.callFake(() => getHourlyAverage());
 
     fixture = TestBed.createComponent(TrendAnalysisDashboardComponent);
     component = fixture.componentInstance;
@@ -40,23 +40,21 @@ describe('TrendAnalysisDashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
-  it('should render bike trend table', waitForAsync(()  => {
-    component.getHourlyBikeAverages();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const rows = fixture.nativeElement.querySelectorAll('mat-expansion-panel');
-      if (rows) {
-        //expect(rows.length).toBe(110);
-        // TODO(all): Add tests.
-      }
-    })
-  }));
-  
 
-  
+  it('should receive bike trends and sort them', waitForAsync(() => {
+    component.getHourlyBikeAverages();
+    expect(component.hourlyBikeTrends.length).toEqual(2);
+    expect(component.hourlyBikeTrends[0]._id).toEqual("1");
+  }));
+
+
+
 });
+
 function getHourlyAverage(): Observable<any> {
-  return new Observable((observer: Observer<any>) => {});
+  let trendOne = { _id: "1", "current": { "avgAvailability": 1 }, "entry": { "hour": 1, "avgAvailability": 1 } };
+  let trendTwo = { _id: "2", "current": { "avgAvailability": 1 }, "entry": { "hour": 1, "avgAvailability": 1 } };
+  let res = [trendOne, trendTwo];
+  return of(res);
 }
 

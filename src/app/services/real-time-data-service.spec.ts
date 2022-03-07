@@ -7,6 +7,7 @@ describe('RealTimeDataService', () => {
   let service: RealTimeDataService;
 
   beforeEach(() => {
+    localStorage.setItem("token", "12345");
     TestBed.configureTestingModule({imports:[
       HttpClientModule
     ]});
