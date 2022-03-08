@@ -12,3 +12,20 @@
         <td>{{openSpots[i].name}}</td>      
     </tr>
 </table>
+
+<p> Move traffic based on AQI: </p>
+
+<table>
+    <tr> 
+      <th> Move Traffic From </th>
+      <th> AQI </th>
+      <th> Move Traffic To </th>
+      <th> Aqi </th>
+    </tr>
+    <tr *ngFor="let entry of highestAqi; let i =index">
+        <td>{{highestAqi[i].stationName}}</td>
+        <td>{{highestAqi[i].aqi}}</td>
+        <td>{{lowestAqi[i].stationName}}</td>
+        <td>{{lowestAqi[i].aqi}}</td>      
+    </tr>
+</table>

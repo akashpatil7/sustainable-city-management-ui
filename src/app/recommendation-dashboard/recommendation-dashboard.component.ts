@@ -12,12 +12,14 @@ export class RecommendationDashboardComponent implements OnInit {
   bikeData:any[] = [];
   openSpots:any[] = [];
   filledSpots:any[] = [];
+  highestAqi:any[] = [];
+  lowestAqi:any[] = [];
 
   constructor(private http:HttpClient, private rs:RecommendationsService) { }
 
   ngOnInit(): void {
     this.getBikeRecommendations();
-    
+    this.getAqiRecommendations();
   }
   
   getBikeRecommendations() {
@@ -26,9 +28,14 @@ export class RecommendationDashboardComponent implements OnInit {
       this.openSpots = res.mostAvailableBikeStationData;
       this.filledSpots = res.mostEmptyBikeStationData;
     });
-    
   }
   
-
+  getAqiRecommendations() {
+    this.rs.getAqiRecommendations().subscribe((res) => {
+      console.log(res);
+      this.highestAqi = res.highestAqiStationData;
+      this.lowestAqi = res.lowestAqiStationData;
+    });
+  }
   
 }
