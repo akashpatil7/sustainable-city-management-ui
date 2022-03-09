@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
+import jspdf from 'jspdf';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -44,10 +45,6 @@ export class RealTimeDashboardComponent implements OnInit {
   busData:DublinBusData[] = [];
   aqiData:AqiData[] = [];
   pedestrianData: PedestrianData[] = [];
-  
-  // objects to store data for graphs
-  bikeGraphData:any = []
-  //aqiGraphData:any = []
 
   // create a map object to display the data
   map: any;
@@ -92,21 +89,13 @@ export class RealTimeDashboardComponent implements OnInit {
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
   
-  saleData = [
-    { name: "Mobiles", value: 105000 },
-    { name: "Laptop", value: 55000 },
-    { name: "AC", value: 15000 },
-    { name: "Headset", value: 150000 },
-    { name: "Fridge", value: 20000 }
-  ];
-  
-  aqiGraphData = [
-    {name: 'Mobiles', value: 105000},
-    {name: 'Laptop', value: 55000},
-    {name: 'AC', value: 15000},
-    {name: 'Headset', value: 150000},
-    {name: 'Fridge', value: 20000}
-  ]
+  testData = [  
+    { Id: 101, Name: 'Nitin', Salary: 1234 },  
+    { Id: 102, Name: 'Sonu', Salary: 1234 },  
+    { Id: 103, Name: 'Mohit', Salary: 1234 },  
+    { Id: 104, Name: 'Rahul', Salary: 1234 },  
+    { Id: 105, Name: 'Kunal', Salary: 1234 }  
+  ]; 
 
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
   }
@@ -164,11 +153,6 @@ export class RealTimeDashboardComponent implements OnInit {
   handleAqiResponse(data: any) {
     console.log(data);
     this.aqiData = data
-    this.aqiData.forEach(data => {
-      //this.aqiGraphData.push({"name":data.station.name.toString(), "value":+data.aqi})
-    })
-    console.log(this.aqiGraphData)
-    console.log(this.saleData)
     this.makeAqiMarkers();
   }
 
@@ -191,9 +175,8 @@ export class RealTimeDashboardComponent implements OnInit {
     // get most up to date timestamp
     this.bikeData.forEach(bike => {
       if (bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update }
-      this.bikeGraphData.push({"name": bike.name, "value": bike.available_bikes})
     })
-    console.log(this.bikeGraphData)
+    console.log(this.bikeData);
     this.makeBikeMarkers();
   }
   
@@ -434,5 +417,28 @@ export class RealTimeDashboardComponent implements OnInit {
       Object.values(this.aqiMarkers).forEach(marker => { this.map.removeLayer(marker) })
     }
   }
+  
+
+  SavePDF():void{  
+    // p = portrait, pt = points, a4 = paper size, 
+    let doc = new jspdf('p', 'pt', 'a4');  
+    doc.html(<HTMLElement>document.getElementById("bikeDataContent"), {
+      html2canvas: {
+          // insert html2canvas options here, e.g.
+          width: 100
+      },
+       callback: function (doc) {
+         
+         //doc.save('test.pdf');              // this function automatically downloads the pdf
+         window.open(doc.output('bloburl'));  // this function opens the pdf in a new tab
+       },
+       x: 10,
+       y: 10
+    });
+
+
+      
+    }
+
 
 }
