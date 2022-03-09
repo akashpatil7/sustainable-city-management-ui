@@ -1,11 +1,26 @@
 <h1 class="title"> Real Time Dashboard </h1>
 
 <p *ngIf="loadingData"> Loading... </p>
-<p> Dublin Bikes </p>
 
 <div *ngIf="!loadingData" class="contentContainer">
   <div class="tableContainer">
     <!-- DUBLIN BIKES -->
+    <p> Dublin Bikes </p>
+    
+    <ngx-charts-bar-vertical class="chart"
+        [view]="[700,300]"
+        [results]="saleData"
+        [xAxisLabel]="'Products'"
+        [legendTitle]="'Product Sale Chart'"
+        [yAxisLabel]="'Sale'"
+        [legend]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [gradient]="false">
+    </ngx-charts-bar-vertical>
+    
     <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
     <!-- Search bar -->
     <div role="main">
@@ -44,6 +59,23 @@
 
     <!-- AQI -->
     <p> Dublin Aqi </p>
+    
+    
+    <ngx-charts-bar-vertical class="chart"
+        [view]="[700,300]"
+        [results]="aqiGraphData"
+        [xAxisLabel]="'Station'"
+        [legendTitle]="'AQI'"
+        [yAxisLabel]="'AQI value'"
+        [legend]="false"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [gradient]="false">
+    </ngx-charts-bar-vertical>
+    
+    
     <!-- Search bar -->
     <div role="main">
       <div>

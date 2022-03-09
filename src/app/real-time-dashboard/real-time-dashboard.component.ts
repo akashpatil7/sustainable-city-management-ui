@@ -44,6 +44,10 @@ export class RealTimeDashboardComponent implements OnInit {
   busData:DublinBusData[] = [];
   aqiData:AqiData[] = [];
   pedestrianData: PedestrianData[] = [];
+  
+  // objects to store data for graphs
+  bikeGraphData:any = []
+  //aqiGraphData:any = []
 
   // create a map object to display the data
   map: any;
@@ -87,6 +91,22 @@ export class RealTimeDashboardComponent implements OnInit {
   
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
+  
+  saleData = [
+    { name: "Mobiles", value: 105000 },
+    { name: "Laptop", value: 55000 },
+    { name: "AC", value: 15000 },
+    { name: "Headset", value: 150000 },
+    { name: "Fridge", value: 20000 }
+  ];
+  
+  aqiGraphData = [
+    {name: 'Mobiles', value: 105000},
+    {name: 'Laptop', value: 55000},
+    {name: 'AC', value: 15000},
+    {name: 'Headset', value: 150000},
+    {name: 'Fridge', value: 20000}
+  ]
 
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
   }
@@ -142,7 +162,13 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   handleAqiResponse(data: any) {
+    console.log(data);
     this.aqiData = data
+    this.aqiData.forEach(data => {
+      //this.aqiGraphData.push({"name":data.station.name.toString(), "value":+data.aqi})
+    })
+    console.log(this.aqiGraphData)
+    console.log(this.saleData)
     this.makeAqiMarkers();
   }
 
@@ -165,7 +191,9 @@ export class RealTimeDashboardComponent implements OnInit {
     // get most up to date timestamp
     this.bikeData.forEach(bike => {
       if (bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update }
+      this.bikeGraphData.push({"name": bike.name, "value": bike.available_bikes})
     })
+    console.log(this.bikeGraphData)
     this.makeBikeMarkers();
   }
   

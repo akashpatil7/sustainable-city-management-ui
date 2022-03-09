@@ -42,3 +42,7 @@ table, th, td {
   display:flex;
   justify-content: space-between;
 }
+
+.chart {
+  padding:20px;
+}
