@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Injectable, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
@@ -88,14 +88,6 @@ export class RealTimeDashboardComponent implements OnInit {
   
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
-  
-  testData = [  
-    { Id: 101, Name: 'Nitin', Salary: 1234 },  
-    { Id: 102, Name: 'Sonu', Salary: 1234 },  
-    { Id: 103, Name: 'Mohit', Salary: 1234 },  
-    { Id: 104, Name: 'Rahul', Salary: 1234 },  
-    { Id: 105, Name: 'Kunal', Salary: 1234 }  
-  ]; 
 
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
   }
@@ -151,7 +143,6 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   handleAqiResponse(data: any) {
-    console.log(data);
     this.aqiData = data
     this.makeAqiMarkers();
   }
@@ -176,7 +167,6 @@ export class RealTimeDashboardComponent implements OnInit {
     this.bikeData.forEach(bike => {
       if (bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update }
     })
-    console.log(this.bikeData);
     this.makeBikeMarkers();
   }
   
@@ -419,7 +409,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
   
 
-  SavePDF():void{  
+  SavePDF():void{
     // p = portrait, pt = points, a4 = paper size, 
     let doc = new jspdf('p', 'pt', 'a4');  
     doc.html(<HTMLElement>document.getElementById("bikeDataContent"), {
@@ -428,17 +418,12 @@ export class RealTimeDashboardComponent implements OnInit {
           width: 100
       },
        callback: function (doc) {
-         
          //doc.save('test.pdf');              // this function automatically downloads the pdf
          window.open(doc.output('bloburl'));  // this function opens the pdf in a new tab
        },
        x: 10,
        y: 10
     });
-
-
-      
-    }
-
+  }
 
 }
