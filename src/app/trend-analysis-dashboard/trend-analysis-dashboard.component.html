@@ -6,7 +6,7 @@
 
 <div class="mainContainer" *ngIf="!loadingData">
   
-  <input type="button" value="Download PDF" class="btn btn-success" (click)="savePDF('bikes')"><br>
+  <input type="button" value="Download PDF" class="btn pdfButton" (click)="savePDF('bikes')"><br>
 
   <mat-accordion multi class="headers-align" id="bikeTrendTable">
     <h3> Average bike availability given the current time: {{currentTime | date: 'HH:mm'}} </h3>

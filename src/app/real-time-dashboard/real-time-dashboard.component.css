@@ -48,16 +48,13 @@ table, th, td {
 .chart {
   padding:20px;
 }
-/*
-#table {
-  max-width: 50px;
-  width: 100%;
-}
-*/
 
-#table td {
-  width: auto;
-  overflow: hidden;
-  word-wrap:break-word;
+.pdfButton {
+  background-color:#381bb9;
+  color:white;
+}
+
+.pdfButton: hover {
+  background-color:aliceblue;
 }
 

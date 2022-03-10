@@ -33,3 +33,12 @@ mat-expansion-panel {
 .hourlyPercentages {
   padding-left:33%;
 }
+
+.pdfButton {
+  background-color:#381bb9;
+  color:white;
+}
+
+.pdfButton: hover {
+  background-color:aliceblue;
+}

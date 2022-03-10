@@ -7,6 +7,8 @@
     <!-- DUBLIN BIKES -->
     <p> Dublin Bikes </p>
     
+    <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
+    
     <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
     <!-- Search bar -->
     <div role="main">
@@ -17,8 +19,6 @@
         </div>
       </div>
     </div>
-    
-    <input type="button" value="Download PDF" class="btn btn-success" (click)="savePDF('bikes')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -53,6 +53,9 @@
 
     <!-- AQI -->
     <p> Dublin Aqi </p>  
+    
+    <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')"><br><br>
+    
     <!-- Search bar -->
     <div role="main">
       <div>
@@ -62,8 +65,6 @@
         </div>
       </div>
     </div>
-    
-    <input type="button" value="Download PDF" class="btn btn-success" (click)="savePDF('aqi')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -97,6 +98,9 @@
     <!-- PEDESTRIAN  -->
     <!-- Search bar -->
     <p> Pedestrian Data</p>
+    
+    <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('pedestrian')"><br><br>
+    
     <div role="main">
       <div>
         <div class="searchBar">
@@ -106,8 +110,6 @@
       </div>
     </div>
     
-    <input type="button" value="Download PDF" class="btn btn-success" (click)="savePDF('pedestrian')"><br>
-
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
     <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer"
@@ -138,6 +140,9 @@
     <!-- DUBLIN BUS -->
     <!-- Search bar -->
     <p> Dublin Bus </p>
+    
+    <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bus')"><br><br>
+    
     <div role="main">
       <div>
         <div class="searchBar">
@@ -147,8 +152,6 @@
       </div>
     </div>
     
-    <input type="button" value="Download PDF" class="btn btn-success" (click)="savePDF('bus')"><br>
-
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
     <mat-radio-group
