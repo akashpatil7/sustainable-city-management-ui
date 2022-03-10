@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
@@ -412,8 +412,7 @@ export class RealTimeDashboardComponent implements OnInit {
     }
   }
   
-  @ViewChild('bikeTable', {static: false}) el!: ElementRef
-  SavePDF(dataIndicator:string):void{
+  savePDF(dataIndicator:string):void{
     // p = portrait, pt = points, a4 = paper size, 
     let doc = new jsPDF('p', 'pt', 'a4');  
     //const pdfTable = this.el.nativeElement;

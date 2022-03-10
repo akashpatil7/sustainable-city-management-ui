@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import {MatExpansionModule} from '@angular/material/expansion';
 import { TrendsService } from '../services/trends.service';
+import { jsPDF } from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 
 @Component({
   selector: 'app-trend-analysis-dashboard',
@@ -38,6 +42,22 @@ export class TrendAnalysisDashboardComponent implements OnInit {
       this.loadingData = false;
     })
     
+  }
+  
+  savePDF(dataIndicator:string):void{
+    // p = portrait, pt = points, a4 = paper size, 
+    let doc = new jsPDF('p', 'pt', 'a4');  
+    //const pdfTable = this.el.nativeElement;
+    let pdfTable;
+    if(dataIndicator == "bikes")
+      pdfTable = <HTMLElement>document.getElementById("bikeTrendTable");
+    
+    if(pdfTable) {
+      var html = htmlToPdfmake(pdfTable.innerHTML);
+      const documentDefinition = { content: html };
+      pdfMake.createPdf(documentDefinition).open(); 
+      
+    }
   }
   
 }
