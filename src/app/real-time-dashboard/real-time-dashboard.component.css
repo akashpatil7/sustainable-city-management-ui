@@ -1,7 +1,9 @@
+/*
 table, th, td {
   border: 1px solid black;
   padding:5px;
 }
+*/
 
 .title {
   text-align: center;
@@ -46,3 +48,16 @@ table, th, td {
 .chart {
   padding:20px;
 }
+/*
+#table {
+  max-width: 50px;
+  width: 100%;
+}
+*/
+
+#table td {
+  width: auto;
+  overflow: hidden;
+  word-wrap:break-word;
+}
+

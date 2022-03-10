@@ -21,6 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
 import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     MatRadioModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    NgbModule
   ],
   providers: [SearchFilterPipe],
   bootstrap: [AppComponent]

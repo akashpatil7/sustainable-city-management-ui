@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, } from '@angular/core';
+import { Component, OnInit, Injectable, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
@@ -8,7 +8,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
-import jspdf from 'jspdf';
+import { jsPDF } from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -408,22 +412,27 @@ export class RealTimeDashboardComponent implements OnInit {
     }
   }
   
-
-  SavePDF():void{
+  @ViewChild('bikeTable', {static: false}) el!: ElementRef
+  SavePDF(dataIndicator:string):void{
     // p = portrait, pt = points, a4 = paper size, 
-    let doc = new jspdf('p', 'pt', 'a4');  
-    doc.html(<HTMLElement>document.getElementById("bikeDataContent"), {
-      html2canvas: {
-          // insert html2canvas options here, e.g.
-          width: 100
-      },
-       callback: function (doc) {
-         //doc.save('test.pdf');              // this function automatically downloads the pdf
-         window.open(doc.output('bloburl'));  // this function opens the pdf in a new tab
-       },
-       x: 10,
-       y: 10
-    });
+    let doc = new jsPDF('p', 'pt', 'a4');  
+    //const pdfTable = this.el.nativeElement;
+    let pdfTable;
+    if(dataIndicator == "bikes")
+      pdfTable = <HTMLElement>document.getElementById("bikeTable");
+    else if (dataIndicator == "aqi")
+      pdfTable = <HTMLElement>document.getElementById("aqiTable");
+    else if (dataIndicator == "pedestrian")
+      pdfTable = <HTMLElement>document.getElementById("pedestrianTable");
+    else if (dataIndicator == "bus")
+      pdfTable = <HTMLElement>document.getElementById("busTable");
+    
+    if(pdfTable) {
+      var html = htmlToPdfmake(pdfTable.innerHTML);
+      const documentDefinition = { content: html };
+      pdfMake.createPdf(documentDefinition).open(); 
+      
+    }
   }
 
 }

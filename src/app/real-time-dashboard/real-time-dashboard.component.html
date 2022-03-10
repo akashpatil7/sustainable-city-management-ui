@@ -18,7 +18,7 @@
       </div>
     </div>
     
-    <input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF()"><br>
+    <input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF('bikes')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -30,20 +30,24 @@
     </mat-radio-group>
 
     <!-- Table to display Dublin bike data -->
-    <div >
-      <table id="bikeDataContent">
-        <tr>
-          <th>Last Updated</th>
-          <th>Station Name</th>
-          <th>Available bikes</th>
-          <th>Available stands</th>
-        </tr>
-        <tr *ngFor="let data of bikeData | searchFilter: searchText">
-          <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
-          <td>{{data.name}}</td>
-          <td>{{data.available_bikes}}</td>
-          <td>{{data.available_bike_stands}}</td>
-        </tr>
+    <div id="bikeTable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Station Name</th>
+            <th scope="col">Available bikes</th>
+            <th scope="col">Available stands</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of bikeData | searchFilter: searchText">
+            <td scope="row">{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
+            <td scope="row">{{data.name}}</td>
+            <td scope="row">{{data.available_bikes}}</td>
+            <td scope="row">{{data.available_bike_stands}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -58,6 +62,8 @@
         </div>
       </div>
     </div>
+    
+    <input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF('aqi')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -69,18 +75,24 @@
     </mat-radio-group>
 
     <!-- Table to display Aqi data -->
-    <table>
-      <tr>
-        <th>Last Updated</th>
-        <th>Station Name</th>
-        <th>Aqi Level</th>
-      </tr>
-      <tr *ngFor="let aqi of aqiData | searchFilter: aqiSearchText">
-        <td>{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
-        <td>{{aqi.station.name}}</td>
-        <td>{{aqi.aqi}}</td>
-      </tr>
-    </table>
+    <div id="aqiTable">
+      <table id="aqiTable" class="table">
+        <thead>
+          <tr>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Station Name</th>
+            <th scope="col">Aqi Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aqi of aqiData | searchFilter: aqiSearchText">
+            <td scope="row">{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
+            <td scope="row">{{aqi.station.name}}</td>
+            <td scope="row">{{aqi.aqi}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     
     <!-- PEDESTRIAN  -->
     <!-- Search bar -->
@@ -93,6 +105,8 @@
         </div>
       </div>
     </div>
+    
+    <input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF('pedestrian')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -104,16 +118,22 @@
     </mat-radio-group>
 
     <!-- Table to display Pedestrian data -->
-    <table>
-      <tr>
-        <th>Location</th>
-        <th>Count</th>
-      </tr>
-      <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
-        <td>{{pedestrian.street}}</td>
-        <td>{{pedestrian.count}}</td>
-      </tr>
-    </table>
+    <div id="pedestrianTable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Location</th>
+            <th scope="col">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
+            <td scope="row">{{pedestrian.street}}</td>
+            <td scope="row">{{pedestrian.count}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     
     <!-- DUBLIN BUS -->
     <!-- Search bar -->
@@ -126,6 +146,8 @@
         </div>
       </div>
     </div>
+    
+    <input type="button" value="Download PDF" class="btn btn-success" (click)="SavePDF('bus')"><br>
 
     <!-- Filter buttons -->
     <label id="filter-buttons">Sort by: </label>
@@ -140,16 +162,22 @@
     </mat-radio-group>
 
     <!-- Table to display Dublin bus data -->
-    <table>
-        <tr> 
-          <th>Route</th>
-          <th>Start Time</th>
-        </tr>
-        <tr *ngFor="let data of busData | searchFilter: busSearchText">
-          <td>{{data.routeShort}}</td>
-          <td>{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
-        </tr>
-    </table>
+    <div id="busTable">
+      <table class="table">
+        <thead>
+          <tr> 
+            <th scope="col">Route</th>
+            <th scope="col">Start Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of busData | searchFilter: busSearchText">
+            <td scope="row">{{data.routeShort}}</td>
+            <td scope="row">{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
   <div class="mapContainer">
