@@ -8,12 +8,14 @@ import { RecommendationsService } from '../services/recommendations.service';
   styleUrls: ['./recommendation-dashboard.component.css']
 })
 export class RecommendationDashboardComponent implements OnInit {
-  
+
   bikeData:any[] = [];
   openSpots:any[] = [];
   filledSpots:any[] = [];
   highestAqi:any[] = [];
   lowestAqi:any[] = [];
+  lowestCountPedestrianData:any[] = []
+  highestCountPedestrianData:any[] = []
 
   constructor(private http:HttpClient, private rs:RecommendationsService) { }
 
@@ -21,7 +23,7 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getBikeRecommendations();
     this.getAqiRecommendations();
   }
-  
+
   getBikeRecommendations() {
     this.rs.getBikeRecommendations().subscribe((res) => {
       console.log(res);
@@ -29,7 +31,7 @@ export class RecommendationDashboardComponent implements OnInit {
       this.filledSpots = res.mostEmptyBikeStationData;
     });
   }
-  
+
   getAqiRecommendations() {
     this.rs.getAqiRecommendations().subscribe((res) => {
       console.log(res);
@@ -37,5 +39,13 @@ export class RecommendationDashboardComponent implements OnInit {
       this.lowestAqi = res.lowestAqiStationData;
     });
   }
-  
+
+  getPedestrianRecommendations() {
+      this.rs.getPedestrianRecommendations().subscribe((res) => {
+        console.log(res);
+        this.lowestCountPedestrianData = res.lowestCountPedestrianData;
+        this.highestCountPedestrianData = res.highestCountPedestrianData;
+      });
+    }
+
 }
