@@ -22,6 +22,7 @@ export class RecommendationDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getBikeRecommendations();
     this.getAqiRecommendations();
+    this.getPedestrianRecommendations();
   }
 
   getBikeRecommendations() {

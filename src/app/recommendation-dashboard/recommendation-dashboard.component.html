@@ -29,3 +29,23 @@
         <td>{{lowestAqi[i].aqi}}</td>      
     </tr>
 </table>
+
+<p> Most and Least Popular Pedestrian Areas Recently: </p>
+
+<p> You can find ideas as to how to popularise the least popular areas 
+  by finding patterns in what makes the most popular areas so popular. </p>
+
+<table>
+    <tr> 
+      <th> Unpopular Area </th>
+      <th> Footfall </th>
+      <th> Popular Area </th>
+      <th> Footfall </th>
+    </tr>
+    <tr *ngFor="let entry of highestCountPedestrianData; let i =index">
+        <td>{{highestCountPedestrianData[i].street}}</td>
+        <td>{{highestCountPedestrianData[i].count}}</td>
+        <td>{{lowestCountPedestrianData[i].street}}</td>
+        <td>{{lowestCountPedestrianData[i].count}}</td>      
+    </tr>
+</table>
