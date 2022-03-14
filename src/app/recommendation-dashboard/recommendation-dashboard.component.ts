@@ -16,6 +16,7 @@ export class RecommendationDashboardComponent implements OnInit {
   lowestAqi:any[] = [];
   lowestCountPedestrianData:any[] = []
   highestCountPedestrianData:any[] = []
+  mostDelayedBuses:any[] = []
 
   constructor(private http:HttpClient, private rs:RecommendationsService) { }
 
@@ -23,6 +24,7 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getBikeRecommendations();
     this.getAqiRecommendations();
     this.getPedestrianRecommendations();
+    this.getBusRecommendations();
   }
 
   getBikeRecommendations() {
@@ -46,6 +48,13 @@ export class RecommendationDashboardComponent implements OnInit {
         console.log(res);
         this.lowestCountPedestrianData = res.lowestCountPedestrianData;
         this.highestCountPedestrianData = res.highestCountPedestrianData;
+      });
+    }
+
+    getBusRecommendations() {
+      this.rs.getBusRecommendations().subscribe((res) => {
+        console.log(res);
+        this.mostDelayedBuses = res.mostDelayed;
       });
     }
 

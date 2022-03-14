@@ -30,4 +30,11 @@ export class RecommendationsService {
       return this.http.get("http://localhost:8050/recommendations/pedestrian/getRecommendations", { headers: header});
     }
 
+  // get Bus recommendations
+  getBusRecommendations():Observable<any> {
+    let token: string = localStorage.getItem("token") || '{}'
+    let header = new HttpHeaders({ "Access-Control-Allow-Origin": "*", "Authorization":  "Bearer " + token})
+    return this.http.get("http://localhost:8050/recommendations/bus/getRecommendations", { headers: header});
+  }
+
 }

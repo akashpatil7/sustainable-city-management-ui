@@ -48,4 +48,17 @@
         <td>{{lowestCountPedestrianData[i].street}}</td>
         <td>{{lowestCountPedestrianData[i].count}}</td>      
     </tr>
-</table>
+  </table>
+
+    <p> Most Delayed Buses: </p>
+
+    <table>
+        <tr> 
+          <th> Route </th>
+          <th> Average delay </th>
+        </tr>
+        <tr *ngFor="let entry of mostDelayedBuses; let i =index">
+            <td>{{mostDelayedBuses[i][1]}}</td>
+            <td>{{mostDelayedBuses[i][0]}}</td>
+        </tr>
+    </table>
