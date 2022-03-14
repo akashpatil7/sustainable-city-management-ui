@@ -11,15 +11,17 @@ import { RecommendationDashboardComponent } from './recommendation-dashboard/rec
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 import { LogoutComponent } from './logout/logout/logout.component';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
+import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
     MatRadioModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    NgxChartsModule,
+    NgbModule
   ],
   providers: [SearchFilterPipe],
   bootstrap: [AppComponent]

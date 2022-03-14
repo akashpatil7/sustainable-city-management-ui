@@ -1,7 +1,9 @@
+/*
 table, th, td {
   border: 1px solid black;
   padding:5px;
 }
+*/
 
 .title {
   text-align: center;
@@ -42,3 +44,17 @@ table, th, td {
   display:flex;
   justify-content: space-between;
 }
+
+.chart {
+  padding:20px;
+}
+
+.pdfButton {
+  background-color:#381bb9;
+  color:white;
+}
+
+.pdfButton: hover {
+  background-color:aliceblue;
+}
+

@@ -8,6 +8,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
+import { jsPDF } from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -404,6 +409,28 @@ export class RealTimeDashboardComponent implements OnInit {
     }
     else {
       Object.values(this.aqiMarkers).forEach(marker => { this.map.removeLayer(marker) })
+    }
+  }
+  
+  savePDF(dataIndicator:string):void{
+    // p = portrait, pt = points, a4 = paper size, 
+    let doc = new jsPDF('p', 'pt', 'a4');  
+    //const pdfTable = this.el.nativeElement;
+    let pdfTable;
+    if(dataIndicator == "bikes")
+      pdfTable = <HTMLElement>document.getElementById("bikeTable");
+    else if (dataIndicator == "aqi")
+      pdfTable = <HTMLElement>document.getElementById("aqiTable");
+    else if (dataIndicator == "pedestrian")
+      pdfTable = <HTMLElement>document.getElementById("pedestrianTable");
+    else if (dataIndicator == "bus")
+      pdfTable = <HTMLElement>document.getElementById("busTable");
+    
+    if(pdfTable) {
+      var html = htmlToPdfmake(pdfTable.innerHTML);
+      const documentDefinition = { content: html };
+      pdfMake.createPdf(documentDefinition).open(); 
+      
     }
   }
 
