@@ -62,3 +62,16 @@
             <td>{{mostDelayedBuses[i][0]}}</td>
         </tr>
     </table>
+
+    <p> These stops are in areas with high Aqi (pollution) indexes. We recommend not routing as many buses here. </p>
+
+    <table>
+        <tr> 
+          <th> Stop </th>
+          <th> Aqi delay </th>
+        </tr>
+        <tr *ngFor="let entry of mostPollutedStops | keyvalue">
+            <td>{{entry.key}}</td>
+            <td>{{entry.value}}</td>
+        </tr>
+    </table>

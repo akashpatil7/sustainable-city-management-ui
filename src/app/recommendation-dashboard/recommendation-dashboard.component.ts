@@ -17,6 +17,7 @@ export class RecommendationDashboardComponent implements OnInit {
   lowestCountPedestrianData:any[] = []
   highestCountPedestrianData:any[] = []
   mostDelayedBuses:any[] = []
+  mostPollutedStops:any[] = []
   moveBikesFrom:any[] = []
   moveBikesTo:any[] = []
 
@@ -66,6 +67,7 @@ export class RecommendationDashboardComponent implements OnInit {
     this.rs.getBusRecommendations().subscribe((res) => {
       console.log(res);
       this.mostDelayedBuses = res.mostDelayed;
+      this.mostPollutedStops = res.mostPolluted;
     });
   }
 
