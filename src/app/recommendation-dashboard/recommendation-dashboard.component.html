@@ -1,6 +1,6 @@
 <h1> Predictions and Recommendations </h1>
 
-<p> Move Dublin bikes to new stations: </p>
+<p> Move Dublin bikes from full stations to empty stations: </p>
 
 <table>
     <tr> 
@@ -11,7 +11,24 @@
         <td>{{entry.name}}</td>
         <td>{{openSpots[i].name}}</td>      
     </tr>
-</table>
+</table><br>
+
+<p> Move Dublin bikes from full stations to highly populated areas: </p>
+
+<table>
+    <tr> 
+      <th> Move Bikes From </th>
+      <th> Available Bikes </th>
+      <th> Move Bikes To </th>
+      <th> Footfall </th>
+    </tr>
+    <tr *ngFor="let entry of moveBikesFrom; let i =index">
+        <td>{{entry.name}}</td>
+        <td>{{entry.availableBikes}}</td>
+        <td>{{moveBikesTo[i].street}}</td> 
+        <td>{{moveBikesTo[i].count}}</td>     
+    </tr>
+</table><br>
 
 <p> Move traffic based on AQI: </p>
 
@@ -28,7 +45,7 @@
         <td>{{lowestAqi[i].stationName}}</td>
         <td>{{lowestAqi[i].aqi}}</td>      
     </tr>
-</table>
+</table><br>
 
 <p> Most and Least Popular Pedestrian Areas Recently: </p>
 
@@ -48,7 +65,7 @@
         <td>{{lowestCountPedestrianData[i].street}}</td>
         <td>{{lowestCountPedestrianData[i].count}}</td>      
     </tr>
-  </table>
+  </table><br>
 
     <p> Most Delayed Buses: </p>
 
