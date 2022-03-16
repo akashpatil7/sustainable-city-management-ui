@@ -18,11 +18,15 @@
 <table>
     <tr> 
       <th> Move Bikes From </th>
+      <th> Available Bikes </th>
       <th> Move Bikes To </th>
+      <th> Footfall </th>
     </tr>
     <tr *ngFor="let entry of moveBikesFrom; let i =index">
         <td>{{entry.name}}</td>
-        <td>{{moveBikesTo[i].street}}</td>      
+        <td>{{entry.availableBikes}}</td>
+        <td>{{moveBikesTo[i].street}}</td> 
+        <td>{{moveBikesTo[i].count}}</td>     
     </tr>
 </table><br>
 
