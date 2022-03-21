@@ -37,7 +37,14 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "rxjs-compat",
+              "pdfmake",
+              "core-js",
+              "raf",
+              "clone-deep"
+           ]
           },
           "configurations": {
             "production": {
@@ -106,7 +113,14 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "rxjs-compat",
+              "pdfmake",
+              "core-js",
+              "raf",
+              "clone-deep"
+           ]
           }
         }
       }
