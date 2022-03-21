@@ -1,8 +1,10 @@
+/*
 table, th, td {
   border: 1px solid black;
   padding:5px;
   margin-top: 2%;
 }
+*/
 
 .title {
   text-align: center;
@@ -61,9 +63,11 @@ mat-card{
   padding:20px;
 }
 
-.parent{
-  /* width: fit-content;
-  block-size:auto;
-  padding-left: 20%;
-  padding-right: 20%; */
+.pdfButton {
+  background-color:#381bb9;
+  color:white;
+}
+
+.pdfButton:hover {
+  background-color:aliceblue;
 }

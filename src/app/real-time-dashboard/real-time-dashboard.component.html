@@ -21,12 +21,12 @@
     </div>
   </mat-card-content>
     </mat-card>
+
     </div>
   </mat-tab>
   <mat-tab label="Table/Graph view">
     <div *ngIf="!loadingData" class="contentContainer">
       <div class="row">
-
       <div class="col-sm-6">
         <!-- DUBLIN BIKES -->
         <mat-card>
@@ -49,7 +49,10 @@
         </ngx-charts-bar-vertical> -->
         <mat-card-content>
         <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
+        <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
         <!-- Search bar -->
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab active label="Table view">
         <div role="main">
           <div>
             <div class="searchBar">
@@ -67,23 +70,26 @@
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
-
-        <mat-tab-group mat-align-tabs="center">
-          <mat-tab active label="Table view">
-            <table>
-              <tr>
-                <th>Last Updated</th>
-                <th>Station Name</th>
-                <th>Available bikes</th>
-                <th>Available stands</th>
-              </tr>
-              <tr *ngFor="let data of bikeData | searchFilter: searchText">
-                <td>{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.available_bikes}}</td>
-                <td>{{data.available_bike_stands}}</td>
-              </tr>
-            </table>
+            <div id="bikeTable">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">Last Updated</th>
+                  <th scope="col">Station Name</th>
+                  <th scope="col">Available bikes</th>
+                  <th scope="col">Available stands</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of bikeData | searchFilter: searchText">
+                  <td scope="row">{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
+                  <td scope="row">{{data.name}}</td>
+                  <td scope="row">{{data.available_bikes}}</td>
+                  <td scope="row">{{data.available_bike_stands}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </mat-tab>
           <mat-tab label="Graph view">
             <canvas baseChart
@@ -98,13 +104,13 @@
       </mat-card-content>
     </mat-card>
     </div>
-
     <div class="col-sm-6">
         <!-- AQI -->
         <mat-card>
           <mat-card-header>
             <mat-card-title>Dublin Aqi</mat-card-title>
           </mat-card-header>
+          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
 
 
         <!-- <ngx-charts-bar-vertical class="chart"
@@ -121,7 +127,8 @@
             [gradient]="false">
         </ngx-charts-bar-vertical> -->
 
-
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="Table view">
         <!-- Search bar -->
         <div role="main">
           <div>
@@ -141,20 +148,25 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-tab-group mat-align-tabs="center">
-          <mat-tab label="Table view">
-            <table>
-              <tr>
-                <th>Last Updated</th>
-                <th>Station Name</th>
-                <th>Aqi Level</th>
-              </tr>
-              <tr *ngFor="let aqi of aqiData | searchFilter: aqiSearchText">
-                <td>{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
-                <td>{{aqi.station.name}}</td>
-                <td>{{aqi.aqi}}</td>
-              </tr>
-            </table>
+        
+            <div id="aqiTable">
+              <table id="aqiTable" class="table">
+                <thead>
+                <tr>
+                  <th scope="col">Last Updated</th>
+                  <th scope="col">Station Name</th>
+                  <th scope="col">Aqi Level</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let aqi of aqiData | searchFilter: aqiSearchText">
+                  <td scope="row">{{aqi.time.stime | date: 'dd/MM/yyyy HH:mm'}}</td>
+                  <td scope="row">{{aqi.station.name}}</td>
+                  <td scope="row">{{aqi.aqi}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </mat-tab>
           <mat-tab label="Graph view"></mat-tab>
         </mat-tab-group>
@@ -171,6 +183,10 @@
           <mat-card-header>
             <mat-card-title>Pedestrian Footfall</mat-card-title>
           </mat-card-header>
+          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('pedestrian')"><br><br>
+
+          <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Table view">
         <div role="main">
           <div>
             <div class="searchBar">
@@ -189,17 +205,20 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-tab-group mat-align-tabs="center">
-          <mat-tab label="Table view">
-            <table>
+        
+            <table class="table">
+              <thead>
               <tr>
-                <th>Location</th>
-                <th>Count</th>
+                <th scope="col">Location</th>
+                <th scope="col">Count</th>
               </tr>
+              </thead>
+              <tbody>
               <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
-                <td>{{pedestrian.street}}</td>
-                <td>{{pedestrian.count}}</td>
+                <td scope="row">{{pedestrian.street}}</td>
+                <td scope="row">{{pedestrian.count}}</td>
               </tr>
+              </tbody>
             </table>
           </mat-tab>
           <mat-tab label="Graph view"></mat-tab>
@@ -215,6 +234,11 @@
           <mat-card-header>
             <mat-card-title>Dublin Bus</mat-card-title>
           </mat-card-header>
+          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
+
+          
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="Table view">
         <div role="main">
           <div>
             <div class="searchBar">
@@ -236,18 +260,22 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-tab-group mat-align-tabs="center">
-          <mat-tab label="Table view">
-            <table>
-              <tr>
-                <th>Route</th>
-                <th>Start Time</th>
-              </tr>
-              <tr *ngFor="let data of busData | searchFilter: busSearchText">
-                <td>{{data.routeShort}}</td>
-                <td>{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
-              </tr>
-          </table>
+            <div id="busTable">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">Route</th>
+                  <th scope="col">Start Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of busData | searchFilter: busSearchText">
+                  <td scope="row">{{data.routeShort}}</td>
+                  <td scope="row">{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </mat-tab>
           <mat-tab label="Graph view"></mat-tab>
         </mat-tab-group>
@@ -258,10 +286,7 @@
         <!-- Map of data -->
       </div>
     </div>
-
-  </mat-tab>
-</mat-tab-group>
-
-
+    </mat-tab>
+    </mat-tab-group>
 
 

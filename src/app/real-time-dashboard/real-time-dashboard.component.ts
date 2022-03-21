@@ -9,6 +9,11 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
+import { jsPDF } from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 import { ChartOptions, ChartDataset, ChartType, ChartConfiguration, ChartData } from 'chart.js';
 import { ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
@@ -48,10 +53,6 @@ export class RealTimeDashboardComponent implements OnInit {
   busData:DublinBusData[] = [];
   aqiData:AqiData[] = [];
   pedestrianData: PedestrianData[] = [];
-  
-  // objects to store data for graphs
-  bikeGraphData:any = []
-  //aqiGraphData:any = []
 
   // create a map object to display the data
   map: any;
@@ -195,13 +196,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   handleAqiResponse(data: any) {
-    console.log(data);
     this.aqiData = data
-    this.aqiData.forEach(data => {
-      //this.aqiGraphData.push({"name":data.station.name.toString(), "value":+data.aqi})
-    })
-    console.log(this.aqiGraphData)
-    console.log(this.saleData)
     this.makeAqiMarkers();
   }
 
@@ -224,9 +219,7 @@ export class RealTimeDashboardComponent implements OnInit {
     // get most up to date timestamp
     this.bikeData.forEach(bike => {
       if (bike.last_update > this.lastUpdated) { this.lastUpdated = bike.last_update }
-      this.bikeGraphData.push({"name": bike.name, "value": bike.available_bikes})
     })
-    console.log(this.bikeGraphData)
     this.makeBikeMarkers();
   }
   
@@ -465,6 +458,28 @@ export class RealTimeDashboardComponent implements OnInit {
     }
     else {
       Object.values(this.aqiMarkers).forEach(marker => { this.map.removeLayer(marker) })
+    }
+  }
+  
+  savePDF(dataIndicator:string):void{
+    // p = portrait, pt = points, a4 = paper size, 
+    let doc = new jsPDF('p', 'pt', 'a4');  
+    //const pdfTable = this.el.nativeElement;
+    let pdfTable;
+    if(dataIndicator == "bikes")
+      pdfTable = <HTMLElement>document.getElementById("bikeTable");
+    else if (dataIndicator == "aqi")
+      pdfTable = <HTMLElement>document.getElementById("aqiTable");
+    else if (dataIndicator == "pedestrian")
+      pdfTable = <HTMLElement>document.getElementById("pedestrianTable");
+    else if (dataIndicator == "bus")
+      pdfTable = <HTMLElement>document.getElementById("busTable");
+    
+    if(pdfTable) {
+      var html = htmlToPdfmake(pdfTable.innerHTML);
+      const documentDefinition = { content: html };
+      pdfMake.createPdf(documentDefinition).open(); 
+      
     }
   }
 

@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { MatOptionModule } from '@angular/material/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MatOptionModule } from '@angular/material/core';
     MatCheckboxModule,
     ReactiveFormsModule,
     NgxChartsModule,
-    NgChartsModule
+    NgChartsModule,
+    NgbModule
   ],
   providers: [SearchFilterPipe],
   bootstrap: [AppComponent]
