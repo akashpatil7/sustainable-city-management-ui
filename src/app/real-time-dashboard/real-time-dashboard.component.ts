@@ -5,9 +5,13 @@ import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
 import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
+import { ChartOptions, ChartDataset, ChartType, ChartConfiguration, ChartData } from 'chart.js';
+import { ViewChild } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -86,11 +90,40 @@ export class RealTimeDashboardComponent implements OnInit {
   showBusMarkers: boolean = true;
   showAqiMarkers: boolean = true;
 
+  selectedBikeStandForGraph: string | undefined;
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
   
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 10
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+      }
+    }
+  };
+  public barChartType: ChartType = 'bar';
+ 
+
+  public barChartData: ChartData<'bar'> = {
+    labels: [ 'Bike Availability'],
+    datasets: [
+      { data: [ 65 ], label: 'Available Bikes' },
+      { data: [ 28 ], label: 'Available Bike Stands' }
+    ]
+  };
   
   saleData = [
     { name: "Mobiles", value: 105000 },
