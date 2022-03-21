@@ -1,6 +1,6 @@
 <h1> Predictions and Recommendations </h1>
 
-<p> Move Dublin bikes to new stations: </p>
+<p> Move Dublin bikes from full stations to empty stations: </p>
 
 <table>
     <tr> 
@@ -11,4 +11,84 @@
         <td>{{entry.name}}</td>
         <td>{{openSpots[i].name}}</td>      
     </tr>
-</table>
+</table><br>
+
+<p> Move Dublin bikes from full stations to highly populated areas: </p>
+
+<table>
+    <tr> 
+      <th> Move Bikes From </th>
+      <th> Available Bikes </th>
+      <th> Move Bikes To </th>
+      <th> Footfall </th>
+    </tr>
+    <tr *ngFor="let entry of moveBikesFrom; let i =index">
+        <td>{{entry.name}}</td>
+        <td>{{entry.availableBikes}}</td>
+        <td>{{moveBikesTo[i].street}}</td> 
+        <td>{{moveBikesTo[i].count}}</td>     
+    </tr>
+</table><br>
+
+<p> Move traffic based on AQI: </p>
+
+<table>
+    <tr> 
+      <th> Move Traffic From </th>
+      <th> AQI </th>
+      <th> Move Traffic To </th>
+      <th> Aqi </th>
+    </tr>
+    <tr *ngFor="let entry of highestAqi; let i =index">
+        <td>{{highestAqi[i].stationName}}</td>
+        <td>{{highestAqi[i].aqi}}</td>
+        <td>{{lowestAqi[i].stationName}}</td>
+        <td>{{lowestAqi[i].aqi}}</td>      
+    </tr>
+</table><br>
+
+<p> Most and Least Popular Pedestrian Areas Recently: </p>
+
+<p> You can find ideas as to how to popularise the least popular areas 
+  by finding patterns in what makes the most popular areas so popular. </p>
+
+<table>
+    <tr> 
+      <th> Unpopular Area </th>
+      <th> Footfall </th>
+      <th> Popular Area </th>
+      <th> Footfall </th>
+    </tr>
+    <tr *ngFor="let entry of highestCountPedestrianData; let i =index">
+        <td>{{highestCountPedestrianData[i].street}}</td>
+        <td>{{highestCountPedestrianData[i].count}}</td>
+        <td>{{lowestCountPedestrianData[i].street}}</td>
+        <td>{{lowestCountPedestrianData[i].count}}</td>      
+    </tr>
+  </table><br>
+
+    <p> Most Delayed Buses: </p>
+
+    <table>
+        <tr> 
+          <th> Route </th>
+          <th> Average delay </th>
+        </tr>
+        <tr *ngFor="let entry of mostDelayedBuses; let i =index">
+            <td>{{mostDelayedBuses[i][1]}}</td>
+            <td>{{mostDelayedBuses[i][0]}}</td>
+        </tr>
+    </table><br>
+
+    <p> These stops are in areas with high Aqi (pollution) indexes. We recommend not routing as many buses here. </p>
+
+    <table>
+        <tr> 
+          <th> Stop </th>
+          <th> Aqi delay </th>
+        </tr>
+        <tr *ngFor="let entry of mostPollutedStops | keyvalue">
+            <td>{{entry.key}}</td>
+            <td>{{entry.value}}</td>
+        </tr>
+    </table>
