@@ -1,37 +1,39 @@
 <div class="parent">
 <p *ngIf="loadingData"> Loading... </p>
 <mat-tab-group mat-align-tabs="center">
+  <!----------------------------------------------------------- MAP VIEW ---------------------------------------------------------------->
   <mat-tab label="Map view">
     <div *ngIf="!loadingData" class="contentContainer">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Map View</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-    <section class="mapFilters">
-      <label class="checkbox">Filter Data For:</label>
-      <mat-checkbox class="checkbox" [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox>
-      <mat-checkbox class="checkbox" [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()">Pedestrians</mat-checkbox>
-      <mat-checkbox class="checkbox" [(ngModel)]="showBusMarkers" (change)="setMapFilter()">Dublin Bus</mat-checkbox>
-      <mat-checkbox class="checkbox" [(ngModel)]="showAqiMarkers" (change)="setMapFilter()">Aqi</mat-checkbox>
-    </section>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Map View</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <section class="mapFilters">
+            <label class="checkbox">Filter Data For:</label>
+            <mat-checkbox class="checkbox" [(ngModel)]="showBikeMarkers" (change)="setMapFilter()">Dublin Bikes</mat-checkbox>
+            <mat-checkbox class="checkbox" [(ngModel)]="showPedestrianMarkers" (change)="setMapFilter()">Pedestrians</mat-checkbox>
+            <mat-checkbox class="checkbox" [(ngModel)]="showBusMarkers" (change)="setMapFilter()">Dublin Bus</mat-checkbox>
+            <mat-checkbox class="checkbox" [(ngModel)]="showAqiMarkers" (change)="setMapFilter()">Aqi</mat-checkbox>
+          </section>
 
-    <div id="map-container">
-      <div id="map"></div>
-    </div>
-  </mat-card-content>
-    </mat-card>
-
+          <div id="map-container">
+            <div id="map"></div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </mat-tab>
+  <!----------------------------------------------------------- TABLE VIEW ---------------------------------------------------------------->
   <mat-tab label="Table/Graph view">
     <div *ngIf="!loadingData" class="contentContainer">
       <div class="row">
       <div class="col-sm-6">
-        <!-- DUBLIN BIKES -->
+        <!---------------------------------------------------- DUBLIN BIKES ---------------------------------------------------------------->
         <mat-card>
           <mat-card-header>
-            <mat-card-title>Dublin Bikes</mat-card-title>
+            <mat-card-title> Dublin Bikes </mat-card-title>
+            <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')">
           </mat-card-header>
 
         <!-- <ngx-charts-bar-vertical class="chart"
@@ -49,70 +51,68 @@
         </ngx-charts-bar-vertical> -->
         <mat-card-content>
         <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
-        <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
-        <!-- Search bar -->
         <mat-tab-group mat-align-tabs="center">
           <mat-tab active label="Table view">
-        <div role="main">
-          <div>
-            <div class="searchBar">
-              <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
-                placeholder="Search a station">
+            
+            <!-- Bike Search bar -->
+            <div role="main">
+              <div>
+                <div class="searchBar">
+                  <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+                    placeholder="Search a station">
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Filter buttons -->
-        <label id="filter-buttons">Sort by: </label>
-        <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="bikeFilterChoice"
-          (change)="setBikeFilter($event)">
-          <mat-radio-button class="filterButton" *ngFor="let item of bikeFilterOptions" [value]="item">
-            {{item}}
-          </mat-radio-button>
-        </mat-radio-group>
-            <div id="bikeTable">
-              <table class="table">
-                <thead>
-                <tr>
-                  <th scope="col">Last Updated</th>
-                  <th scope="col">Station Name</th>
-                  <th scope="col">Available bikes</th>
-                  <th scope="col">Available stands</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let data of bikeData | searchFilter: searchText">
-                  <td scope="row">{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
-                  <td scope="row">{{data.name}}</td>
-                  <td scope="row">{{data.available_bikes}}</td>
-                  <td scope="row">{{data.available_bike_stands}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+            <!-- Bike Filter buttons -->
+            <label id="filter-buttons">Sort by: </label>
+              <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="bikeFilterChoice" (change)="setBikeFilter($event)">
+                <mat-radio-button class="filterButton" *ngFor="let item of bikeFilterOptions" [value]="item">
+                  {{item}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <!-- Bike Table -->
+              <div id="bikeTable">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th scope="col">Last Updated</th>
+                    <th scope="col">Station Name</th>
+                    <th scope="col">Available bikes</th>
+                    <th scope="col">Available stands</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of bikeData | searchFilter: searchText">
+                    <td scope="row">{{data.last_update | date: 'dd/MM/yyyy HH:mm'}}</td>
+                    <td scope="row">{{data.name}}</td>
+                    <td scope="row">{{data.available_bikes}}</td>
+                    <td scope="row">{{data.available_bike_stands}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
           </mat-tab>
+          <!-- Bike Graph-->
           <mat-tab label="Graph view">
-            <canvas baseChart
+              <canvas baseChart
                 [data]="barChartData"
                 [options]="barChartOptions"
                 [type]="barChartType">
-          </canvas>
+              </canvas>
           </mat-tab>
         </mat-tab-group>
-        <!-- Table to display Dublin bike data -->
-
       </mat-card-content>
     </mat-card>
     </div>
     <div class="col-sm-6">
-        <!-- AQI -->
+      <!--------------------------------------------------------- AQI --------------------------------------------------------------------->
         <mat-card>
           <mat-card-header>
-            <mat-card-title>Dublin Aqi</mat-card-title>
+            <mat-card-title>Dublin Air Quality Index</mat-card-title>
+            <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')">
           </mat-card-header>
-          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')"><br><br>
-
-
+          
         <!-- <ngx-charts-bar-vertical class="chart"
             [view]="[700,300]"
             [results]="aqiGraphData"
@@ -129,7 +129,7 @@
 
         <mat-tab-group mat-align-tabs="center">
           <mat-tab label="Table view">
-        <!-- Search bar -->
+        <!-- AQI Search bar -->
         <div role="main">
           <div>
             <div class="searchBar">
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <!-- Filter buttons -->
+        <!-- AQI Filter buttons -->
         <label id="filter-buttons">Sort by: </label>
         <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer" [(ngModel)]="aqiFilterChoice"
           (change)="setAqiFilter($event)">
@@ -147,8 +147,7 @@
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
-
-        
+            <!-- AQI TABLE -->
             <div id="aqiTable">
               <table id="aqiTable" class="table">
                 <thead>
@@ -168,25 +167,25 @@
               </table>
             </div>
           </mat-tab>
+          <!-- AQI GRAPH -->
           <mat-tab label="Graph view"></mat-tab>
-        </mat-tab-group>
-        <!-- Table to display Aqi data -->
-
+          </mat-tab-group>
         </mat-card>
         </div>
       <!-- </div>
       <div class="row"> -->
         <div class="col-sm-6">
-        <!-- PEDESTRIAN  -->
-        <!-- Search bar -->
+        <!--------------------------------------------------------- PEDESTRIAN --------------------------------------------------------------------->
         <mat-card>
           <mat-card-header>
             <mat-card-title>Pedestrian Footfall</mat-card-title>
+            <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('pedestrian')">
           </mat-card-header>
-          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('pedestrian')"><br><br>
+        
 
           <mat-tab-group mat-align-tabs="center">
             <mat-tab label="Table view">
+        <!-- Pedestrian Search Bar -->
         <div role="main">
           <div>
             <div class="searchBar">
@@ -196,7 +195,7 @@
           </div>
         </div>
 
-        <!-- Filter buttons -->
+        <!-- Pedestrian Filter buttons -->
         <label id="filter-buttons">Sort by: </label>
         <mat-radio-group aria-labelledby="filter-buttons-label" class="filterButtonsContainer"
           [(ngModel)]="pedestrianFilterChoice" (change)="setPedestrianFilter($event)">
@@ -204,6 +203,7 @@
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
+        <!-- Pedestrian Table -->
           <div id="pedestrianTable">
               <table class="table">
                 <thead>
@@ -221,24 +221,23 @@
               </table>
             </div>
           </mat-tab>
+          <!-- Pedestrian Graph -->
           <mat-tab label="Graph view"></mat-tab>
         </mat-tab-group>
-        <!-- Table to display Pedestrian data -->
-
         </mat-card>
         </div>
+        
+        
         <div class="col-sm-6">
-        <!-- DUBLIN BUS -->
-        <!-- Search bar -->
+        <!--------------------------------------------------------- DUBLIN BUS --------------------------------------------------------------------->
         <mat-card>
           <mat-card-header>
             <mat-card-title>Dublin Bus</mat-card-title>
+            <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bus')">
           </mat-card-header>
-          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bus')"><br><br>
-
-          
         <mat-tab-group mat-align-tabs="center">
           <mat-tab label="Table view">
+        <!-- Bus Search Bar -->
         <div role="main">
           <div>
             <div class="searchBar">
@@ -248,7 +247,7 @@
           </div>
         </div>
 
-        <!-- Filter buttons -->
+        <!-- Bus Filter buttons -->
         <label id="filter-buttons">Sort by: </label>
         <mat-radio-group
           aria-labelledby="filter-buttons-label"
@@ -259,7 +258,7 @@
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
-
+            <!-- Bus Table -->
             <div id="busTable">
               <table class="table">
                 <thead>
@@ -277,16 +276,14 @@
               </table>
             </div>
           </mat-tab>
+          <!-- Bus Graph -->
           <mat-tab label="Graph view"></mat-tab>
         </mat-tab-group>
-        <!-- Table to display Dublin bus data -->
-
         </mat-card>
         </div>
-        <!-- Map of data -->
       </div>
     </div>
-    </mat-tab>
-    </mat-tab-group>
+  </mat-tab>
+</mat-tab-group>
 
 

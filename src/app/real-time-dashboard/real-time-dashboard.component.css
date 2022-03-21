@@ -71,3 +71,9 @@ mat-card{
 .pdfButton:hover {
   background-color:aliceblue;
 }
+
+mat-card-header {
+  display:flex;
+  justify-content: space-between;
+}
+
