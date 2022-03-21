@@ -39,7 +39,11 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "rxjs-compat"
+              "rxjs-compat",
+              "pdfmake",
+              "core-js",
+              "raf",
+              "clone-deep"
            ]
           },
           "configurations": {
@@ -111,7 +115,11 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "rxjs-compat"
+              "rxjs-compat",
+              "pdfmake",
+              "core-js",
+              "raf",
+              "clone-deep"
            ]
           }
         }
