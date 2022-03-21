@@ -110,7 +110,7 @@
           <mat-card-header>
             <mat-card-title>Dublin Aqi</mat-card-title>
           </mat-card-header>
-          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
+          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')"><br><br>
 
 
         <!-- <ngx-charts-bar-vertical class="chart"
@@ -204,22 +204,22 @@
             {{item}}
           </mat-radio-button>
         </mat-radio-group>
-
-        
-            <table class="table">
-              <thead>
-              <tr>
-                <th scope="col">Location</th>
-                <th scope="col">Count</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
-                <td scope="row">{{pedestrian.street}}</td>
-                <td scope="row">{{pedestrian.count}}</td>
-              </tr>
-              </tbody>
-            </table>
+          <div id="pedestrianTable">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">Location</th>
+                  <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let pedestrian of pedestrianData | searchFilter: pedestrianSearchText">
+                  <td scope="row">{{pedestrian.street}}</td>
+                  <td scope="row">{{pedestrian.count}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </mat-tab>
           <mat-tab label="Graph view"></mat-tab>
         </mat-tab-group>
@@ -234,7 +234,7 @@
           <mat-card-header>
             <mat-card-title>Dublin Bus</mat-card-title>
           </mat-card-header>
-          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')"><br><br>
+          <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bus')"><br><br>
 
           
         <mat-tab-group mat-align-tabs="center">
