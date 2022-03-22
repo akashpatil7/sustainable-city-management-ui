@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RecommendationsService } from '../services/recommendations.service';
-import { TrendsService } from '../services/trends.service';
 
 @Component({
   selector: 'app-recommendation-dashboard',
@@ -28,7 +27,7 @@ export class RecommendationDashboardComponent implements OnInit {
   loadingData:boolean = true;
   currentTime:any;
 
-  constructor(private http:HttpClient, private rs:RecommendationsService, private trends:TrendsService) { }
+  constructor(private http:HttpClient, private rs:RecommendationsService) { }
 
   ngOnInit(): void {
     this.getBikeRecommendations();
@@ -81,7 +80,7 @@ export class RecommendationDashboardComponent implements OnInit {
   
   // get hourly availability averages for bike stations
   getHourlyBikeAverages() {
-    this.trends.getHourlyAverage().subscribe((res) => {
+    this.rs.getHourlyAverage().subscribe((res) => {
       this.hourlyBikeTrends = res;
       this.hourlyBikeTrends.sort(function(a, b){
           if(a._id < b._id) { return -1; }
