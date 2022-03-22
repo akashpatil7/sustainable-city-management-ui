@@ -96,6 +96,8 @@ function getPedestrianRecommendations():Observable<any> {
 
 function getBusRecommendations():Observable<any> {
   let res = {"mostDelayed" : [1] ,"mostPolluted" : [2]};
+  return of(res);
+}
 
 function getHourlyAverage(): Observable<any> {
   let trendOne = { _id: "1", "current": { "avgAvailability": 1 }, "entry": { "hour": 1, "avgAvailability": 1 } };
