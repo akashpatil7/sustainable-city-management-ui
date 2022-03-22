@@ -113,14 +113,7 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
-            "scripts": [],
-            "allowedCommonJsDependencies": [
-              "rxjs-compat",
-              "pdfmake",
-              "core-js",
-              "raf",
-              "clone-deep"
-           ]
+            "scripts": []
           }
         }
       }
