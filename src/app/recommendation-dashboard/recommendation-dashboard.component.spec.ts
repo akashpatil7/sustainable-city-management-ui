@@ -5,15 +5,12 @@ import { Observable, Observer } from 'rxjs';
 import { of } from "rxjs";
 import { RouterTestingModule } from '@angular/router/testing';
 import { RecommendationsService } from '../services/recommendations.service';
-import { TrendsService } from '../services/trends.service';
 
 describe('RecommendationDashboardComponent', () => {
   let component: RecommendationDashboardComponent;
   let fixture: ComponentFixture<RecommendationDashboardComponent>;
   let service: RecommendationsService;
-  let trendsService: TrendsService;
   let spy: any;
-  let trendsSpy: any;
 
   beforeEach(async () => {
     localStorage.setItem("token", "12345");
@@ -46,8 +43,8 @@ describe('RecommendationDashboardComponent', () => {
   });
   
   it('should receive bike trends and sort them',() => {
-    trendsService = TestBed.inject(TrendsService);
-    trendsSpy = spyOn(trendsService, 'getHourlyAverage').and.callFake(() => getHourlyAverage());
+    service= TestBed.inject(RecommendationsService);
+    spy = spyOn(service, 'getHourlyAverage').and.callFake(() => getHourlyAverage());
     let recs = component.getHourlyBikeAverages();
     expect(component.hourlyBikeTrends.length).toEqual(2);
     expect(component.hourlyBikeTrends[0]._id).toEqual("1");
