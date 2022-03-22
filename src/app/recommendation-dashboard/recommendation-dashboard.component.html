@@ -1,94 +1,200 @@
-<h1> Predictions and Recommendations </h1>
-
-<p> Move Dublin bikes from full stations to empty stations: </p>
-
-<table>
-    <tr> 
-      <th> Move Bikes From </th>
-      <th> Move Bikes To </th>
-    </tr>
-    <tr *ngFor="let entry of filledSpots; let i =index">
-        <td>{{entry.name}}</td>
-        <td>{{openSpots[i].name}}</td>      
-    </tr>
-</table><br>
-
-<p> Move Dublin bikes from full stations to highly populated areas: </p>
-
-<table>
-    <tr> 
-      <th> Move Bikes From </th>
-      <th> Available Bikes </th>
-      <th> Move Bikes To </th>
-      <th> Footfall </th>
-    </tr>
-    <tr *ngFor="let entry of moveBikesFrom; let i =index">
-        <td>{{entry.name}}</td>
-        <td>{{entry.availableBikes}}</td>
-        <td>{{moveBikesTo[i].street}}</td> 
-        <td>{{moveBikesTo[i].count}}</td>     
-    </tr>
-</table><br>
-
-<p> Move traffic based on AQI: </p>
-
-<table>
-    <tr> 
-      <th> Move Traffic From </th>
-      <th> AQI </th>
-      <th> Move Traffic To </th>
-      <th> Aqi </th>
-    </tr>
-    <tr *ngFor="let entry of highestAqi; let i =index">
-        <td>{{highestAqi[i].stationName}}</td>
-        <td>{{highestAqi[i].aqi}}</td>
-        <td>{{lowestAqi[i].stationName}}</td>
-        <td>{{lowestAqi[i].aqi}}</td>      
-    </tr>
-</table><br>
-
-<p> Most and Least Popular Pedestrian Areas Recently: </p>
-
-<p> You can find ideas as to how to popularise the least popular areas 
-  by finding patterns in what makes the most popular areas so popular. </p>
-
-<table>
-    <tr> 
-      <th> Unpopular Area </th>
-      <th> Footfall </th>
-      <th> Popular Area </th>
-      <th> Footfall </th>
-    </tr>
-    <tr *ngFor="let entry of highestCountPedestrianData; let i =index">
-        <td>{{highestCountPedestrianData[i].street}}</td>
-        <td>{{highestCountPedestrianData[i].count}}</td>
-        <td>{{lowestCountPedestrianData[i].street}}</td>
-        <td>{{lowestCountPedestrianData[i].count}}</td>      
-    </tr>
-  </table><br>
-
-    <p> Most Delayed Buses: </p>
-
-    <table>
-        <tr> 
-          <th> Route </th>
-          <th> Average delay </th>
-        </tr>
-        <tr *ngFor="let entry of mostDelayedBuses; let i =index">
-            <td>{{mostDelayedBuses[i][1]}}</td>
-            <td>{{mostDelayedBuses[i][0]}}</td>
-        </tr>
-    </table><br>
-
-    <p> These stops are in areas with high Aqi (pollution) indexes. We recommend not routing as many buses here. </p>
-
-    <table>
-        <tr> 
-          <th> Stop </th>
-          <th> Aqi delay </th>
-        </tr>
-        <tr *ngFor="let entry of mostPollutedStops | keyvalue">
-            <td>{{entry.key}}</td>
-            <td>{{entry.value}}</td>
-        </tr>
-    </table>
+<div *ngIf="loadingData"> Loading... </div>
+<div *ngIf="!loadingData">
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Move Dublin bikes to empty stations:</mat-card-title>
+          <mat-card-subtitle>Recommendation to move bikes from the least used bike stations to heavily used bike stations for better optimization</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Move Bikes From </th>
+                <th scope="col"> Move Bikes To </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of filledSpots; let i =index">
+                  <td scope="row">{{entry.name}}</td>
+                  <td scope="row">{{openSpots[i].name}}</td>      
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Move Dublin bikes to highly populated areas:</mat-card-title>
+          <mat-card-subtitle>Recommendation to move bikes from the least used bike stations to areas with highest population for better reach</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Move Bikes From </th>
+                <th scope="col"> Available Bikes </th>
+                <th scope="col"> Move Bikes To </th>
+                <th scope="col"> Footfall </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of moveBikesFrom; let i =index">
+                <td scope="row">{{entry.name}}</td>
+                <td scope="row">{{entry.availableBikes}}</td>
+                <td scope="row">{{moveBikesTo[i].street}}</td> 
+                <td scope="row">{{moveBikesTo[i].count}}</td>     
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Move Traffic Based on AQI:</mat-card-title>
+          <mat-card-subtitle>Recommendation to traffic from most polluted to least polluted areas </mat-card-subtitle>
+          <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Move Traffic From </th>
+                <th scope="col"> AQI </th>
+                <th scope="col"> Move Traffic To </th>
+                <th scope="col"> Aqi </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of highestAqi; let i =index">
+                <td scope="row">{{highestAqi[i].stationName}}</td>
+                <td scope="row">{{highestAqi[i].aqi}}</td>
+                <td scope="row">{{lowestAqi[i].stationName}}</td>
+                <td scope="row">{{lowestAqi[i].aqi}}</td>      
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Most and Least Popular Pedestrian Areas Recently:</mat-card-title>
+          <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas 
+            by finding patterns in what makes the most popular areas so popular. </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Unpopular Area </th>
+                <th scope="col"> Footfall </th>
+                <th scope="col"> Popular Area </th>
+                <th scope="col"> Footfall </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of highestCountPedestrianData; let i =index">
+                <td scope="row">{{highestCountPedestrianData[i].street}}</td>
+                <td scope="row">{{highestCountPedestrianData[i].count}}</td>
+                <td scope="row">{{lowestCountPedestrianData[i].street}}</td>
+                <td scope="row">{{lowestCountPedestrianData[i].count}}</td>      
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Most Delayed Buses:</mat-card-title>
+          <mat-card-subtitle>An insight into bus routes experiencing most delays. These routes may require re-scheduling based on average delays</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Route </th>
+                <th scope="col"> Average delay </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of mostDelayedBuses; let i =index">
+                <td scope="row">{{mostDelayedBuses[i][1]}}</td>
+                <td scope="row">{{mostDelayedBuses[i][0]}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Most Polluted Bus Stops:</mat-card-title>
+          <mat-card-subtitle>These stops are in areas with high Aqi (pollution) indexes. We recommend not routing as many buses here.</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr> 
+                <th scope="col"> Stop </th>
+                <th scope="col"> Aqi delay </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entry of mostPollutedStops | keyvalue">
+                <td scope="row">{{entry.key}}</td>
+                <td scope="row">{{entry.value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <!--------------------------------------------------------------- Trends --------------------------------------------------------------------------->
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bike Availability:</mat-card-title>
+          <mat-card-subtitle>Average bike availability for each stand given the current time: {{currentTime | date: 'HH:mm'}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-accordion multi class="headers-align" id="bikeTrendTable">
+          <mat-expansion-panel id="bikeEntry" *ngFor="let entry of hourlyBikeTrends">
+            <mat-expansion-panel-header style="height:50px;">
+              <mat-panel-title>
+                {{entry._id}}
+              </mat-panel-title>
+              <mat-panel-description>
+                <div> {{entry.current.avgAvailability}}% </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div>
+              <table class="table">
+                <thead>
+                  <tr> 
+                    <th scope="col"> Hour </th>
+                    <th scope="col"> Average Availability </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let hourData of entry.data">
+                    <td scope="row">{{hourData.hour}}:00</td>
+                    <td scope="row">{{hourData.avgAvailability}}%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
+  </div>
+</div>

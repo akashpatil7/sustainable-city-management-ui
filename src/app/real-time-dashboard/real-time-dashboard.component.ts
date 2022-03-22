@@ -5,9 +5,18 @@ import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
 import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
+import { jsPDF } from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
+import { ChartOptions, ChartDataset, ChartType, ChartConfiguration, ChartData } from 'chart.js';
+import { ViewChild } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -82,11 +91,56 @@ export class RealTimeDashboardComponent implements OnInit {
   showBusMarkers: boolean = true;
   showAqiMarkers: boolean = true;
 
+  selectedBikeStandForGraph: string | undefined;
   // array to store Pedestrian data 
   streetLatLon:any[] = [];
   
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 10
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+      }
+    }
+  };
+  public barChartType: ChartType = 'bar';
+ 
+
+  public barChartData: ChartData<'bar'> = {
+    labels: [ 'Bike Availability'],
+    datasets: [
+      { data: [ 65 ], label: 'Available Bikes' },
+      { data: [ 28 ], label: 'Available Bike Stands' }
+    ]
+  };
+  
+  saleData = [
+    { name: "Mobiles", value: 105000 },
+    { name: "Laptop", value: 55000 },
+    { name: "AC", value: 15000 },
+    { name: "Headset", value: 150000 },
+    { name: "Fridge", value: 20000 }
+  ];
+  
+  aqiGraphData = [
+    {name: 'Mobiles', value: 105000},
+    {name: 'Laptop', value: 55000},
+    {name: 'AC', value: 15000},
+    {name: 'Headset', value: 150000},
+    {name: 'Fridge', value: 20000}
+  ]
 
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
   }
@@ -404,6 +458,28 @@ export class RealTimeDashboardComponent implements OnInit {
     }
     else {
       Object.values(this.aqiMarkers).forEach(marker => { this.map.removeLayer(marker) })
+    }
+  }
+  
+  savePDF(dataIndicator:string):void{
+    // p = portrait, pt = points, a4 = paper size, 
+    let doc = new jsPDF('p', 'pt', 'a4');  
+    //const pdfTable = this.el.nativeElement;
+    let pdfTable;
+    if(dataIndicator == "bikes")
+      pdfTable = <HTMLElement>document.getElementById("bikeTable");
+    else if (dataIndicator == "aqi")
+      pdfTable = <HTMLElement>document.getElementById("aqiTable");
+    else if (dataIndicator == "pedestrian")
+      pdfTable = <HTMLElement>document.getElementById("pedestrianTable");
+    else if (dataIndicator == "bus")
+      pdfTable = <HTMLElement>document.getElementById("busTable");
+    
+    if(pdfTable) {
+      var html = htmlToPdfmake(pdfTable.innerHTML);
+      const documentDefinition = { content: html };
+      pdfMake.createPdf(documentDefinition).open(); 
+      
     }
   }
 
