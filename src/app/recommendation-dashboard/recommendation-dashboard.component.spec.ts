@@ -53,10 +53,49 @@ describe('RecommendationDashboardComponent', () => {
     expect(component.hourlyBikeTrends[0]._id).toEqual("1");
   });
 
+  it('should get AQI recommendation', () => {
+    service = TestBed.inject(RecommendationsService);
+    spy = spyOn(service, 'getAqiRecommendations').and.callFake(() => getAqiRecommendations());
+    let recs = component.getAqiRecommendations();
+    expect(component.highestAqi).toEqual([1]);
+    expect(component.lowestAqi).toEqual([2]);
+  });
+
+  it('should get pedestrian recommendation', () => {
+      service = TestBed.inject(RecommendationsService);
+      spy = spyOn(service, 'getPedestrianRecommendations').and.callFake(() => getPedestrianRecommendations());
+      let recs = component.getPedestrianRecommendations();
+      expect(component.lowestCountPedestrianData).toEqual([1]);
+      expect(component.highestCountPedestrianData).toEqual([2]);
+    });
+
+  it('should get bus recommendation', () => {
+      service = TestBed.inject(RecommendationsService);
+      spy = spyOn(service, 'getBusRecommendations').and.callFake(() => getBusRecommendations());
+      let recs = component.getBusRecommendations();
+      expect(component.mostDelayedBuses).toEqual([1]);
+      expect(component.mostPollutedStops).toEqual([2]);
+    });
+
 });
 
 function getBikeRecommendations():Observable<any> {
   let res = {"mostAvailableBikeStationData": [1], "mostEmptyBikeStationData": [2]};
+  return of(res);
+}
+
+function getAqiRecommendations():Observable<any> {
+  let res = {"highestAqiStationData" : [1] ,"lowestAqiStationData" : [2]};
+  return of(res);
+}
+
+function getPedestrianRecommendations():Observable<any> {
+  let res = {"lowestCountPedestrianData" : [1], "highestCountPedestrianData" : [2]};
+  return of(res);
+}
+
+function getBusRecommendations():Observable<any> {
+  let res = {"mostDelayed" : [1] ,"mostPolluted" : [2]};
   return of(res);
 }
 
