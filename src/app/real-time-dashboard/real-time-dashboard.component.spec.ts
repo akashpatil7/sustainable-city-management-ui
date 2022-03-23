@@ -43,6 +43,18 @@ describe('RealTimeDashboardComponent', () => {
     expect(component.bikeData.length).toBeGreaterThan(0);
   });
   
+  it('should load in bus data', () => {
+    expect(component.busData.length).toBeGreaterThan(0);
+  });
+  
+  it('should load in aqi data', () => {
+    expect(component.aqiData.length).toBeGreaterThan(0);
+  });
+  
+  it('should load in pedestrian data', () => {
+    expect(component.pedestrianData.length).toBeGreaterThan(0);
+  });
+  
   it('should render data headers', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     let tableHeaders = compiled.querySelectorAll('th');
@@ -54,11 +66,16 @@ describe('RealTimeDashboardComponent', () => {
     
   });
 
-  it('should handle aqi response', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-
+  
+  it('should scale a pedestrian marker based on population count', () => {
+    let pedestrianCount = 1746;
+    let scaledCount = component.scaleCircleMarker(pedestrianCount);
+    expect(scaledCount).toBe(19.549999999999997)
+  });
+  
 });
 
 function getRealTimeData(dataType:string):Observable<any> {
