@@ -1,9 +1,8 @@
 on:
   push:
-    branches:
-      - ui-deployment
-      - main
-
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 # TODO(all): add environment variables for deployment.
 
 jobs:
