@@ -20,6 +20,7 @@ describe('RealTimeDashboardComponent', () => {
       declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule,
+        FormsModule,
         RouterTestingModule,
         RouterTestingModule.withRoutes(
           [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]
