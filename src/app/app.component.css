@@ -8,16 +8,9 @@
   }
 
   .toolbar {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
+    padding-left: 2%;
     background-color: #381bb9;
     color: white;
-    font-weight: 600;
-    justify-content: center;
   }
 
   .toolbar span {
@@ -38,5 +31,9 @@ li {
 }
 
 .contentContainer {
-  padding:50px;
+  padding:20px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
 }

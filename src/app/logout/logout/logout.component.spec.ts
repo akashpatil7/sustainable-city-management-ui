@@ -25,4 +25,8 @@ describe('LogoutComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have no token', () => {
+    expect(localStorage.getItem("token")).toBeNull;
+  });
 });

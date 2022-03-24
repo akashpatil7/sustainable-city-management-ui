@@ -1,18 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-
-import { filter, Observable, Observer } from 'rxjs';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SearchFilterPipe } from '../pipes/search-filter.pipe';
-
-
+import { Observable, Observer, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AqiSearchFilterPipe } from '../pipes/aqi-search-filter.pipe';
-
+import { SearchFilterPipe } from '../pipes/search-filter.pipe';
 
 describe('RealTimeDashboardComponent', () => {
   let component: RealTimeDashboardComponent;
@@ -20,12 +14,10 @@ describe('RealTimeDashboardComponent', () => {
   let service: RealTimeDataService;
   let spy: any;
 
-
   beforeEach(async () => {
-
+    localStorage.setItem("token", "12345");
     await TestBed.configureTestingModule({
-      declarations: [ RealTimeDashboardComponent, AqiSearchFilterPipe, SearchFilterPipe ],
-       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule,
         FormsModule,
@@ -38,25 +30,21 @@ describe('RealTimeDashboardComponent', () => {
     .compileComponents();
 
     service = TestBed.inject(RealTimeDataService);
-    spy = spyOn(service, 'getRealTimeData').and.callFake(()=> getRealTimeData());
-  });
-
-  beforeEach(() => {
-    localStorage.setItem("token", "12345");
-
+    spy = spyOn(service, 'getRealTimeData').withArgs("bike").and.callFake(() => getRealTimeData("bike")).withArgs("bus").and.callFake(() => getRealTimeData("bus")).withArgs("aqi").and.callFake(() => getRealTimeData("aqi")).withArgs("ped").and.callFake(() => getRealTimeData("ped"));
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
+    fixture.detectChanges()
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   
+  it('should load in bike data', () => {
+    expect(component.bikeData.length).toBeGreaterThan(0);
+  });
+  
   it('should render data headers', () => {
-    fixture = TestBed.createComponent(RealTimeDashboardComponent);
-    fixture.detectChanges();
-    
     const compiled = fixture.nativeElement as HTMLElement;
     let tableHeaders = compiled.querySelectorAll('th');
     
@@ -67,10 +55,33 @@ describe('RealTimeDashboardComponent', () => {
     
   });
 
+  it('should handle aqi response', () => {
+    expect(component).toBeTruthy();
+  });
+
 
 });
-function getRealTimeData():Observable<any> {
-  return new Observable((observer: Observer<any>) => {
-  });
+
+function getRealTimeData(dataType:string):Observable<any> {
+  let data = {}
+  if (dataType=="bike") {
+    let bike = {"id": 0}
+    data = [bike];
+  }
+  if (dataType=="aqi") {
+    let aqiTime = {"stime": "Jun 15, 2015, 9:03:01 AM"}
+    let aqiStation = {"name": "test"}
+    let aqi = {"uid": 0, "time": aqiTime, "station": aqiStation}
+    data = [aqi];
+  }
+  if (dataType=="ped") {
+    let ped = {"id": 0}
+    data = [ped];
+  }
+  if (dataType=="bus") {
+    let bus = {"routeId": 0}
+    data = [bus];
+  }
+  return of(data);
 }
 
