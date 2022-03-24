@@ -84,7 +84,7 @@ export class RealTimeDataService {
             break;
         }
       };
-      //eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
+      eventSource.onerror = (error) => observer.error('eventSource.onerror: ' + error);
       return () => eventSource.close();
     });
 
