@@ -14,9 +14,9 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
-import { ChartOptions, ChartDataset, ChartType, ChartConfiguration, ChartData } from 'chart.js';
+import { ChartOptions, ChartType, ChartConfiguration, ChartData, ChartDataSets, ChartPluginsOptions } from 'chart.js';
 import { ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, Color, Label } from 'ng2-charts';
 
 //import the code from the Leaflet API for creating marker icons
 const blueIcon = L.icon({
@@ -100,31 +100,82 @@ export class RealTimeDashboardComponent implements OnInit {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
-  public barChartOptions: ChartConfiguration['options'] = {
+  // AQI Chart attributes
+  public aqiChartOptions: (ChartOptions) = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
-    scales: {
-      x: {},
-      y: {
-        min: 10
-      }
+    title: {
+      text: 'AQI Index at 18 different areas in Dublin',
+      display: true
     },
-    plugins: {
-      legend: {
-        display: true,
-      }
+    scales:{
+      xAxes: [{
+          display: false //this will remove all the x-axis grid lines
+      }]
     }
   };
-  public barChartType: ChartType = 'bar';
- 
+  public aqiChartType: ChartType = 'bar';
+  public aqiChartLegend = true;
+  public aqiChartLabels: Label[] = []
+  public aqiChartData: ChartDataSets[] = [];
 
-  public barChartData: ChartData<'bar'> = {
-    labels: [ 'Bike Availability'],
-    datasets: [
-      { data: [ 65 ], label: 'Available Bikes' },
-      { data: [ 28 ], label: 'Available Bike Stands' }
-    ]
+  //Most Dublin bikes chart attributes
+  public mostBikesChartOptions: (ChartOptions) = {
+    responsive: true,
+    title: {
+      text: 'Top 20 bike stations with most available bikes',
+      display: true
+    },
+    scales:{
+      xAxes: [{
+          display: false //this will remove all the x-axis grid lines
+      }]
+    }
   };
+  public mostBikesChartColors: Color[] = [
+    {
+      backgroundColor: 'rgba(0,128,0,0.3)',
+    },
+  ];
+  public mostBikesChartType: ChartType = 'bar';
+  public mostBikesChartLegend = true;
+  public mostBikesChartLabels: Label[] = []
+  public mostBikesChartData: ChartDataSets[] = [];
+
+  //Least Dublin bikes chart attributes
+  public leastBikesChartOptions: (ChartOptions) = {
+    responsive: true,
+    title: {
+      text: 'Top 20 bike stations with least available bikes',
+      display: true
+    },
+    scales:{
+      xAxes: [{
+          display: false //this will remove all the x-axis grid lines
+      }]
+    }
+  };
+  public leastBikesChartType: ChartType = 'bar';
+  public leastBikesChartLegend = true;
+  public leastBikesChartLabels: Label[] = []
+  public leastBikesChartData: ChartDataSets[] = [];
+
+  // Pedestrian Chart attributes
+  public pedestrianChartOptions: (ChartOptions) = {
+    responsive: true,
+    title: {
+      text: 'Pedestrian footfall at 29 different locations in Dublin',
+      display: true
+    },
+    scales:{
+      xAxes: [{
+          display: false //this will remove all the x-axis grid lines
+      }]
+    }
+  };
+  public pedestrianChartType: ChartType = 'bar';
+  public pedestrianChartLegend = true;
+  public pedestrianChartLabels: Label[] = []
+  public pedestrianChartData: ChartDataSets[] = [];
   
   saleData = [
     { name: "Mobiles", value: 105000 },
@@ -197,11 +248,25 @@ export class RealTimeDashboardComponent implements OnInit {
 
   handleAqiResponse(data: any) {
     this.aqiData = data
+    this.aqiChartData = [
+      {
+        data: this.aqiData.map(a => Number(a.aqi)),
+        label: 'AQI Index'
+      }
+    ]
+    this.aqiChartLabels = this.aqiData.map(a => a.station.name)
     this.makeAqiMarkers();
   }
 
   handlePedestrianResponse(data: any) {
     this.pedestrianData = data
+    this.pedestrianChartData = [
+      {
+        data: this.pedestrianData.map(a => Number(a.count)),
+        label: 'Pedestrian footfall'
+      }
+    ]
+    this.pedestrianChartLabels = this.pedestrianData.map(a => a.street)
     this.makePedestrianMarkers();
   }
 
@@ -215,6 +280,28 @@ export class RealTimeDashboardComponent implements OnInit {
       if (a.name > b.name) { return 1; }
       return 0;
     });
+
+    this.mostBikesChartData = [
+      {
+        data: this.bikeData.sort(function(a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
+        .slice(0, 20).map(a => Number(a.available_bikes)),
+        //data: this.bikeData.map(a => Number(a.available_bikes)),
+        label: 'Available bikes'
+      }
+    ]
+    this.mostBikesChartLabels = this.bikeData.sort(function(a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
+    .slice(0, 20).map(a => a.name)
+
+    this.leastBikesChartData = [
+      {
+        data: this.bikeData.sort(function(a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
+        .slice(0, 20).map(a => Number(a.available_bikes)),
+        //data: this.bikeData.map(a => Number(a.available_bikes)),
+        label: 'Available bikes'
+      }
+    ]
+    this.leastBikesChartLabels = this.bikeData.sort(function(a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
+    .slice(0, 20).map(a => a.name)
 
     // get most up to date timestamp
     this.bikeData.forEach(bike => {
