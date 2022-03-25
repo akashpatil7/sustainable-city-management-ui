@@ -20,6 +20,12 @@ export class RecommendationDashboardComponent implements OnInit {
   mostPollutedStops:any[] = []
   moveBikesFrom:any[] = []
   moveBikesTo:any[] = []
+  
+  // trends variables
+  bikeTrends:any[] = [];
+  hourlyBikeTrends:any[] = [];
+  loadingData:boolean = true;
+  currentTime:any;
 
   constructor(private http:HttpClient, private rs:RecommendationsService) { }
 
@@ -29,6 +35,7 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getPedestrianRecommendations();
     this.getBusRecommendations();
     this.getBikePedestrianRecommendations();
+    this.getHourlyBikeAverages();
   }
 
   getBikeRecommendations() {
@@ -69,6 +76,22 @@ export class RecommendationDashboardComponent implements OnInit {
       this.mostDelayedBuses = res.mostDelayed;
       this.mostPollutedStops = res.mostPolluted;
     });
+  }
+  
+  // get hourly availability averages for bike stations
+  getHourlyBikeAverages() {
+    this.rs.getHourlyAverage().subscribe((res) => {
+      this.hourlyBikeTrends = res;
+      this.hourlyBikeTrends.sort(function(a, b){
+          if(a._id < b._id) { return -1; }
+          if(a._id > b._id) { return 1; }
+          return 0;
+      });
+      
+      this.currentTime = new Date();
+      this.loadingData = false;
+    })
+    
   }
 
 }

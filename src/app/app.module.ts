@@ -6,7 +6,6 @@ import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserServiceComponentComponent } from './user-service-component/user-service-component.component';
-import { TrendAnalysisDashboardComponent } from './trend-analysis-dashboard/trend-analysis-dashboard.component';
 import { RecommendationDashboardComponent } from './recommendation-dashboard/recommendation-dashboard.component';
 import { RealTimeDashboardComponent } from './real-time-dashboard/real-time-dashboard.component';
 import { LogoutComponent } from './logout/logout/logout.component';
@@ -28,7 +27,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     AppComponent,
     UserServiceComponentComponent,
-    TrendAnalysisDashboardComponent,
     RecommendationDashboardComponent,
     RealTimeDashboardComponent,
     LogoutComponent,
