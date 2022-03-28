@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class LoginRegisterServiceService {
-  BACKEND_URL:string = 'http://localhost:8080/user';
+
+	hostname = environment.hostName	
+  BACKEND_URL:string = "http://" + this.hostname + ":8080/user";
 
   constructor(private http: HttpClient) {}
 
