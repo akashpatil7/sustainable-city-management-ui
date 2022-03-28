@@ -8,8 +8,7 @@ import { environment } from 'src/environments/environment';
 
 export class LoginRegisterServiceService {
 
-	hostname = environment.hostName	
-  BACKEND_URL:string = "http://" + this.hostname + ":8080/user";
+  BACKEND_URL:string = "http://" + environment.hostName + ":8080/user";
 
   constructor(private http: HttpClient) {}
 
