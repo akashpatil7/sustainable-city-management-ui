@@ -95,11 +95,22 @@
           </mat-tab>
           <!-- Bike Graph-->
           <mat-tab label="Graph view">
-              <canvas baseChart
-                [data]="barChartData"
-                [options]="barChartOptions"
-                [type]="barChartType">
-              </canvas>
+            <canvas baseChart
+              [datasets]="mostBikesChartData"
+              [labels]="mostBikesChartLabels"
+              [options]="mostBikesChartOptions"
+              [legend]="mostBikesChartLegend"
+              [colors]="mostBikesChartColors"
+              [chartType]="mostBikesChartType">
+            </canvas>
+            <br>
+            <canvas baseChart
+              [datasets]="leastBikesChartData"
+              [labels]="leastBikesChartLabels"
+              [options]="leastBikesChartOptions"
+              [legend]="leastBikesChartLegend"
+              [chartType]="leastBikesChartType">
+            </canvas>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
@@ -168,7 +179,15 @@
             </div>
           </mat-tab>
           <!-- AQI GRAPH -->
-          <mat-tab label="Graph view"></mat-tab>
+          <mat-tab label="Graph view">
+            <canvas baseChart
+            [datasets]="aqiChartData"
+            [labels]="aqiChartLabels"
+            [options]="aqiChartOptions"
+            [legend]="aqiChartLegend"
+            [chartType]="aqiChartType">
+              </canvas>
+          </mat-tab>
           </mat-tab-group>
         </mat-card>
         </div>
@@ -222,7 +241,15 @@
             </div>
           </mat-tab>
           <!-- Pedestrian Graph -->
-          <mat-tab label="Graph view"></mat-tab>
+          <mat-tab label="Graph view">
+            <canvas baseChart
+              [datasets]="pedestrianChartData"
+              [labels]="pedestrianChartLabels"
+              [options]="pedestrianChartOptions"
+              [legend]="pedestrianChartLegend"
+              [chartType]="pedestrianChartType">
+            </canvas>
+          </mat-tab>
         </mat-tab-group>
         </mat-card>
         </div>
