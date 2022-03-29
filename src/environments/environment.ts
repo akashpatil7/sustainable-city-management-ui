@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  hostName: window.location.hostname
+  hostName: window.location.hostname + ":8080"
 };
 
 /*
