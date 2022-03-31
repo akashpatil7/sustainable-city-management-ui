@@ -54,6 +54,7 @@ export class RecommendationDashboardComponent implements OnInit {
     }
     return outdated;
   }
+  
   getBikeRecommendations() {
     if (this.outdatedCache()) {
       console.log("getting bike recs from request")
