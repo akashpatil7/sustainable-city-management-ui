@@ -14,13 +14,23 @@ export class RecommendationDashboardComponent implements OnInit {
   filledSpots:any[] = [];
   highestAqi:any[] = [];
   lowestAqi:any[] = [];
-  lowestCountPedestrianData:any[] = []
-  highestCountPedestrianData:any[] = []
-  mostDelayedBuses:any[] = []
-  mostPollutedStops:any[] = []
-  moveBikesFrom:any[] = []
-  moveBikesTo:any[] = []
-  
+  lowestCountPedestrianData:any[] = [];
+  highestCountPedestrianData:any[] = [];
+  mostDelayedBuses:any[] = [];
+  mostPollutedStops:any[] = [];
+  moveBikesFrom:any[] = [];
+  moveBikesTo:any[] = [];
+
+  highestAqiPredictionModel:any[] = [];
+  lowestAqiPredictionModel:any[] = [];
+  highestAqiFuturePredictionModel:any[] = [];
+  lowestAqiFuturePredictionModel:any[] = [];
+
+  lowestCountPedestrianPredictionModel:any[] = [];
+  highestCountPedestrianPredictionModel:any[] = [];
+  lowestCountPedestrianFuturePredictionModel:any[] = [];
+  highestCountPedestrianFuturePredictionModel:any[] = [];
+
   // trends variables
   bikeTrends:any[] = [];
   hourlyBikeTrends:any[] = [];
@@ -45,7 +55,7 @@ export class RecommendationDashboardComponent implements OnInit {
       this.filledSpots = res.mostEmptyBikeStationData;
     });
   }
-  
+
   getBikePedestrianRecommendations() {
     this.rs.getBikePedestrianRecommendations().subscribe((res) => {
       console.log(res);
@@ -77,7 +87,7 @@ export class RecommendationDashboardComponent implements OnInit {
       this.mostPollutedStops = res.mostPolluted;
     });
   }
-  
+
   // get hourly availability averages for bike stations
   getHourlyBikeAverages() {
     this.rs.getHourlyAverage().subscribe((res) => {
@@ -87,11 +97,42 @@ export class RecommendationDashboardComponent implements OnInit {
           if(a._id > b._id) { return 1; }
           return 0;
       });
-      
+
       this.currentTime = new Date();
       this.loadingData = false;
     })
-    
+
   }
 
+  getAqiRecommendationFromPrediction() {
+    this.rs.().subscribe((res) => {
+      console.log(res);
+      this.highestAqiPredictionModel = res.highestAqiStationData;
+      this.lowestAqiPredictionModel = res.lowestAqiStationData;
+    });
+  }
+
+  getAqiRecommendationFromFuturePrediction() {
+      this.rs.().subscribe((res) => {
+        console.log(res);
+        this.highestAqiFuturePredictionModel = res.highestAqiStationData;
+        this.lowestAqiFuturePredictionModel = res.lowestAqiStationData;
+      });
+    }
+
+  getPedestrianRecommendationFromPrediction() {
+      this.rs.getPedestrianRecommendations().subscribe((res) => {
+        console.log(res);
+        this.lowestCountPedestrianPredictionModel = res.lowestCountPedestrianData;
+        this.highestCountPedestrianPredictionModel = res.highestCountPedestrianData;
+      });
+    }
+
+  getPedestrianRecommendationFromFuturePrediction() {
+      this.rs.getPedestrianRecommendations().subscribe((res) => {
+        console.log(res);
+        this.lowestCountPedestrianFuturePredictionModel = res.lowestCountPedestrianData;
+        this.highestCountPedestrianFuturePredictionModel = res.highestCountPedestrianData;
+      });
+    }
 }
