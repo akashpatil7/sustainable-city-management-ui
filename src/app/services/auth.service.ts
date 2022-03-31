@@ -29,5 +29,6 @@ export class AuthService {
       localStorage.removeItem("token");
       window.alert("You have been logged out.");
     }
+    localStorage.clear();
   }
 }
