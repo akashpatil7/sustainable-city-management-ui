@@ -28,7 +28,7 @@ describe('RealTimeDashboardComponent', () => {
       ],
     })
     .compileComponents();
-
+    localStorage.removeItem("dataCacheTime");
     service = TestBed.inject(RealTimeDataService);
     spy = spyOn(service, 'getRealTimeData').withArgs("bike").and.callFake(() => getRealTimeData("bike")).withArgs("bus").and.callFake(() => getRealTimeData("bus")).withArgs("aqi").and.callFake(() => getRealTimeData("aqi")).withArgs("ped").and.callFake(() => getRealTimeData("ped"));
     fixture = TestBed.createComponent(RealTimeDashboardComponent);

@@ -28,6 +28,7 @@ describe('RecommendationDashboardComponent', () => {
     fixture = TestBed.createComponent(RecommendationDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    localStorage.removeItem("cacheTime");
   });
 
   it('should create', () => {
