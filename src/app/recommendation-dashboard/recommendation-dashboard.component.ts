@@ -20,6 +20,7 @@ export class RecommendationDashboardComponent implements OnInit {
   mostPollutedStops:any[] = []
   moveBikesFrom:any[] = []
   moveBikesTo:any[] = []
+  displayedColumns = ['from', 'to']
   
   // trends variables
   bikeTrends:any[] = [];

@@ -11,9 +11,8 @@ table, th, td {
 }
 
 #map-container {
-    position: relative;
+    display: inherit;
     height: 500px;
-    width: 1100px;
 }
 
 mat-card{
@@ -44,7 +43,7 @@ mat-card{
 }
 
 .mapFilters {
-  display: flex;
+  display: inherit;
   align-content: center;
   align-items: center;
   margin-bottom: 2%;
