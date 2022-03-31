@@ -7,6 +7,7 @@ import { Observable, Observer, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
+import { DublinBikesData } from '../models/DublinBikesData';
 
 describe('RealTimeDashboardComponent', () => {
   let component: RealTimeDashboardComponent;
@@ -20,7 +21,6 @@ describe('RealTimeDashboardComponent', () => {
       declarations: [ RealTimeDashboardComponent, SearchFilterPipe ],
       imports: [
         HttpClientModule,
-        FormsModule,
         RouterTestingModule,
         RouterTestingModule.withRoutes(
           [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]
@@ -69,6 +69,28 @@ describe('RealTimeDashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should handle bike response', () => {
+    let bike1 = new DublinBikesData();
+    bike1.name = "a";
+    bike1.last_update = "0";
+    bike1.available_bikes = 1;
+    bike1.latitude = 1;
+    bike1.longitude = 1;
+
+    let bike2 = new DublinBikesData();
+    bike2.name = "b";
+    bike2.last_update = "0";
+    bike2.available_bikes = 2;
+    bike2.latitude = 1;
+    bike2.longitude = 1;
+
+    let data: DublinBikesData[] = [bike2, bike1];
+    component.handleBikeResponse(data);
+    expect(component.bikeData[0].name).toBe("a");
+    expect(component.mostBikesChartData[0].data).toEqual([2,1]);
+    expect(component.leastBikesChartData[0].data).toEqual([1,2]);
   });
   
   it('should scale a pedestrian marker based on population count', () => {

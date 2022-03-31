@@ -49,9 +49,9 @@ const redIcon = L.icon({
 export class RealTimeDashboardComponent implements OnInit {
 
   // arrays to store each real time data indicator
-  bikeData:DublinBikesData[] = [];
-  busData:DublinBusData[] = [];
-  aqiData:AqiData[] = [];
+  bikeData: DublinBikesData[] = [];
+  busData: DublinBusData[] = [];
+  aqiData: AqiData[] = [];
   pedestrianData: PedestrianData[] = [];
 
   // create a map object to display the data
@@ -60,13 +60,13 @@ export class RealTimeDashboardComponent implements OnInit {
   // objects to hold bike markers
   bikeMarkers: Object = {};
   pedestrianMarkers: Object = {};
-  busMarkers:Object = {}
+  busMarkers: Object = {}
   aqiMarkers: Object = {};
-  
+
   // variables to store loading status of real time data
-  lastUpdated:any;
-  loadingData:boolean = true;
-  
+  lastUpdated: any;
+  loadingData: boolean = true;
+
   // variables to hold search filter inputs
   searchText: string = '';
   busSearchText: string = '';
@@ -74,17 +74,17 @@ export class RealTimeDashboardComponent implements OnInit {
   pedestrianSearchText: string = '';
 
   // variables to store selected data filters
-  bikeFilterChoice:string = '';
-  aqiFilterChoice:string = '';
-  busFilterChoice:string = '';
+  bikeFilterChoice: string = '';
+  aqiFilterChoice: string = '';
+  busFilterChoice: string = '';
   pedestrianFilterChoice: string = '';
-  
+
   // data filter options
-  bikeFilterOptions:string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
-  busFilterOptions:string[] = ['Route', 'Start Time'];
-  aqiOptions:string[] = ['Station Name', 'Last Updated', 'Aqi'];
+  bikeFilterOptions: string[] = ['Station Name', 'Last Updated', 'Available Bikes', 'Available Bike Stands'];
+  busFilterOptions: string[] = ['Route', 'Start Time'];
+  aqiOptions: string[] = ['Station Name', 'Last Updated', 'Aqi'];
   pedestrianOptions: string[] = ['Street Name', 'Number of Pedestrians']
-  
+
   // variables to hold map data checkbox values
   showBikeMarkers: boolean = true;
   showPedestrianMarkers: boolean = true;
@@ -93,8 +93,8 @@ export class RealTimeDashboardComponent implements OnInit {
 
   selectedBikeStandForGraph: string | undefined;
   // array to store Pedestrian data 
-  streetLatLon:any[] = [];
-  
+  streetLatLon: any[] = [];
+
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
 
@@ -107,9 +107,9 @@ export class RealTimeDashboardComponent implements OnInit {
       text: 'AQI Index at 18 different areas in Dublin',
       display: true
     },
-    scales:{
+    scales: {
       xAxes: [{
-          display: false //this will remove all the x-axis grid lines
+        display: false //this will remove all the x-axis grid lines
       }]
     }
   };
@@ -125,9 +125,9 @@ export class RealTimeDashboardComponent implements OnInit {
       text: 'Top 20 bike stations with most available bikes',
       display: true
     },
-    scales:{
+    scales: {
       xAxes: [{
-          display: false //this will remove all the x-axis grid lines
+        display: false //this will remove all the x-axis grid lines
       }]
     }
   };
@@ -148,9 +148,9 @@ export class RealTimeDashboardComponent implements OnInit {
       text: 'Top 20 bike stations with least available bikes',
       display: true
     },
-    scales:{
+    scales: {
       xAxes: [{
-          display: false //this will remove all the x-axis grid lines
+        display: false //this will remove all the x-axis grid lines
       }]
     }
   };
@@ -166,9 +166,9 @@ export class RealTimeDashboardComponent implements OnInit {
       text: 'Pedestrian footfall at 29 different locations in Dublin',
       display: true
     },
-    scales:{
+    scales: {
       xAxes: [{
-          display: false //this will remove all the x-axis grid lines
+        display: false //this will remove all the x-axis grid lines
       }]
     }
   };
@@ -176,7 +176,7 @@ export class RealTimeDashboardComponent implements OnInit {
   public pedestrianChartLegend = true;
   public pedestrianChartLabels: Label[] = []
   public pedestrianChartData: ChartDataSets[] = [];
-  
+
   saleData = [
     { name: "Mobiles", value: 105000 },
     { name: "Laptop", value: 55000 },
@@ -184,13 +184,13 @@ export class RealTimeDashboardComponent implements OnInit {
     { name: "Headset", value: 150000 },
     { name: "Fridge", value: 20000 }
   ];
-  
+
   aqiGraphData = [
-    {name: 'Mobiles', value: 105000},
-    {name: 'Laptop', value: 55000},
-    {name: 'AC', value: 15000},
-    {name: 'Headset', value: 150000},
-    {name: 'Fridge', value: 20000}
+    { name: 'Mobiles', value: 105000 },
+    { name: 'Laptop', value: 55000 },
+    { name: 'AC', value: 15000 },
+    { name: 'Headset', value: 150000 },
+    { name: 'Fridge', value: 20000 }
   ]
 
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
@@ -208,23 +208,23 @@ export class RealTimeDashboardComponent implements OnInit {
   ngAfterContentInit(): void {
     this.loadingData = false;
   }
-  
+
   // set initial map configurations (Dublin city centre)
   initialiseMap(): void {
-     this.map = L.map('map', {
-       center: [53.35105167452323, -6.256029081676276],
-       zoom: 13,
-       preferCanvas: true
-     });
+    this.map = L.map('map', {
+      center: [53.35105167452323, -6.256029081676276],
+      zoom: 13,
+      preferCanvas: true
+    });
 
-     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          minZoom: 3,
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
 
-      tiles.addTo(this.map);
-   }
+    tiles.addTo(this.map);
+  }
 
   async getData() {
     this.realTimeDataService.getRealTimeData("bike").subscribe({
@@ -240,7 +240,7 @@ export class RealTimeDashboardComponent implements OnInit {
       next: this.handleBusResponse.bind(this)
     })
     // get bus stop geo data
-    await this.http.get('../assets/DBus_Stops.json', {responseType: 'json'}).subscribe( (data:any) => {
+    await this.http.get('../assets/DBus_Stops.json', { responseType: 'json' }).subscribe((data: any) => {
       this.dublinBusStops = data;
       this.makeBusMarkers();
     });
@@ -283,25 +283,25 @@ export class RealTimeDashboardComponent implements OnInit {
 
     this.mostBikesChartData = [
       {
-        data: this.bikeData.sort(function(a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
-        .slice(0, 20).map(a => Number(a.available_bikes)),
+        data: this.bikeData.sort(function (a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
+          .slice(0, 20).map(a => Number(a.available_bikes)),
         //data: this.bikeData.map(a => Number(a.available_bikes)),
         label: 'Available bikes'
       }
     ]
-    this.mostBikesChartLabels = this.bikeData.sort(function(a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
-    .slice(0, 20).map(a => a.name)
+    this.mostBikesChartLabels = this.bikeData.sort(function (a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
+      .slice(0, 20).map(a => a.name)
 
     this.leastBikesChartData = [
       {
-        data: this.bikeData.sort(function(a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
-        .slice(0, 20).map(a => Number(a.available_bikes)),
+        data: this.bikeData.sort(function (a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
+          .slice(0, 20).map(a => Number(a.available_bikes)),
         //data: this.bikeData.map(a => Number(a.available_bikes)),
         label: 'Available bikes'
       }
     ]
-    this.leastBikesChartLabels = this.bikeData.sort(function(a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
-    .slice(0, 20).map(a => a.name)
+    this.leastBikesChartLabels = this.bikeData.sort(function (a, b) { return a.available_bikes > b.available_bikes ? 1 : -1; })
+      .slice(0, 20).map(a => a.name)
 
     // get most up to date timestamp
     this.bikeData.forEach(bike => {
@@ -309,30 +309,30 @@ export class RealTimeDashboardComponent implements OnInit {
     })
     this.makeBikeMarkers();
   }
-  
+
   // save real time bus data
-  handleBusResponse(data:any) {
+  handleBusResponse(data: any) {
     this.busData = data
     // sort bus data by route name
-    this.busData.sort(function(a, b){
-        if(a.routeShort < b.routeShort) { return -1; }
-        if(a.routeShort > b.routeShort) { return 1; }
-        return 0;
+    this.busData.sort(function (a, b) {
+      if (a.routeShort < b.routeShort) { return -1; }
+      if (a.routeShort > b.routeShort) { return 1; }
+      return 0;
     });
     this.makeBusPopup();
   }
 
- // create a Dublin bike marker with given lat and lon
+  // create a Dublin bike marker with given lat and lon
   makeBikeMarkers() {
-    this.bikeData.forEach( (station) => {
+    this.bikeData.forEach((station) => {
       // upate existing marker's popup with new real time information
-      if(this.bikeMarkers[station.name]) {
+      if (this.bikeMarkers[station.name]) {
         let marker = this.bikeMarkers[station.name];
         marker.bindPopup(this.makeBikePopup(station));
       }
       // create a new marker if data is coming through first time
       else {
-        let marker = L.marker([station.latitude, station.longitude], {icon: blueIcon});
+        let marker = L.marker([station.latitude, station.longitude], { icon: blueIcon });
         marker.bindPopup(this.makeBikePopup(station));
         this.bikeMarkers[station.name] = marker;
         marker.addTo(this.map);
@@ -343,7 +343,7 @@ export class RealTimeDashboardComponent implements OnInit {
   // create an aqi marker with given lat and lon
   makeAqiMarkers() {
     this.aqiData.forEach((aqi) => {
-      if(this.aqiMarkers[aqi.uid]) {
+      if (this.aqiMarkers[aqi.uid]) {
         let marker = this.aqiMarkers[aqi.uid];
         marker.bindPopup(this.makeAqiPopup(aqi));
       }
@@ -359,7 +359,7 @@ export class RealTimeDashboardComponent implements OnInit {
   // create a Pedestrian marker with the size scaled to the amount of people in the area
   makePedestrianMarkers() {
     this.pedestrianData.forEach((pedestrian) => {
-      if(this.pedestrianMarkers[pedestrian.street]) {
+      if (this.pedestrianMarkers[pedestrian.street]) {
         let marker = this.pedestrianMarkers[pedestrian.street];
         marker.bindPopup(this.makePedestrianPopup(pedestrian));
       }
@@ -418,7 +418,7 @@ export class RealTimeDashboardComponent implements OnInit {
       `<div>Area: ${streetNames[streetNames.length - 1]}</div>` +
       `<div>Number of people: ${street.count}</div>`
   }
-  
+
   makeBusPopup() {
     //TODO: figure out what data we want to show
   }
@@ -478,7 +478,7 @@ export class RealTimeDashboardComponent implements OnInit {
       return 0;
     });
   }
-  
+
   setBusFilter($event: MatRadioChange) {
     let dataAttr = ''
     switch ($event.value) {
@@ -494,7 +494,7 @@ export class RealTimeDashboardComponent implements OnInit {
       if (a[dataAttr] > b[dataAttr]) { return 1; }
       return 0;
     });
-    
+
   }
 
   // sort the pedestrian table data based on selected filter
@@ -547,13 +547,13 @@ export class RealTimeDashboardComponent implements OnInit {
       Object.values(this.aqiMarkers).forEach(marker => { this.map.removeLayer(marker) })
     }
   }
-  
-  savePDF(dataIndicator:string):void{
+
+  savePDF(dataIndicator: string): void {
     // p = portrait, pt = points, a4 = paper size, 
-    let doc = new jsPDF('p', 'pt', 'a4');  
+    let doc = new jsPDF('p', 'pt', 'a4');
     //const pdfTable = this.el.nativeElement;
     let pdfTable;
-    if(dataIndicator == "bikes")
+    if (dataIndicator == "bikes")
       pdfTable = <HTMLElement>document.getElementById("bikeTable");
     else if (dataIndicator == "aqi")
       pdfTable = <HTMLElement>document.getElementById("aqiTable");
@@ -561,12 +561,12 @@ export class RealTimeDashboardComponent implements OnInit {
       pdfTable = <HTMLElement>document.getElementById("pedestrianTable");
     else if (dataIndicator == "bus")
       pdfTable = <HTMLElement>document.getElementById("busTable");
-    
-    if(pdfTable) {
+
+    if (pdfTable) {
       var html = htmlToPdfmake(pdfTable.innerHTML);
       const documentDefinition = { content: html };
-      pdfMake.createPdf(documentDefinition).open(); 
-      
+      pdfMake.createPdf(documentDefinition).open();
+
     }
   }
 
