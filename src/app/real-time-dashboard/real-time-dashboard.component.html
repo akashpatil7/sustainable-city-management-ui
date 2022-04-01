@@ -1,6 +1,6 @@
 <div class="parent">
 <p *ngIf="loadingData"> Loading... </p>
-<mat-tab-group mat-align-tabs="center">
+<mat-tab-group dynamicHeight mat-align-tabs="center">
   <!----------------------------------------------------------- MAP VIEW ---------------------------------------------------------------->
   <mat-tab label="Map view">
     <div *ngIf="!loadingData" class="contentContainer">
