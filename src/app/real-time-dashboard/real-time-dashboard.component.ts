@@ -197,6 +197,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("init-ing")
     this.getData();
   }
 
@@ -207,6 +208,19 @@ export class RealTimeDashboardComponent implements OnInit {
 
   ngAfterContentInit(): void {
     this.loadingData = false;
+  }
+
+  outdatedCache() {
+    var outdated = true;
+    let cacheTime = localStorage.getItem('dataCacheTime');
+    if (cacheTime != null) {
+      let then = parseInt(JSON.parse(cacheTime));
+      let now = new Date().getTime();
+      if (now-then < 60000) {
+        outdated = false;
+      }
+    }
+    return outdated;
   }
 
   // set initial map configurations (Dublin city centre)
@@ -226,7 +240,8 @@ export class RealTimeDashboardComponent implements OnInit {
     tiles.addTo(this.map);
   }
 
-  async getData() {
+  async getUpdatedData() {
+    console.log("fetching data from request")
     this.realTimeDataService.getRealTimeData("bike").subscribe({
       next: this.handleBikeResponse.bind(this)
     });
@@ -239,15 +254,45 @@ export class RealTimeDashboardComponent implements OnInit {
     this.realTimeDataService.getRealTimeData("bus").subscribe({
       next: this.handleBusResponse.bind(this)
     })
+    var now = new Date().getTime();
+    localStorage.setItem("dataCacheTime", JSON.stringify(now))
+  }
+  async getData() {
     // get bus stop geo data
     await this.http.get('../assets/DBus_Stops.json', { responseType: 'json' }).subscribe((data: any) => {
       this.dublinBusStops = data;
       this.makeBusMarkers();
     });
+    
+    if (this.outdatedCache()) {
+      console.log("getting data from request, not local storage")
+      this.getUpdatedData();
+    }
+    else {
+      console.log("getting data from local storage")
+      let bikeData = localStorage.getItem("bikeData")
+      if (bikeData != null) {
+        this.handleBikeResponse(JSON.parse(bikeData))
+      }
+      let aqiData = localStorage.getItem("aqiData")
+      if (aqiData != null) {
+        this.handleAqiResponse(JSON.parse(aqiData))
+      }
+      let pedestrianData = localStorage.getItem("pedestrianData")
+      if (pedestrianData != null) {
+        this.handlePedestrianResponse(JSON.parse(pedestrianData))
+      }
+      let busData = localStorage.getItem("busData")
+      if (busData != null) {
+        this.handleBusResponse(JSON.parse(busData))
+      }     
+      this.getUpdatedData();
+    }
   }
 
   handleAqiResponse(data: any) {
     this.aqiData = data
+    localStorage.setItem("aqiData", JSON.stringify(this.aqiData));
     this.aqiChartData = [
       {
         data: this.aqiData.map(a => Number(a.aqi)),
@@ -260,6 +305,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   handlePedestrianResponse(data: any) {
     this.pedestrianData = data
+    localStorage.setItem("pedestrianData", JSON.stringify(this.pedestrianData));
     this.pedestrianChartData = [
       {
         data: this.pedestrianData.map(a => Number(a.count)),
@@ -272,6 +318,7 @@ export class RealTimeDashboardComponent implements OnInit {
 
   handleBikeResponse(data: DublinBikesData[]) {
     this.bikeData = data
+    localStorage.setItem("bikeData", JSON.stringify(this.bikeData));
     this.lastUpdated = this.bikeData[0]["last_update"];
 
     // alphabetise bike data by station name
@@ -313,6 +360,7 @@ export class RealTimeDashboardComponent implements OnInit {
   // save real time bus data
   handleBusResponse(data: any) {
     this.busData = data
+    localStorage.setItem("busData", JSON.stringify(this.busData));
     // sort bus data by route name
     this.busData.sort(function (a, b) {
       if (a.routeShort < b.routeShort) { return -1; }

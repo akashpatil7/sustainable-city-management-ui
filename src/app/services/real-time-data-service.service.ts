@@ -6,14 +6,15 @@ import { DublinBusData } from '../models/DublinBusData';
 import { PedestrianData } from '../models/PedestrianData';
 import { Observer } from 'rxjs';
 import { AqiData } from '../models/AqiData';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RealTimeDataService {
 
-  private bikeUrl = 'http://localhost:8005/getRealTimeDataForBike';
-  private aqiUrl = 'http://localhost:8005/getRealTimeDataForAqi';
-  private pedestrianUrl = 'http://localhost:8005/getRealTimeDataForPedestrian';
-  private busUrl = 'http://localhost:8005/getRealTimeDataForBus';
+  private bikeUrl = 'http://' + environment.hostName + '/getRealTimeDataForBike';
+  private aqiUrl = 'http://' + environment.hostName + '/getRealTimeDataForAqi';
+  private pedestrianUrl = 'http://' + environment.hostName + '/getRealTimeDataForPedestrian';
+  private busUrl = 'http://' + environment.hostName + '/getRealTimeDataForBus';
   urls = {"bike": this.bikeUrl, "aqi": this.aqiUrl, "ped": this.pedestrianUrl, "bus": this.busUrl};
 
   private dublinBikesDataObjects: DublinBikesData = {
