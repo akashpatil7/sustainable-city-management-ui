@@ -105,7 +105,7 @@ export class RecommendationDashboardComponent implements OnInit {
   }
 
   getAqiRecommendationFromPrediction() {
-    this.rs.().subscribe((res) => {
+    this.rs.getAqiRecommendationFromPrediction().subscribe((res) => {
       console.log(res);
       this.highestAqiPredictionModel = res.highestAqiStationData;
       this.lowestAqiPredictionModel = res.lowestAqiStationData;
@@ -113,7 +113,7 @@ export class RecommendationDashboardComponent implements OnInit {
   }
 
   getAqiRecommendationFromFuturePrediction() {
-      this.rs.().subscribe((res) => {
+      this.rs.getAqiRecommendationFromFuturePrediction().subscribe((res) => {
         console.log(res);
         this.highestAqiFuturePredictionModel = res.highestAqiStationData;
         this.lowestAqiFuturePredictionModel = res.lowestAqiStationData;
