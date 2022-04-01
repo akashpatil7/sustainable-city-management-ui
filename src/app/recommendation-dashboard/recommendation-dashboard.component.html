@@ -10,7 +10,7 @@
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Move Bikes From </th>
                 <th scope="col"> Move Bikes To </th>
               </tr>
@@ -18,7 +18,7 @@
             <tbody>
               <tr *ngFor="let entry of filledSpots; let i =index">
                   <td scope="row">{{entry.name}}</td>
-                  <td scope="row">{{openSpots[i].name}}</td>      
+                  <td scope="row">{{openSpots[i].name}}</td>
               </tr>
             </tbody>
           </table>
@@ -34,7 +34,7 @@
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Move Bikes From </th>
                 <th scope="col"> Available Bikes </th>
                 <th scope="col"> Move Bikes To </th>
@@ -45,8 +45,8 @@
               <tr *ngFor="let entry of moveBikesFrom; let i =index">
                 <td scope="row">{{entry.name}}</td>
                 <td scope="row">{{entry.availableBikes}}</td>
-                <td scope="row">{{moveBikesTo[i].street}}</td> 
-                <td scope="row">{{moveBikesTo[i].count}}</td>     
+                <td scope="row">{{moveBikesTo[i].street}}</td>
+                <td scope="row">{{moveBikesTo[i].count}}</td>
             </tr>
             </tbody>
           </table>
@@ -63,7 +63,7 @@
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Move Traffic From </th>
                 <th scope="col"> AQI </th>
                 <th scope="col"> Move Traffic To </th>
@@ -75,7 +75,7 @@
                 <td scope="row">{{highestAqi[i].stationName}}</td>
                 <td scope="row">{{highestAqi[i].aqi}}</td>
                 <td scope="row">{{lowestAqi[i].stationName}}</td>
-                <td scope="row">{{lowestAqi[i].aqi}}</td>      
+                <td scope="row">{{lowestAqi[i].aqi}}</td>
               </tr>
             </tbody>
           </table>
@@ -86,13 +86,13 @@
       <mat-card>
         <mat-card-header>
           <mat-card-title>Most and Least Popular Pedestrian Areas Recently:</mat-card-title>
-          <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas 
+          <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas
             by finding patterns in what makes the most popular areas so popular. </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Unpopular Area </th>
                 <th scope="col"> Footfall </th>
                 <th scope="col"> Popular Area </th>
@@ -104,8 +104,66 @@
                 <td scope="row">{{highestCountPedestrianData[i].street}}</td>
                 <td scope="row">{{highestCountPedestrianData[i].count}}</td>
                 <td scope="row">{{lowestCountPedestrianData[i].street}}</td>
-                <td scope="row">{{lowestCountPedestrianData[i].count}}</td>      
+                <td scope="row">{{lowestCountPedestrianData[i].count}}</td>
               </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Most and Least Popular Pedestrian Areas Based on Prediction Model Data:</mat-card-title>
+          <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas
+            by finding patterns in what makes the most popular areas so popular. </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col"> Unpopular Area </th>
+              <th scope="col"> Footfall </th>
+              <th scope="col"> Popular Area </th>
+              <th scope="col"> Footfall </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let entry of highestCountPedestrianPredictionModel; let i =index">
+              <td scope="row">{{highestCountPedestrianPredictionModel[i].street}}</td>
+              <td scope="row">{{highestCountPedestrianPredictionModel[i].count}}</td>
+              <td scope="row">{{lowestCountPedestrianPredictionModel[i].street}}</td>
+              <td scope="row">{{lowestCountPedestrianPredictionModel[i].count}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-sm-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Most and Least Popular Pedestrian Areas In next 10 Minutes:</mat-card-title>
+          <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas
+            by finding patterns in what makes the most popular areas so popular. </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col"> Unpopular Area </th>
+              <th scope="col"> Footfall </th>
+              <th scope="col"> Popular Area </th>
+              <th scope="col"> Footfall </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let entry of highestCountPedestrianFuturePredictionModel; let i =index">
+              <td scope="row">{{highestCountPedestrianFuturePredictionModel[i].street}}</td>
+              <td scope="row">{{highestCountPedestrianFuturePredictionModel[i].count}}</td>
+              <td scope="row">{{lowestCountPedestrianFuturePredictionModel[i].street}}</td>
+              <td scope="row">{{lowestCountPedestrianFuturePredictionModel[i].count}}</td>
+            </tr>
             </tbody>
           </table>
         </mat-card-content>
@@ -120,7 +178,7 @@
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Route </th>
                 <th scope="col"> Average delay </th>
               </tr>
@@ -144,7 +202,7 @@
         <mat-card-content>
           <table class="table">
             <thead>
-              <tr> 
+              <tr>
                 <th scope="col"> Stop </th>
                 <th scope="col"> Aqi delay </th>
               </tr>
@@ -179,7 +237,7 @@
             <div>
               <table class="table">
                 <thead>
-                  <tr> 
+                  <tr>
                     <th scope="col"> Hour </th>
                     <th scope="col"> Average Availability </th>
                   </tr>
