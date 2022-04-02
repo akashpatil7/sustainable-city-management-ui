@@ -6,7 +6,7 @@
 }
 
 #login-form-wrap {
-  width: 35%;
+  width: 50%;
   margin: 30px auto;
   text-align: center;
   padding: 20px 0 0 0;
@@ -14,13 +14,9 @@
   padding: 5px;
   display: block;
   }
-  
-  #login-form {
-    padding: 0 60px;
-  }
 
   #register-form-wrap {
-    width: 35%;
+    width: 50%;
     margin: 30px auto;
     text-align: center;
     padding: 20px 0 0 0;
@@ -28,10 +24,6 @@
     margin-top: 5%;
     padding: 5px;
     display: none;
-  }
-  
-  #register-form {
-    padding: 0 60px;
   }
 
   .responseStyle{
@@ -43,3 +35,7 @@
     padding: 5px;
     display: none;
   }
+  
+mat-card{
+  min-width: min-content;
+}

@@ -22,6 +22,10 @@ import { SearchFilterPipe } from "../app/pipes/search-filter.pipe";
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { MatOptionModule } from '@angular/material/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatTable, MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     NgxChartsModule,
     ChartsModule,
-    NgbModule
+    NgbModule,
+    MatSidenavModule,
+    MatIconModule,
+    FlexLayoutModule,
+    MatTableModule
   ],
   providers: [SearchFilterPipe],
   bootstrap: [AppComponent]

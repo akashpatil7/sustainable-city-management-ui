@@ -9,26 +9,32 @@
 
 <body>
   <mat-toolbar class="toolbar">
-    <mat-toolbar-row>
+    
       <span>Sustainable City Management</span>
       <span class="example-spacer"></span>
-    <nav mat-tab-nav-bar mat-align-tabs="center" class="navbar">
-      <a mat-tab-link routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard'" [active]="activeLink == '/real-time-dashboard'"> Real Time Dashboard </a>
-      <a mat-tab-link routerLink="/recommendations" (click)="activeLink = '/recommendations'" [active]="activeLink == '/recommendations'"> Trends and Recommendations </a>
-      <a mat-tab-link routerLink="/logout" (click)="activeLink = '/logout'" [active]="activeLink == '/logout'"> Logout </a>
-    </nav> 
-  </mat-toolbar-row>
-    <!-- <div class="md-toolbar-tools">
-      <h2 class="md-flex">Sustainable City Management</h2>
-    </div> -->
-  </mat-toolbar>
-  <!-- <nav mat-tab-nav-bar mat-align-tabs="center" class="navbar">
-    <a mat-tab-link routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard'" [active]="activeLink == '/real-time-dashboard'"> Real Time Dashboard </a>
-    <a mat-tab-link routerLink="/recommendations" (click)="activeLink = '/recommendations'" [active]="activeLink == '/recommendations'"> Recommendations </a>
-    <a mat-tab-link routerLink="/logout" (click)="activeLink = '/logout'" [active]="activeLink == '/logout'"> Logout </a>
-  </nav>  -->
+      <div fxShow="true" fxHide.lt-md="true">
+        <nav mat-tab-nav-bar mat-align-tabs="center" class="navbar">
+          <a mat-tab-link routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard'" [active]="activeLink == '/real-time-dashboard'"> Real Time Dashboard </a>
+          <a mat-tab-link routerLink="/recommendations" (click)="activeLink = '/recommendations'" [active]="activeLink == '/recommendations'"> Trends and Recommendations </a>
+          <a mat-tab-link routerLink="/logout" (click)="activeLink = '/logout'" [active]="activeLink == '/logout'"> Logout </a>
+        </nav> 
+      </div>
+      <div fxShow="true" fxHide.gt-sm="true">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
     
-  <div class="contentContainer">
+  </mat-toolbar>
+    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
+      <div class="sidenav" fxLayout="column">
+        <a mat-button routerLink="/real-time-dashboard" (click)="activeLink = '/real-time-dashboard';sidenav.close()" > Real Time Dashboard </a>
+        <a mat-button routerLink="/recommendations" (click)="activeLink = '/recommendations';sidenav.close()" > Trends and Recommendations </a>
+        <a mat-button routerLink="/logout" (click)="activeLink = '/logout';sidenav.close()" > Logout </a>
+      </div>
+    </mat-sidenav>
+    
+  <div fxFlexFill class="contentContainer">
     <router-outlet></router-outlet>
   </div>
 

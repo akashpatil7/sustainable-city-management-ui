@@ -1,10 +1,10 @@
 <div class="parent">
 <p *ngIf="loadingData"> Loading... </p>
-<mat-tab-group mat-align-tabs="center">
+<mat-tab-group dynamicHeight mat-align-tabs="center">
   <!----------------------------------------------------------- MAP VIEW ---------------------------------------------------------------->
   <mat-tab label="Map view">
     <div *ngIf="!loadingData" class="contentContainer">
-      <mat-card>
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Map View</mat-card-title>
         </mat-card-header>
@@ -27,10 +27,10 @@
   <!----------------------------------------------------------- TABLE VIEW ---------------------------------------------------------------->
   <mat-tab label="Table/Graph view">
     <div *ngIf="!loadingData" class="contentContainer">
-      <div class="row">
-      <div class="col-sm-6">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+          <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
         <!---------------------------------------------------- DUBLIN BIKES ---------------------------------------------------------------->
-        <mat-card>
+        <mat-card class="mat-elevation-z4">
           <mat-card-header>
             <mat-card-title> Dublin Bikes </mat-card-title>
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')">
@@ -116,9 +116,9 @@
       </mat-card-content>
     </mat-card>
     </div>
-    <div class="col-sm-6">
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
       <!--------------------------------------------------------- AQI --------------------------------------------------------------------->
-        <mat-card>
+        <mat-card class="mat-elevation-z4">
           <mat-card-header>
             <mat-card-title>Dublin Air Quality Index</mat-card-title>
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')">
@@ -193,9 +193,9 @@
         </div>
       <!-- </div>
       <div class="row"> -->
-        <div class="col-sm-6">
+        <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
         <!--------------------------------------------------------- PEDESTRIAN --------------------------------------------------------------------->
-        <mat-card>
+        <mat-card class="mat-elevation-z4">
           <mat-card-header>
             <mat-card-title>Pedestrian Footfall</mat-card-title>
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('pedestrian')">
@@ -255,9 +255,9 @@
         </div>
         
         
-        <div class="col-sm-6">
+        <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
         <!--------------------------------------------------------- DUBLIN BUS --------------------------------------------------------------------->
-        <mat-card>
+        <mat-card class="mat-elevation-z4">
           <mat-card-header>
             <mat-card-title>Dublin Bus</mat-card-title>
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bus')">
@@ -308,9 +308,11 @@
         </mat-tab-group>
         </mat-card>
         </div>
-      </div>
-    </div>
+        
+        </div>
+        </div>
   </mat-tab>
 </mat-tab-group>
+</div>
 
 
