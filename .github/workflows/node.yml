@@ -1,9 +1,8 @@
 on:
   push:
-    branches:
-      - ui-deployment
-      - main
-
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 # TODO(all): add environment variables for deployment.
 
 jobs:
@@ -58,6 +57,6 @@ jobs:
        password: ${{ secrets.ACR_PASSWORD }}
     - name: Build and Push docker images to ACR
       run: |
-        docker build . -t scmcontainer.azurecr.io/UI:${{ github.sha }}
-        docker push scmcontainer.azurecr.io/UI:${{ github.sha }}
+        docker-compose build
+        docker-compose push
    # TODO(all): deploy to server.

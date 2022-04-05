@@ -7,6 +7,7 @@ import { Observable, Observer, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
+import { DublinBikesData } from '../models/DublinBikesData';
 
 describe('RealTimeDashboardComponent', () => {
   let component: RealTimeDashboardComponent;
@@ -27,7 +28,7 @@ describe('RealTimeDashboardComponent', () => {
       ],
     })
     .compileComponents();
-
+    localStorage.removeItem("dataCacheTime");
     service = TestBed.inject(RealTimeDataService);
     spy = spyOn(service, 'getRealTimeData').withArgs("bike").and.callFake(() => getRealTimeData("bike")).withArgs("bus").and.callFake(() => getRealTimeData("bus")).withArgs("aqi").and.callFake(() => getRealTimeData("aqi")).withArgs("ped").and.callFake(() => getRealTimeData("ped"));
     fixture = TestBed.createComponent(RealTimeDashboardComponent);
@@ -43,6 +44,18 @@ describe('RealTimeDashboardComponent', () => {
     expect(component.bikeData.length).toBeGreaterThan(0);
   });
   
+  it('should load in bus data', () => {
+    expect(component.busData.length).toBeGreaterThan(0);
+  });
+  
+  it('should load in aqi data', () => {
+    expect(component.aqiData.length).toBeGreaterThan(0);
+  });
+  
+  it('should load in pedestrian data', () => {
+    expect(component.pedestrianData.length).toBeGreaterThan(0);
+  });
+  
   it('should render data headers', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     let tableHeaders = compiled.querySelectorAll('th');
@@ -54,11 +67,38 @@ describe('RealTimeDashboardComponent', () => {
     
   });
 
-  it('should handle aqi response', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should handle bike response', () => {
+    let bike1 = new DublinBikesData();
+    bike1.name = "a";
+    bike1.last_update = "0";
+    bike1.available_bikes = 1;
+    bike1.latitude = 1;
+    bike1.longitude = 1;
 
+    let bike2 = new DublinBikesData();
+    bike2.name = "b";
+    bike2.last_update = "0";
+    bike2.available_bikes = 2;
+    bike2.latitude = 1;
+    bike2.longitude = 1;
+
+    let data: DublinBikesData[] = [bike2, bike1];
+    component.handleBikeResponse(data);
+    expect(component.bikeData[0].name).toBe("a");
+    expect(component.mostBikesChartData[0].data).toEqual([2,1]);
+    expect(component.leastBikesChartData[0].data).toEqual([1,2]);
+  });
+  
+  it('should scale a pedestrian marker based on population count', () => {
+    let pedestrianCount = 1746;
+    let scaledCount = component.scaleCircleMarker(pedestrianCount);
+    expect(scaledCount).toBe(19.549999999999997)
+  });
+  
 });
 
 function getRealTimeData(dataType:string):Observable<any> {

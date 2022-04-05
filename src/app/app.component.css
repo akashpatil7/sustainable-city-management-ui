@@ -22,6 +22,11 @@
   text-align: center;
 }
 
+.sidenav a{
+  color: #381bb9;
+  text-align: left;
+}
+
 a {
   color: aliceblue;
 }

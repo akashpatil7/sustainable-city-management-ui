@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { RealTimeDashboardComponent } from '../real-time-dashboard/real-time-dashboard.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('UserServiceComponentComponent', () => {
   let component: UserServiceComponentComponent;
@@ -22,7 +23,8 @@ describe('UserServiceComponentComponent', () => {
           [{path: 'real-time-dashboard', component: RealTimeDashboardComponent}]
         )
       ],
-      declarations: [ UserServiceComponentComponent ]
+      declarations: [ UserServiceComponentComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   });

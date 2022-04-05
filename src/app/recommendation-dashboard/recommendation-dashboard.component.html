@@ -1,14 +1,28 @@
 <div *ngIf="loadingData"> Loading... </div>
 <div *ngIf="!loadingData">
-  <div class="row">
-    <div class="col-sm-6">
-      <mat-card>
+  <!-- <div class="row">
+    <div class="col-sm-6"> -->
+    <div class = "content">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Move Dublin bikes to empty stations:</mat-card-title>
           <mat-card-subtitle>Recommendation to move bikes from the least used bike stations to heavily used bike stations for better optimization</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <table class="table">
+          <!-- <table mat-table [dataSource]="filledSpots">
+            <ng-container matColumnDef="from">
+              <th mat-header-cell *matHeaderCellDef> Move Bikes From </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="to">
+              <th mat-header-cell *matHeaderCellDef> Move Bikes To </th>
+              <td mat-cell *matCellDef="let element; let i =index"> {{openSpots[i].name}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
             <thead>
               <tr> 
                 <th scope="col"> Move Bikes From </th>
@@ -25,11 +39,13 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-sm-6">
-      <mat-card>
+    <!-- </div>
+    <div class="col-sm-6"> -->
+      <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Move Dublin bikes to highly populated areas:</mat-card-title>
-          <mat-card-subtitle>Recommendation to move bikes from the least used bike stations to areas with highest population for better reach</mat-card-subtitle>
+          <mat-card-subtitle>Recommendation to move bikes from the least used bike stations to the closest station in areas with highest population</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <table class="table">
@@ -53,8 +69,10 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-sm-6">
-      <mat-card>
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+    <!-- </div>
+    <div class="col-sm-6"> -->
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Move Traffic Based on AQI:</mat-card-title>
           <mat-card-subtitle>Recommendation to traffic from most polluted to least polluted areas </mat-card-subtitle>
@@ -82,8 +100,10 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-sm-6">
-      <mat-card>
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+    <!-- </div>
+    <div class="col-sm-6"> -->
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Most and Least Popular Pedestrian Areas Recently:</mat-card-title>
           <mat-card-subtitle>You can find ideas as to how to popularise the least popular areas 
@@ -111,8 +131,10 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-sm-6">
-      <mat-card>
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+    <!-- </div>
+    <div class="col-sm-6"> -->
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Most Delayed Buses:</mat-card-title>
           <mat-card-subtitle>An insight into bus routes experiencing most delays. These routes may require re-scheduling based on average delays</mat-card-subtitle>
@@ -135,8 +157,10 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-sm-6">
-      <mat-card>
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+    <!-- </div>
+    <div class="col-sm-6"> -->
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Most Polluted Bus Stops:</mat-card-title>
           <mat-card-subtitle>These stops are in areas with high Aqi (pollution) indexes. We recommend not routing as many buses here.</mat-card-subtitle>
@@ -159,16 +183,18 @@
         </mat-card-content>
       </mat-card>
     </div>
+    <div fxFlex.lg="50%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
+    <!-- </div> -->
     <!--------------------------------------------------------------- Trends --------------------------------------------------------------------------->
-    <div class="col-sm-6">
-      <mat-card>
+    <!-- <div class="col-sm-6"> -->
+      <mat-card class="mat-elevation-z4">
         <mat-card-header>
           <mat-card-title>Bike Availability:</mat-card-title>
           <mat-card-subtitle>Average bike availability for each stand given the current time: {{currentTime | date: 'HH:mm'}}</mat-card-subtitle>
         </mat-card-header>
         <mat-accordion multi class="headers-align" id="bikeTrendTable">
           <mat-expansion-panel id="bikeEntry" *ngFor="let entry of hourlyBikeTrends">
-            <mat-expansion-panel-header style="height:50px;">
+            <mat-expansion-panel-header style="height:max-content; padding-top: 5px; padding-bottom: 5px;">
               <mat-panel-title>
                 {{entry._id}}
               </mat-panel-title>
@@ -195,6 +221,7 @@
           </mat-expansion-panel>
         </mat-accordion>
       </mat-card>
+      </div>
     </div>
   </div>
 </div>

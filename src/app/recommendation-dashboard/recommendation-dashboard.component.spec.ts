@@ -5,15 +5,12 @@ import { Observable, Observer } from 'rxjs';
 import { of } from "rxjs";
 import { RouterTestingModule } from '@angular/router/testing';
 import { RecommendationsService } from '../services/recommendations.service';
-import { TrendsService } from '../services/trends.service';
 
 describe('RecommendationDashboardComponent', () => {
   let component: RecommendationDashboardComponent;
   let fixture: ComponentFixture<RecommendationDashboardComponent>;
   let service: RecommendationsService;
-  let trendsService: TrendsService;
   let spy: any;
-  let trendsSpy: any;
 
   beforeEach(async () => {
     localStorage.setItem("token", "12345");
@@ -31,6 +28,7 @@ describe('RecommendationDashboardComponent', () => {
     fixture = TestBed.createComponent(RecommendationDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    localStorage.removeItem("cacheTime");
   });
 
   it('should create', () => {
@@ -45,9 +43,9 @@ describe('RecommendationDashboardComponent', () => {
     expect(component.filledSpots).toEqual([2]);
   });
   
-  it('should receive bike trends and sort them',() => {
-    trendsService = TestBed.inject(TrendsService);
-    trendsSpy = spyOn(trendsService, 'getHourlyAverage').and.callFake(() => getHourlyAverage());
+  it('should receive hourly bike trends and sort them',() => {
+    service= TestBed.inject(RecommendationsService);
+    spy = spyOn(service, 'getHourlyAverage').and.callFake(() => getHourlyAverage());
     let recs = component.getHourlyBikeAverages();
     expect(component.hourlyBikeTrends.length).toEqual(2);
     expect(component.hourlyBikeTrends[0]._id).toEqual("1");
@@ -76,6 +74,16 @@ describe('RecommendationDashboardComponent', () => {
       expect(component.mostDelayedBuses).toEqual([1]);
       expect(component.mostPollutedStops).toEqual([2]);
     });
+    
+  it('should get bike and pedestrian recommendation', () => {
+      service = TestBed.inject(RecommendationsService);
+      spy = spyOn(service, 'getBikePedestrianRecommendations').and.callFake(() => getBikePedestrianRecommendations());
+      let recs = component.getBikePedestrianRecommendations();
+      expect(component.moveBikesFrom[0].availableBikes).toEqual(33);
+      expect(component.moveBikesFrom[0].name).toEqual("TALBOT STREET");
+      expect(component.moveBikesTo[0].count).toEqual(5150);
+      expect(component.moveBikesTo[0].street).toEqual("Newcomen Bridge/Charleville mall inbound");
+    });
 
 });
 
@@ -103,5 +111,14 @@ function getHourlyAverage(): Observable<any> {
   let trendOne = { _id: "1", "current": { "avgAvailability": 1 }, "entry": { "hour": 1, "avgAvailability": 1 } };
   let trendTwo = { _id: "2", "current": { "avgAvailability": 1 }, "entry": { "hour": 1, "avgAvailability": 1 } };
   let res = [trendOne, trendTwo];
+  return of(res);
+}
+
+function getBikePedestrianRecommendations():Observable<any> {
+  let station1 = {availableBikes: 33, name: "TALBOT STREET" };
+  let station2 = {availableBikes: 30, name: "FREDERICK STREET SOUTH" };
+  let pedestrian1 = {count: 5150, street: "Newcomen Bridge/Charleville mall inbound"};
+  let pedestrian2 = {count: 4698, street: "North Wall Quay/Samuel Beckett bridge East"};
+  let res = {"moveBikesFrom": [station1, station2], "moveBikesTo": [pedestrian1, pedestrian2]};
   return of(res);
 }
