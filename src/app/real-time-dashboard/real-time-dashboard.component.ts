@@ -142,6 +142,9 @@ export class RealTimeDashboardComponent implements OnInit {
     {name: 'Fridge', value: 20000}
   ]
 
+  busColumnOne = 'Route';
+  busColumnTwo = 'Start Time';
+
   constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
   }
 
@@ -193,10 +196,11 @@ export class RealTimeDashboardComponent implements OnInit {
       this.dublinBusStops = data;
       this.makeBusMarkers();
     });
-  }
+   }
 
   handleAqiResponse(data: any) {
     this.aqiData = data
+    console.log(data);
     this.makeAqiMarkers();
   }
 
@@ -206,6 +210,7 @@ export class RealTimeDashboardComponent implements OnInit {
   }
 
   handleBikeResponse(data: DublinBikesData[]) {
+    console.log(data);
     this.bikeData = data
     this.lastUpdated = this.bikeData[0]["last_update"];
 
@@ -226,6 +231,9 @@ export class RealTimeDashboardComponent implements OnInit {
   // save real time bus data
   handleBusResponse(data:any) {
     this.busData = data
+    this.isSimulatedData(this.busData);
+
+    console.log(data);
     // sort bus data by route name
     this.busData.sort(function(a, b){
         if(a.routeShort < b.routeShort) { return -1; }
@@ -235,8 +243,21 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBusPopup();
   }
 
+  isSimulatedData(data:any){
+    // checks if the data returned is simulated or real time, if simulated the labels in the table change accordingly
+    if(data[0].hasOwnProperty("simulation")){
+      this.busColumnOne = 'Stop Number';
+      this.busColumnTwo = 'Arrival Delay'
+    }
+    else{
+      this.busColumnOne = 'Route';
+      this.busColumnTwo = 'Start Time';
+    }
+  }
+
  // create a Dublin bike marker with given lat and lon
   makeBikeMarkers() {
+    console.log(this.bikeData);
     this.bikeData.forEach( (station) => {
       // upate existing marker's popup with new real time information
       if(this.bikeMarkers[station.name]) {
