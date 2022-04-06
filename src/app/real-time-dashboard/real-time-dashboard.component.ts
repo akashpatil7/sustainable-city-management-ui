@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
-import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {  MatRadioChange } from '@angular/material/radio';
+
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
@@ -14,7 +13,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
-import { ChartOptions, ChartType, ChartConfiguration, ChartData, ChartDataSets, ChartPluginsOptions } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { ViewChild } from '@angular/core';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 
