@@ -20,7 +20,7 @@ export class RecommendationDashboardComponent implements OnInit {
   moveBikesFrom: any[] = []
   moveBikesTo: any[] = []
   displayedColumns = ['from', 'to']
-  
+
   // trends variables
   hourlyBikeTrends: any[] = [];
   loadingData: boolean = true;
@@ -44,13 +44,13 @@ export class RecommendationDashboardComponent implements OnInit {
     if (cacheTime != null) {
       let then = parseInt(JSON.parse(cacheTime));
       let now = new Date().getTime();
-      if (now-then < 60000) {
+      if (now - then < 60000) {
         outdated = false;
       }
     }
     return outdated;
   }
-  
+
   getBikeRecommendations() {
     if (this.outdatedCache()) {
       console.log("getting bike recs from request")
