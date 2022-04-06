@@ -290,14 +290,16 @@
               <table class="table">
                 <thead>
                 <tr>
-                  <th scope="col">Route</th>
-                  <th scope="col">Start Time</th>
+                  <th scope="col">{{busColumnOne}}</th>
+                  <th scope="col">{{busColumnTwo}}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let data of busData | searchFilter: busSearchText">
-                  <td scope="row">{{data.routeShort}}</td>
-                  <td scope="row">{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
+                  <td scope="row" *ngIf="busColumnOne == 'Route'">{{data.routeShort}}</td>
+                  <td scope="row" *ngIf="busColumnOne == 'Stop Number'">{{data.stop_number}}</td>
+                  <td scope="row" *ngIf="busColumnTwo == 'Start Time'">{{data.startTimestamp| date: 'dd/MM/yyyy HH:mm'}}</td>
+                  <td scope="row" *ngIf="busColumnTwo == 'Arrival Delay'">{{data.arrival_delay}}</td>
                 </tr>
                 </tbody>
               </table>
