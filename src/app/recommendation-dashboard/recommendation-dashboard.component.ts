@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RecommendationsService } from '../services/recommendations.service';
-import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recommendation-dashboard',
@@ -10,7 +9,6 @@ import { interval, Subscription } from 'rxjs';
 })
 export class RecommendationDashboardComponent implements OnInit {
 
-  bikeData: any[] = [];
   openSpots: any[] = [];
   filledSpots: any[] = [];
   highestAqi: any[] = [];
@@ -24,12 +22,9 @@ export class RecommendationDashboardComponent implements OnInit {
   displayedColumns = ['from', 'to']
   
   // trends variables
-  bikeTrends: any[] = [];
   hourlyBikeTrends: any[] = [];
   loadingData: boolean = true;
   currentTime: any;
-
-  subscription: Subscription = new Subscription;
 
   constructor(private http: HttpClient, private rs: RecommendationsService) { }
 
