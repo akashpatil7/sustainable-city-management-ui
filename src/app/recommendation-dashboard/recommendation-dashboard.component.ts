@@ -9,8 +9,8 @@ import { RecommendationsService } from '../services/recommendations.service';
 })
 export class RecommendationDashboardComponent implements OnInit {
 
-  openSpots: any[] = [];
-  filledSpots: any[] = [];
+  openBikeSpots: any[] = [];
+  filledBikeSpots: any[] = [];
   highestAqi: any[] = [];
   lowestAqi: any[] = [];
   lowestCountPedestrianData: any[] = []
@@ -38,7 +38,7 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getHourlyBikeAverages();
   }
 
-  outdatedCache() {
+  private outdatedCache() {
     var outdated = true;
     let cacheTime = localStorage.getItem('cacheTime');
     if (cacheTime != null) {
@@ -56,10 +56,10 @@ export class RecommendationDashboardComponent implements OnInit {
       console.log("getting bike recs from request")
       this.rs.getBikeRecommendations().subscribe((res) => {
         console.log(res);
-        this.openSpots = res.mostAvailableBikeStationData;
-        this.filledSpots = res.mostEmptyBikeStationData;
-        localStorage.setItem("openSpots", JSON.stringify(this.openSpots));
-        localStorage.setItem("filledSpots", JSON.stringify(this.filledSpots));
+        this.openBikeSpots = res.mostAvailableBikeStationData;
+        this.filledBikeSpots = res.mostEmptyBikeStationData;
+        localStorage.setItem("openSpots", JSON.stringify(this.openBikeSpots));
+        localStorage.setItem("filledSpots", JSON.stringify(this.filledBikeSpots));
       });
     }
     else {
@@ -67,8 +67,8 @@ export class RecommendationDashboardComponent implements OnInit {
       let openSpots = localStorage.getItem("openSpots")
       let filledSpots = localStorage.getItem("filledSpots")
       if (openSpots != null && filledSpots != null) {
-        this.openSpots = JSON.parse(openSpots);
-        this.filledSpots = JSON.parse(filledSpots);
+        this.openBikeSpots = JSON.parse(openSpots);
+        this.filledBikeSpots = JSON.parse(filledSpots);
       }
     }
   }

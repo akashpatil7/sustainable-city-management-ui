@@ -39,8 +39,8 @@ describe('RecommendationDashboardComponent', () => {
     service = TestBed.inject(RecommendationsService);
     spy = spyOn(service, 'getBikeRecommendations').and.callFake(() => getBikeRecommendations());
     let recs = component.getBikeRecommendations();
-    expect(component.openSpots).toEqual([1]);
-    expect(component.filledSpots).toEqual([2]);
+    expect(component.openBikeSpots).toEqual([1]);
+    expect(component.filledBikeSpots).toEqual([2]);
   });
 
   it('should receive hourly bike trends and sort them', () => {

@@ -13,17 +13,6 @@
           </mat-card-header>
           <mat-card-content>
             <table class="table">
-              <!-- <table mat-table [dataSource]="filledSpots">
-            <ng-container matColumnDef="from">
-              <th mat-header-cell *matHeaderCellDef> Move Bikes From </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
-            <ng-container matColumnDef="to">
-              <th mat-header-cell *matHeaderCellDef> Move Bikes To </th>
-              <td mat-cell *matCellDef="let element; let i =index"> {{openSpots[i].name}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
               <thead>
                 <tr>
                   <th scope="col"> Move Bikes From </th>
@@ -31,9 +20,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let entry of filledSpots; let i =index">
+                <tr *ngFor="let entry of filledBikeSpots; let i =index">
                   <td scope="row">{{entry.name}}</td>
-                  <td scope="row">{{openSpots[i].name}}</td>
+                  <td scope="row">{{openBikeSpots[i].name}}</td>
                 </tr>
               </tbody>
             </table>

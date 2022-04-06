@@ -36,19 +36,6 @@
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('bikes')">
           </mat-card-header>
 
-        <!-- <ngx-charts-bar-vertical class="chart"
-            [view]="[700,300]"
-            [results]="saleData"
-            [xAxisLabel]="'Products'"
-            [legendTitle]="'Product Sale Chart'"
-            [yAxisLabel]="'Sale'"
-            [legend]="true"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            [xAxis]="true"
-            [yAxis]="true"
-            [gradient]="false">
-        </ngx-charts-bar-vertical> -->
         <mat-card-content>
         <div > Last Updated: {{lastUpdated | date: 'dd/MM/yyyy HH:mm'}} </div>
         <mat-tab-group mat-align-tabs="center">
@@ -124,19 +111,6 @@
             <input type="button" value="Download Report" class="btn pdfButton" (click)="savePDF('aqi')">
           </mat-card-header>
           
-        <!-- <ngx-charts-bar-vertical class="chart"
-            [view]="[700,300]"
-            [results]="aqiGraphData"
-            [xAxisLabel]="'Station'"
-            [legendTitle]="'AQI'"
-            [yAxisLabel]="'AQI value'"
-            [legend]="false"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            [xAxis]="true"
-            [yAxis]="true"
-            [gradient]="false">
-        </ngx-charts-bar-vertical> -->
 
         <mat-tab-group mat-align-tabs="center">
           <mat-tab label="Table view">
