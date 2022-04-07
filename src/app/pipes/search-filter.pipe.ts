@@ -10,9 +10,9 @@ import { AqiData } from '../models/AqiData';
 @Pipe({ name: 'searchFilter' })
 export class SearchFilterPipe implements PipeTransform {
   /**
-   * Transform
+   * Filter out from a list of objects what the user is looking for
    *
-   * @param {any[]} items
+   * @param {PipeInput[]} items
    * @param {string} searchText
    * @returns {any[]}
    */

@@ -92,6 +92,7 @@ export class RealTimeDashboardComponent implements OnInit {
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
 
+  // chart for graphing the real-time data
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   // AQI Chart attributes
@@ -112,7 +113,7 @@ export class RealTimeDashboardComponent implements OnInit {
   public aqiChartLabels: Label[] = []
   public aqiChartData: ChartDataSets[] = [];
 
-  //Most Dublin bikes chart attributes
+  //Dublin bikes chart attributes
   public mostBikesChartOptions: (ChartOptions) = {
     responsive: true,
     title: {
@@ -174,70 +175,34 @@ export class RealTimeDashboardComponent implements OnInit {
   busColumnOne = 'Route';
   busColumnTwo = 'Start Time';
 
-  constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {
-  }
+  constructor(private realTimeDataService: RealTimeDataService, private http: HttpClient) {}
 
+  /*
+   * Automatically called when component is loaded
+   * Loads in the real-time data
+   */
   ngOnInit(): void {
     console.log("init-ing")
     this.getData();
   }
 
-  // initialise the map after the html component is rendered and get real-time data
+  /*
+   * Load the map after the rest of the component has rendered
+   */
   ngAfterViewInit() {
     this.initialiseMap();
   }
 
-  ngAfterContentInit(): void {
+  /*
+   * Sets loading to false after all content loads
+   */
+  ngAfterContentInit() {
     this.loadingData = false;
   }
 
-  outdatedCache() {
-    var outdated = true;
-    let cacheTime = localStorage.getItem('dataCacheTime');
-    if (cacheTime != null) {
-      let then = parseInt(JSON.parse(cacheTime));
-      let now = new Date().getTime();
-      if (now - then < 60000) {
-        outdated = false;
-      }
-    }
-    return outdated;
-  }
-
-  // set initial map configurations (Dublin city centre)
-  initialiseMap(): void {
-    this.map = L.map('map', {
-      center: [53.35105167452323, -6.256029081676276],
-      zoom: 13,
-      preferCanvas: true
-    });
-
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-
-    tiles.addTo(this.map);
-  }
-
-  async getUpdatedData() {
-    console.log("fetching data from request")
-    this.realTimeDataService.getRealTimeData("bike").subscribe({
-      next: this.handleBikeResponse.bind(this)
-    });
-    this.realTimeDataService.getRealTimeData("aqi").subscribe({
-      next: this.handleAqiResponse.bind(this)
-    });
-    this.realTimeDataService.getRealTimeData("ped").subscribe({
-      next: this.handlePedestrianResponse.bind(this)
-    });
-    this.realTimeDataService.getRealTimeData("bus").subscribe({
-      next: this.handleBusResponse.bind(this)
-    })
-    var now = new Date().getTime();
-    localStorage.setItem("dataCacheTime", JSON.stringify(now))
-  }
+  /*
+   * Get the real-time data or update the cache if previously requested
+   */
   async getData() {
     // get bus stop geo data
     await this.http.get('../assets/DBus_Stops.json', { responseType: 'json' }).subscribe((data: any) => {
@@ -271,6 +236,11 @@ export class RealTimeDashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Load in the AQI data and store in cache
+   *
+   * @param {any} data
+   */
   handleAqiResponse(data: any) {
     this.aqiData = data
     localStorage.setItem("aqiData", JSON.stringify(this.aqiData));
@@ -284,6 +254,11 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeAqiMarkers();
   }
 
+  /**
+   * Load in the Pedestrian data and store in cache
+   *
+   * @param {any} data
+   */
   handlePedestrianResponse(data: any) {
     this.pedestrianData = data
     localStorage.setItem("pedestrianData", JSON.stringify(this.pedestrianData));
@@ -297,6 +272,11 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makePedestrianMarkers();
   }
 
+  /**
+   * Load in the Bike data and store in cache
+   *
+   * @param {any} data
+   */
   handleBikeResponse(data: DublinBikesData[]) {
     console.log(data);
     this.bikeData = data
@@ -310,6 +290,7 @@ export class RealTimeDashboardComponent implements OnInit {
       return 0;
     });
 
+    // make the graph
     this.mostBikesChartData = [
       {
         data: this.bikeData.sort(function (a, b) { return a.available_bikes < b.available_bikes ? 1 : -1; })
@@ -339,7 +320,11 @@ export class RealTimeDashboardComponent implements OnInit {
     this.makeBikeMarkers();
   }
 
-  // save real time bus data
+  /**
+   * Load in the Bus data and store in cache
+   *
+   * @param {any} data
+   */
   handleBusResponse(data: any) {
     this.busData = data
     this.isSimulatedData(this.busData);
@@ -351,11 +336,53 @@ export class RealTimeDashboardComponent implements OnInit {
       if (a.routeShort > b.routeShort) { return 1; }
       return 0;
     });
-    this.makeBusPopup();
   }
 
+  /*
+   * Get updated real-time data from all four data indicators and set cache
+   */
+  async getUpdatedData() {
+    console.log("fetching data from request")
+    this.realTimeDataService.getRealTimeData("bike").subscribe({
+      next: this.handleBikeResponse.bind(this)
+    });
+    this.realTimeDataService.getRealTimeData("aqi").subscribe({
+      next: this.handleAqiResponse.bind(this)
+    });
+    this.realTimeDataService.getRealTimeData("ped").subscribe({
+      next: this.handlePedestrianResponse.bind(this)
+    });
+    this.realTimeDataService.getRealTimeData("bus").subscribe({
+      next: this.handleBusResponse.bind(this)
+    })
+    let now = new Date().getTime();
+    localStorage.setItem("dataCacheTime", JSON.stringify(now))
+  }
+  
+  /**
+   * Update cache time if outdated
+   *
+   * @returns {any} outdated
+   */
+  outdatedCache() {
+    let outdated = true;
+    let cacheTime = localStorage.getItem('dataCacheTime');
+    if (cacheTime != null) {
+      let then = parseInt(JSON.parse(cacheTime));
+      let now = new Date().getTime();
+      if (now - then < 60000) {
+        outdated = false;
+      }
+    }
+    return outdated;
+  }
+
+  /**
+   * Checks if the data returned is simulated or real time, if simulated the labels in the table change accordingly
+   *
+   * @param {any[]} data
+   */
   isSimulatedData(data:any){
-    // checks if the data returned is simulated or real time, if simulated the labels in the table change accordingly
     if(data[0].hasOwnProperty("simulation")){
       this.busColumnOne = 'Stop Number';
       this.busColumnTwo = 'Arrival Delay'
@@ -365,8 +392,29 @@ export class RealTimeDashboardComponent implements OnInit {
       this.busColumnTwo = 'Start Time';
     }
   }
+  
+  /*
+   * Initialise the map and set initial configurations (Dublin city centre)
+   */
+  initialiseMap() {
+    this.map = L.map('map', {
+      center: [53.35105167452323, -6.256029081676276],
+      zoom: 13,
+      preferCanvas: true
+    });
 
-  // create a Dublin bike marker with given lat and lon
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    tiles.addTo(this.map);
+  }
+
+  /*
+   * Create the Dublin bike map markers 
+   */
   makeBikeMarkers() {
     this.bikeData.forEach((station) => {
       // upate existing marker's popup with new real time information
@@ -384,7 +432,9 @@ export class RealTimeDashboardComponent implements OnInit {
     });
   }
 
-  // create an aqi marker with given lat and lon
+  /*
+   * Create the AQI map markers 
+   */
   makeAqiMarkers() {
     this.aqiData.forEach((aqi) => {
       if (this.aqiMarkers[aqi.uid]) {
@@ -399,8 +449,22 @@ export class RealTimeDashboardComponent implements OnInit {
       }
     });
   }
+  
+  /*
+   * Create the Bus map markers
+   */
+  makeBusMarkers() {
+    this.dublinBusStops.forEach((stop: any) => {
+      let marker = L.circleMarker([stop["stop_lat"], stop["stop_lon"]], { radius: 5, color: 'green' });
+      marker.bindPopup(`<div> <b> ${stop.stop_name} </b></div>`);
+      marker.addTo(this.map);
+      this.busMarkers[stop.stop_name] = marker;
+    });
+  }
 
-  // create a Pedestrian marker with the size scaled to the amount of people in the area
+  /*
+   * Create the Pedestrian map markers with the size scaled to the amount of people in the area
+   */
   makePedestrianMarkers() {
     this.pedestrianData.forEach((pedestrian) => {
       if (this.pedestrianMarkers[pedestrian.street]) {
@@ -417,7 +481,12 @@ export class RealTimeDashboardComponent implements OnInit {
     })
   }
 
-  // scale the pedestrian marker based on the number of people
+  /**
+   * Scale the pedestrian marker based on the number of pedestrians
+   *
+   * @param {number} pedestrians
+   * @returns {number}
+   */
   scaleCircleMarker(pedestrians: number): number {
     if (pedestrians)
       return ((pedestrians - 0) / (3000 - 0)) * (30 - 5) + 5
@@ -425,17 +494,12 @@ export class RealTimeDashboardComponent implements OnInit {
       return 0;
   }
 
-  // create a bus marker for each bus stop
-  makeBusMarkers() {
-    this.dublinBusStops.forEach((stop: any) => {
-      let marker = L.circleMarker([stop["stop_lat"], stop["stop_lon"]], { radius: 5, color: 'green' });
-      marker.bindPopup(`<div> <b> ${stop.stop_name} </b></div>`);
-      marker.addTo(this.map);
-      this.busMarkers[stop.stop_name] = marker;
-    });
-  }
-
-  // create selected popup Bike information for each marker
+  /**
+   * Create selected popup Bike information for each marker
+   *
+   * @param {any} station
+   * @returns {any}
+   */
   makeBikePopup(station: any): string {
     return `` +
       `<div>Name: ${station.name}</div>` +
@@ -446,7 +510,12 @@ export class RealTimeDashboardComponent implements OnInit {
       `<div>Last Updated: ${station.last_update}</div>`
   }
 
-  // create selected popup Aqi information for each marker
+  /**
+   * Create selected popup AQI information for each marker
+   *
+   * @param {any} aqi
+   * @returns {any}
+   */
   makeAqiPopup(aqi: any): string {
     return `` +
       `<div>Name: ${aqi.station.name}</div>` +
@@ -454,7 +523,12 @@ export class RealTimeDashboardComponent implements OnInit {
       `<div>Last Updated: ${aqi.time.stime}</div>`
   }
 
-  // create selected popup Bike information for each marker
+  /**
+   * Create selected popup Pedestrian information for each marker
+   *
+   * @param {any} street
+   * @returns {any}
+   */
   makePedestrianPopup(street: any): string {
     let streetNames = street["street"].split("/");
     return `` +
@@ -463,12 +537,11 @@ export class RealTimeDashboardComponent implements OnInit {
       `<div>Number of people: ${street.count}</div>`
   }
 
-  makeBusPopup() {
-    //TODO: figure out what data we want to show
-  }
-
-
-  // sort the bike table data based on selected filter
+  /**
+   * Sorts the bike table data based on selected filter
+   *
+   * @param {MatRadioChange} $event
+   */
   setBikeFilter($event: MatRadioChange) {
     let dataAttr = ''
     switch ($event.value) {
@@ -493,7 +566,11 @@ export class RealTimeDashboardComponent implements OnInit {
     });
   }
 
-  // sort the bike table data based on selected filter
+  /**
+   * Sorts the aqi table data based on selected filter
+   *
+   * @param {MatRadioChange} $event
+   */
   setAqiFilter($event: MatRadioChange) {
     let dataAttr = ''
     let innerAttr = ''
@@ -523,6 +600,11 @@ export class RealTimeDashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Sorts the bus table data based on selected filter
+   *
+   * @param {MatRadioChange} $event
+   */
   setBusFilter($event: MatRadioChange) {
     let dataAttr = ''
     switch ($event.value) {
@@ -538,10 +620,13 @@ export class RealTimeDashboardComponent implements OnInit {
       if (a[dataAttr] > b[dataAttr]) { return 1; }
       return 0;
     });
-
   }
 
-  // sort the pedestrian table data based on selected filter
+  /**
+   * Sorts the pedestrian table data based on selected filter
+   *
+   * @param {MatRadioChange} $event
+   */
   setPedestrianFilter($event: MatRadioChange) {
     let dataAttr = ''
     switch ($event.value) {
@@ -559,7 +644,9 @@ export class RealTimeDashboardComponent implements OnInit {
     });
   }
 
-  // show or remove map pins based on filter values
+  /**
+   * Shows or removes map pins based on filter values
+   */
   setMapFilter() {
     if (this.showBikeMarkers) {
       Object.values(this.bikeMarkers).forEach(marker => { this.map.addLayer(marker) })
@@ -592,10 +679,15 @@ export class RealTimeDashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Creates a pdf out of the specified data table
+   *
+   * @param {string} dataIndicator
+   */
   savePDF(dataIndicator: string): void {
     // p = portrait, pt = points, a4 = paper size, 
     let doc = new jsPDF('p', 'pt', 'a4');
-    //const pdfTable = this.el.nativeElement;
+
     let pdfTable;
     if (dataIndicator == "bikes")
       pdfTable = <HTMLElement>document.getElementById("bikeTable");
@@ -610,8 +702,6 @@ export class RealTimeDashboardComponent implements OnInit {
       var html = htmlToPdfmake(pdfTable.innerHTML);
       const documentDefinition = { content: html };
       pdfMake.createPdf(documentDefinition).open();
-
     }
   }
-
 }
