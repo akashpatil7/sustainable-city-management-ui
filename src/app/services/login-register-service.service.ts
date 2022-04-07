@@ -12,6 +12,13 @@ export class LoginRegisterServiceService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * POST request: Logs in the user
+   *
+   * @param {string} email
+   * @param {string} password
+   * @returns {Observable}
+   */
   loginUser(email: string, password: string){
     var userObj = {
       "email": email, 
@@ -22,6 +29,14 @@ export class LoginRegisterServiceService {
     return this.http.post<any>(this.BACKEND_URL + '/login', userObj, options);  
   }
 
+  /**
+   * POST request: Registers user details
+   *
+   * @param {string} email
+   * @param {string} password
+   * @param {string} username
+   * @returns {Observable}
+   */
   sendRegisterDetails(email: string, password: string, username: string){
     var userObj = {
       "email": email, 

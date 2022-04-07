@@ -58,8 +58,7 @@ export class RealTimeDataService {
     time: 0,
   };
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getRealTimeData(dataType: string): Observable<any> {
     return new Observable((observer: Observer<any>) => {

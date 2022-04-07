@@ -29,6 +29,10 @@ export class RecommendationDashboardComponent implements OnInit {
 
   constructor(private http: HttpClient, private rs: RecommendationsService) { }
 
+  /**
+   * Automatically called when the component is loaded
+   * Gets the data recommendations
+   */
   ngOnInit(): void {
     console.log("init-ing")
     this.getBikeRecommendations();
@@ -39,6 +43,11 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getHourlyBikeAverages();
   }
 
+  /**
+   * Update cache time if outdated
+   *
+   * @returns {any} outdated
+   */
   private outdatedCache() {
     var outdated = true;
     let cacheTime = localStorage.getItem('cacheTime');
@@ -52,6 +61,9 @@ export class RecommendationDashboardComponent implements OnInit {
     return outdated;
   }
 
+  /*
+   * Gets the bike recommendations
+   */
   getBikeRecommendations() {
     if (this.outdatedCache()) {
       console.log("getting bike recs from request")
@@ -74,6 +86,9 @@ export class RecommendationDashboardComponent implements OnInit {
     }
   }
 
+  /*
+   * Gets the bike-pedestrian recommendations
+   */
   getBikePedestrianRecommendations() {
     if (this.outdatedCache()) {
       this.rs.getBikePedestrianRecommendations().subscribe((res) => {
@@ -94,6 +109,9 @@ export class RecommendationDashboardComponent implements OnInit {
     }
   }
 
+  /*
+   * Gets the AQI recommendations
+   */
   getAqiRecommendations() {
     if (this.outdatedCache()) {
       this.rs.getAqiRecommendations().subscribe((res) => {
@@ -114,6 +132,9 @@ export class RecommendationDashboardComponent implements OnInit {
     }
   }
 
+  /*
+   * Gets the pedestrian recommendations
+   */
   getPedestrianRecommendations() {
     if (this.outdatedCache()) {
       this.rs.getPedestrianRecommendations().subscribe((res) => {
@@ -134,6 +155,9 @@ export class RecommendationDashboardComponent implements OnInit {
     }
   }
 
+  /*
+   * Gets the bus recommendations
+   */
   getBusRecommendations() {
     if (this.outdatedCache()) {
       this.rs.getBusRecommendations().subscribe((res) => {
@@ -154,7 +178,9 @@ export class RecommendationDashboardComponent implements OnInit {
     }
   }
 
-  // get hourly availability averages for bike stations
+  /*
+   * Gets hourly availability averages for bike stations
+   */
   getHourlyBikeAverages() {
     if (this.outdatedCache()) {
       this.rs.getHourlyAverage().subscribe((res) => {
