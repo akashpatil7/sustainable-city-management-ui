@@ -1,8 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { LoginRegisterServiceService } from '../services/login-register-service.service';
 import { Router } from '@angular/router';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-service-component',
@@ -16,18 +15,16 @@ export class UserServiceComponentComponent implements OnInit {
   constructor(private loginService: LoginRegisterServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    /*
-    if(this.auth.isLoggedIn()){
-      this.router.navigateByUrl('/real-time-dashboard');
-    }*/
   }
 
   checkPasswords(password1: string, password2: string) {
+    //checks if passwords inputted when registering are the same
     if (password1 == password2) return true;
     else return false;
   }
 
   onLogin(data: { email: string; password: string; }) {
+    // sends login request to the backend
     if (this.isValidEmail(data.email)) {
       this.loginService.loginUser(data.email, data.password).subscribe({
         next: this.handleLoginResponse.bind(this),
@@ -40,14 +37,17 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   handleLoginResponse(data: { [key: string]: string }) {
+    // on successful login, the session token is stored in localStorage
     var token = data["token"];
     localStorage.setItem("token", token);
     if (token) {
+      // user is redirected to real time dashboard
       this.router.navigateByUrl('/real-time-dashboard');
     }
   }
 
   handleLoginError(error: HttpErrorResponse) {
+    // handle login error response
     this.showLoginError(error.name);
   }
 
@@ -98,6 +98,7 @@ export class UserServiceComponentComponent implements OnInit {
   }
 
   isValidEmail(email: string) {
+    // checks if email inputted when logging in/registering is a of @dublincity.ie domain 
     var validEmail = new RegExp("^[a-zA-Z0-9_.+-]+@dublincity\.ie$");
     if (validEmail.test(email)) {
       return true;

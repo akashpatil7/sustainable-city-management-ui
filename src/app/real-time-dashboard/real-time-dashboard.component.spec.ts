@@ -1,10 +1,9 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { RealTimeDashboardComponent } from './real-time-dashboard.component';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
-import { Observable, Observer, of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchFilterPipe } from '../pipes/search-filter.pipe';
 import { DublinBikesData } from '../models/DublinBikesData';
