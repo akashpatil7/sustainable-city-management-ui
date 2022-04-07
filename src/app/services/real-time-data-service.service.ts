@@ -15,7 +15,7 @@ export class RealTimeDataService {
   private aqiUrl = 'http://' + environment.hostName + '/getRealTimeDataForAqi';
   private pedestrianUrl = 'http://' + environment.hostName + '/getRealTimeDataForPedestrian';
   private busUrl = 'http://' + environment.hostName + '/getRealTimeDataForBus';
-  urls = {"bike": this.bikeUrl, "aqi": this.aqiUrl, "ped": this.pedestrianUrl, "bus": this.busUrl};
+  urls = { "bike": this.bikeUrl, "aqi": this.aqiUrl, "ped": this.pedestrianUrl, "bus": this.busUrl };
 
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
@@ -61,12 +61,12 @@ export class RealTimeDataService {
   constructor(private http: HttpClient) {
   }
 
-  getRealTimeData(dataType:string): Observable<any> {
+  getRealTimeData(dataType: string): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.urls[dataType]}` + "?Authorization=" + localStorage.getItem("token"));
       eventSource.onmessage = (event) => {
         const json = JSON.parse(event.data);
-        switch(dataType){
+        switch (dataType) {
           case "bike":
             this.dublinBikesDataObjects = json;
             observer.next(this.dublinBikesDataObjects);

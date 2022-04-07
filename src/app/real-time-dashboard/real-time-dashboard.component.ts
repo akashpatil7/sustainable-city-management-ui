@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
-import { MatRadioChange } from '@angular/material/radio';
+import {  MatRadioChange } from '@angular/material/radio';
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
@@ -89,10 +89,6 @@ export class RealTimeDashboardComponent implements OnInit {
   showBusMarkers: boolean = true;
   showAqiMarkers: boolean = true;
 
-  selectedBikeStandForGraph: string | undefined;
-  // array to store Pedestrian data 
-  streetLatLon: any[] = [];
-
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
 
@@ -175,22 +171,6 @@ export class RealTimeDashboardComponent implements OnInit {
   public pedestrianChartLabels: Label[] = []
   public pedestrianChartData: ChartDataSets[] = [];
 
-  saleData = [
-    { name: "Mobiles", value: 105000 },
-    { name: "Laptop", value: 55000 },
-    { name: "AC", value: 15000 },
-    { name: "Headset", value: 150000 },
-    { name: "Fridge", value: 20000 }
-  ];
-
-  aqiGraphData = [
-    { name: 'Mobiles', value: 105000 },
-    { name: 'Laptop', value: 55000 },
-    { name: 'AC', value: 15000 },
-    { name: 'Headset', value: 150000 },
-    { name: 'Fridge', value: 20000 }
-  ]
-
   busColumnOne = 'Route';
   busColumnTwo = 'Start Time';
 
@@ -217,7 +197,7 @@ export class RealTimeDashboardComponent implements OnInit {
     if (cacheTime != null) {
       let then = parseInt(JSON.parse(cacheTime));
       let now = new Date().getTime();
-      if (now-then < 60000) {
+      if (now - then < 60000) {
         outdated = false;
       }
     }
@@ -264,7 +244,7 @@ export class RealTimeDashboardComponent implements OnInit {
       this.dublinBusStops = data;
       this.makeBusMarkers();
     });
-    
+
     if (this.outdatedCache()) {
       console.log("getting data from request, not local storage")
       this.getUpdatedData();
@@ -286,7 +266,7 @@ export class RealTimeDashboardComponent implements OnInit {
       let busData = localStorage.getItem("busData")
       if (busData != null) {
         this.handleBusResponse(JSON.parse(busData))
-      }     
+      }
       this.getUpdatedData();
     }
   }
