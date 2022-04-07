@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RecommendationsService } from '../services/recommendations.service';
-import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recommendation-dashboard',
@@ -10,9 +9,8 @@ import { interval, Subscription } from 'rxjs';
 })
 export class RecommendationDashboardComponent implements OnInit {
 
-  bikeData: any[] = [];
-  openSpots: any[] = [];
-  filledSpots: any[] = [];
+  openBikeSpots: any[] = [];
+  filledBikeSpots: any[] = [];
   highestAqi: any[] = [];
   lowestAqi: any[] = [];
   lowestCountPedestrianData: any[] = []
@@ -22,14 +20,11 @@ export class RecommendationDashboardComponent implements OnInit {
   moveBikesFrom: any[] = []
   moveBikesTo: any[] = []
   displayedColumns = ['from', 'to']
-  
+
   // trends variables
-  bikeTrends: any[] = [];
   hourlyBikeTrends: any[] = [];
   loadingData: boolean = true;
   currentTime: any;
-
-  subscription: Subscription = new Subscription;
 
   constructor(private http: HttpClient, private rs: RecommendationsService) { }
 
@@ -43,37 +38,37 @@ export class RecommendationDashboardComponent implements OnInit {
     this.getHourlyBikeAverages();
   }
 
-  outdatedCache() {
+  private outdatedCache() {
     var outdated = true;
     let cacheTime = localStorage.getItem('cacheTime');
     if (cacheTime != null) {
       let then = parseInt(JSON.parse(cacheTime));
       let now = new Date().getTime();
-      if (now-then < 60000) {
+      if (now - then < 60000) {
         outdated = false;
       }
     }
     return outdated;
   }
-  
+
   getBikeRecommendations() {
     if (this.outdatedCache()) {
       console.log("getting bike recs from request")
       this.rs.getBikeRecommendations().subscribe((res) => {
         console.log(res);
-        this.openSpots = res.mostAvailableBikeStationData;
-        this.filledSpots = res.mostEmptyBikeStationData;
-        localStorage.setItem("openSpots", JSON.stringify(this.openSpots));
-        localStorage.setItem("filledSpots", JSON.stringify(this.filledSpots));
+        this.openBikeSpots = res.mostAvailableBikeStationData;
+        this.filledBikeSpots = res.mostEmptyBikeStationData;
+        localStorage.setItem("openBikeSpots", JSON.stringify(this.openBikeSpots));
+        localStorage.setItem("filledBikeSpots", JSON.stringify(this.filledBikeSpots));
       });
     }
     else {
       console.log("getting bike recs from local storage")
-      let openSpots = localStorage.getItem("openSpots")
-      let filledSpots = localStorage.getItem("filledSpots")
+      let openSpots = localStorage.getItem("openBikeSpots")
+      let filledSpots = localStorage.getItem("filledBikeSpots")
       if (openSpots != null && filledSpots != null) {
-        this.openSpots = JSON.parse(openSpots);
-        this.filledSpots = JSON.parse(filledSpots);
+        this.openBikeSpots = JSON.parse(openSpots);
+        this.filledBikeSpots = JSON.parse(filledSpots);
       }
     }
   }

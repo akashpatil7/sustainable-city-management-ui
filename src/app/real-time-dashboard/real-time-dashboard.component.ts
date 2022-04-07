@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { RealTimeDataService } from '../services/real-time-data-service.service';
 import { DublinBikesData } from '../models/DublinBikesData';
 import { DublinBusData } from '../models/DublinBusData';
-import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {  MatRadioChange } from '@angular/material/radio';
+
 import * as L from 'leaflet';
 import { AqiData } from '../models/AqiData';
 import { PedestrianData } from '../models/PedestrianData';
@@ -14,7 +13,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
-import { ChartOptions, ChartType, ChartConfiguration, ChartData, ChartDataSets, ChartPluginsOptions } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { ViewChild } from '@angular/core';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 
@@ -90,10 +89,6 @@ export class RealTimeDashboardComponent implements OnInit {
   showPedestrianMarkers: boolean = true;
   showBusMarkers: boolean = true;
   showAqiMarkers: boolean = true;
-
-  selectedBikeStandForGraph: string | undefined;
-  // array to store Pedestrian data 
-  streetLatLon: any[] = [];
 
   // array to store Dublin bus stop coordinates
   dublinBusStops: any[] = []
@@ -177,22 +172,6 @@ export class RealTimeDashboardComponent implements OnInit {
   public pedestrianChartLabels: Label[] = []
   public pedestrianChartData: ChartDataSets[] = [];
 
-  saleData = [
-    { name: "Mobiles", value: 105000 },
-    { name: "Laptop", value: 55000 },
-    { name: "AC", value: 15000 },
-    { name: "Headset", value: 150000 },
-    { name: "Fridge", value: 20000 }
-  ];
-
-  aqiGraphData = [
-    { name: 'Mobiles', value: 105000 },
-    { name: 'Laptop', value: 55000 },
-    { name: 'AC', value: 15000 },
-    { name: 'Headset', value: 150000 },
-    { name: 'Fridge', value: 20000 }
-  ]
-
   busColumnOne = 'Route';
   busColumnTwo = 'Start Time';
 
@@ -219,7 +198,7 @@ export class RealTimeDashboardComponent implements OnInit {
     if (cacheTime != null) {
       let then = parseInt(JSON.parse(cacheTime));
       let now = new Date().getTime();
-      if (now-then < 60000) {
+      if (now - then < 60000) {
         outdated = false;
       }
     }
@@ -266,7 +245,7 @@ export class RealTimeDashboardComponent implements OnInit {
       this.dublinBusStops = data;
       this.makeBusMarkers();
     });
-    
+
     if (this.outdatedCache()) {
       console.log("getting data from request, not local storage")
       this.getUpdatedData();
@@ -288,7 +267,7 @@ export class RealTimeDashboardComponent implements OnInit {
       let busData = localStorage.getItem("busData")
       if (busData != null) {
         this.handleBusResponse(JSON.parse(busData))
-      }     
+      }
       this.getUpdatedData();
     }
   }
