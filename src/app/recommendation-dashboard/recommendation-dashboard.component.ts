@@ -58,14 +58,14 @@ export class RecommendationDashboardComponent implements OnInit {
         console.log(res);
         this.openBikeSpots = res.mostAvailableBikeStationData;
         this.filledBikeSpots = res.mostEmptyBikeStationData;
-        localStorage.setItem("openSpots", JSON.stringify(this.openBikeSpots));
-        localStorage.setItem("filledSpots", JSON.stringify(this.filledBikeSpots));
+        localStorage.setItem("openBikeSpots", JSON.stringify(this.openBikeSpots));
+        localStorage.setItem("filledBikeSpots", JSON.stringify(this.filledBikeSpots));
       });
     }
     else {
       console.log("getting bike recs from local storage")
-      let openSpots = localStorage.getItem("openSpots")
-      let filledSpots = localStorage.getItem("filledSpots")
+      let openSpots = localStorage.getItem("openBikeSpots")
+      let filledSpots = localStorage.getItem("filledBikeSpots")
       if (openSpots != null && filledSpots != null) {
         this.openBikeSpots = JSON.parse(openSpots);
         this.filledBikeSpots = JSON.parse(filledSpots);
