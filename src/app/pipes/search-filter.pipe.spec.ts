@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SearchFilterPipe } from './search-filter.pipe';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PedestrianData } from '../models/PedestrianData';
 import { AqiData, AqiStation } from '../models/AqiData';

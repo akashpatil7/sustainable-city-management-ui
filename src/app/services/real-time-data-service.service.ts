@@ -11,12 +11,14 @@ import { environment } from 'src/environments/environment';
 @Injectable({ providedIn: 'root' })
 export class RealTimeDataService {
 
+  // url endpoints for each data indicator
   private bikeUrl = 'http://' + environment.hostName + '/getRealTimeDataForBike';
   private aqiUrl = 'http://' + environment.hostName + '/getRealTimeDataForAqi';
   private pedestrianUrl = 'http://' + environment.hostName + '/getRealTimeDataForPedestrian';
   private busUrl = 'http://' + environment.hostName + '/getRealTimeDataForBus';
   urls = { "bike": this.bikeUrl, "aqi": this.aqiUrl, "ped": this.pedestrianUrl, "bus": this.busUrl };
 
+  // models to map the real-time data
   private dublinBikesDataObjects: DublinBikesData = {
     id: 0,
     harvest_time: '',
@@ -30,6 +32,7 @@ export class RealTimeDataService {
     latitude: 0,
     longitude: 0
   };
+  
   private busDataObjects: DublinBusData = {
     routeId: '',
     routeLong: '',
@@ -58,9 +61,14 @@ export class RealTimeDataService {
     time: 0,
   };
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
+  /**
+   * Gets the real time data from the backend for given data source
+   *
+   * @param {string} dataType
+   * @returns {Observable<any>}
+   */
   getRealTimeData(dataType: string): Observable<any> {
     return new Observable((observer: Observer<any>) => {
       const eventSource = new EventSource(`${this.urls[dataType]}` + "?Authorization=" + localStorage.getItem("token"));
